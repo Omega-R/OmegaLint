@@ -1,0 +1,4 @@
+#Thu Oct 22 17:30:22 MSK 2020
+base.0=/home/shipa/AndroidStudioProjects/OmegaLint/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,0 +1,2 @@
+com/example/omegalint/BuildConfig.java
+ com.example.omegalint.BuildConfig
