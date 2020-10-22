@@ -1,2 +1,3 @@
+include ':checks'
 include ':app'
 rootProject.name = "OmegaLint"

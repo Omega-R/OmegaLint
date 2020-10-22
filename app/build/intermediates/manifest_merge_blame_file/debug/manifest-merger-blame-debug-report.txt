@@ -25,23 +25,22 @@
 17-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:9:9-54
 18        android:supportsRtl="true"
 18-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:10:9-35
-19        android:testOnly="true"
-20        android:theme="@style/Theme.OmegaLint" >
-20-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:11:9-47
-21        <activity android:name="com.example.omegalint.MainActivity" >
-21-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:9-18:20
-21-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:19-47
-22            <intent-filter>
-22-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:13:13-17:29
-23                <action android:name="android.intent.action.MAIN" />
-23-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:14:17-69
-23-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:14:25-66
-24
-25                <category android:name="android.intent.category.LAUNCHER" />
-25-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:16:17-77
-25-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:16:27-74
-26            </intent-filter>
-27        </activity>
-28    </application>
-29
-30</manifest>
+19        android:theme="@style/Theme.OmegaLint" >
+19-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:11:9-47
+20        <activity android:name="com.example.omegalint.MainActivity" >
+20-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:9-18:20
+20-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:19-47
+21            <intent-filter>
+21-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:13:13-17:29
+22                <action android:name="android.intent.action.MAIN" />
+22-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:14:17-69
+22-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:14:25-66
+23
+24                <category android:name="android.intent.category.LAUNCHER" />
+24-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:16:17-77
+24-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:16:27-74
+25            </intent-filter>
+26        </activity>
+27    </application>
+28
+29</manifest>
