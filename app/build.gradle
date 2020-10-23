@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.omegalint"
-        minSdkVersion 19
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -28,7 +28,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8.toString()
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 }
 

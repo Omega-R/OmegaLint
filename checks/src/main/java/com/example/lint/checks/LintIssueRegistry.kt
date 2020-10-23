@@ -16,7 +16,7 @@ class LintIssueRegistry : IssueRegistry() {
         listOfIssues.add(MaxLineLengthDetector.ISSUE)
         listOfIssues.add(MaxArgumentsCountDetector.ISSUE)
         listOfIssues.add(ExceptionCatchDetector.ISSUE)
-        listOfIssues.add(FieldsOrderDetector.ISSUE)
+        //listOfIssues.add(FieldsOrderDetector.ISSUE)
     }
 
     override val issues = listOfIssues
