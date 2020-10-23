@@ -4,35 +4,35 @@ ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManif
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
-MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/63f9c720d340784047c2d052cbd963e8/jetified-core-ktx-1.3.2/AndroidManifest.xml:2:1-9:12
-MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/8c08fa54dfb9d3f963216380fd3a81d7/material-1.2.1/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9dca0bf693bddda6467e8bec29911581/constraintlayout-2.0.2/AndroidManifest.xml:2:1-11:12
-MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e2537e92f13c1f2298f8511f88556a93/appcompat-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4e9452c8343f163c58c4b90d4c60b237/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/6f15c02bf97a4ff8ad70a039961580f6/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9b69cdf90bf91b3889577c76d036151c/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b0a47701d9207ef1675f778fae13ce13/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f1437aedf0a79843484cbdbdacc48351/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/eb66cf0d105741cbc45d64fa4c9e6a66/transition-1.2.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/747d1f1991893f8d52bf0caedf390567/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1d0feb4e92bb4f98c45b4fed9d93a45/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1ea71f7d43e9dfb77e185c569aacdd3/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/604cad85294ac77ee4ad34c567a1bc7d/loader-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/30b6c7e0bb8a11b3aee0567ce1e81f1c/jetified-activity-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/210c41e0d81369a5da416a9e8f3ec65b/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/24703d02b22e5c73c9129ecab2c33d67/customview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:17:1-26:12
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b2a5eb0fc7d2b8b1be4846d02f432bab/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a9bd7952ca7b229eb8a4438ecfa953a6/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/cde271bbd15d85b33d2909d6d9d8c27f/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4a662f3a2743aa2fb134d322be09089b/lifecycle-runtime-2.1.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/60bae243e739eb81a4ba04f0bfe38f84/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f483960348cceee13915160d66651366/jetified-savedstate-1.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/fa8e1a4ab843a22a0ce8f50f99ec8405/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4ea9dc8c995d588e1af5daede2009176/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/c1e1fded02cc4d4eb6c8e4beb11d253b/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0e96a72ca3a752fe7479a70462cf253d/core-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/901757bb172caa4ab64362932150acea/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/a7914e058f1ea67719a7b447e620aa28/jetified-core-ktx-1.3.2/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/4b5bf9de51d89be3fa74e63160c491d0/material-1.2.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/ff2dcd301a05b983e683d316ac823295/constraintlayout-2.0.2/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/8053239dec2a17c6866096f5057647cb/appcompat-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9e60f461112c8ec9d6c35ccbae902f7f/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/813e1e2f2389234717945b9ce29d6fdd/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/da523afc89498e9b8e5b314e169a8fa0/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/5249e93bc5dfc214ef21e96ffe09e77b/drawerlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d1a67a3e37f93f026b4e2ceb6f292257/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/bbf70c784136f8726548de874d82ca48/transition-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/820e17008c4790e2a1169fa6ccd2da84/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/10287d9b4738833a47c9d04e721bfe59/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8f6d95ecea878223faad6a70dc78f40/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/609c0950fce9dbe590edb6aff6259407/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0da32c1020c6874465b65ed271c8f17a/jetified-activity-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/861917a5ed0ab2d335d39a80c785696f/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e1bd9b37c76836557e1f0667e6fe5335/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1ec69c91971ca3ec2e7215d729a3ce1d/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1786a86e929ca2348d6e5c9dfc028181/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/788b2bdcb9a4ded323c6661047001528/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1e45e512565f3d96ae9f421fe03b310/lifecycle-runtime-2.1.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/83b24fe05c113be38de8d4f1575440f7/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/2b1bb92b20f29da1702161b3f95f8b17/jetified-savedstate-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0ecf1e18a0788bd0d90fa09204a6c3fe/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a779d724f2c48e462f73e356f8933292/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b9494db27b977cf266bdf721e831d56a/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/faa68db51e0e47aa238128161af15dc6/core-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8903238b4e597dc87ac0792a3ccd8ba/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:17:1-24:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
@@ -52,16 +52,16 @@ INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidMa
 		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:11-69
 application
 ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:5:5-19:19
-MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/8c08fa54dfb9d3f963216380fd3a81d7/material-1.2.1/AndroidManifest.xml:22:5-20
-MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/8c08fa54dfb9d3f963216380fd3a81d7/material-1.2.1/AndroidManifest.xml:22:5-20
-MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9dca0bf693bddda6467e8bec29911581/constraintlayout-2.0.2/AndroidManifest.xml:9:5-20
-MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9dca0bf693bddda6467e8bec29911581/constraintlayout-2.0.2/AndroidManifest.xml:9:5-20
-MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:24:5-89
-MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:24:5-89
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/cde271bbd15d85b33d2909d6d9d8c27f/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/cde271bbd15d85b33d2909d6d9d8c27f/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/4b5bf9de51d89be3fa74e63160c491d0/material-1.2.1/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/4b5bf9de51d89be3fa74e63160c491d0/material-1.2.1/AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/ff2dcd301a05b983e683d316ac823295/constraintlayout-2.0.2/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/ff2dcd301a05b983e683d316ac823295/constraintlayout-2.0.2/AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/788b2bdcb9a4ded323c6661047001528/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/788b2bdcb9a4ded323c6661047001528/versionedparcelable-1.1.0/AndroidManifest.xml:24:5-25:19
 	android:appComponentFactory
-		ADDED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:24:18-86
+		ADDED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:24:18-86
 	android:supportsRtl
 		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:10:9-35
 	android:label
@@ -92,64 +92,64 @@ uses-sdk
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
-MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/63f9c720d340784047c2d052cbd963e8/jetified-core-ktx-1.3.2/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/63f9c720d340784047c2d052cbd963e8/jetified-core-ktx-1.3.2/AndroidManifest.xml:5:5-7:41
-MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/8c08fa54dfb9d3f963216380fd3a81d7/material-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/8c08fa54dfb9d3f963216380fd3a81d7/material-1.2.1/AndroidManifest.xml:20:5-44
-MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9dca0bf693bddda6467e8bec29911581/constraintlayout-2.0.2/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9dca0bf693bddda6467e8bec29911581/constraintlayout-2.0.2/AndroidManifest.xml:5:5-7:41
-MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e2537e92f13c1f2298f8511f88556a93/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e2537e92f13c1f2298f8511f88556a93/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4e9452c8343f163c58c4b90d4c60b237/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4e9452c8343f163c58c4b90d4c60b237/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/6f15c02bf97a4ff8ad70a039961580f6/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/6f15c02bf97a4ff8ad70a039961580f6/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9b69cdf90bf91b3889577c76d036151c/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9b69cdf90bf91b3889577c76d036151c/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b0a47701d9207ef1675f778fae13ce13/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b0a47701d9207ef1675f778fae13ce13/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f1437aedf0a79843484cbdbdacc48351/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f1437aedf0a79843484cbdbdacc48351/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/eb66cf0d105741cbc45d64fa4c9e6a66/transition-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/eb66cf0d105741cbc45d64fa4c9e6a66/transition-1.2.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/747d1f1991893f8d52bf0caedf390567/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/747d1f1991893f8d52bf0caedf390567/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1d0feb4e92bb4f98c45b4fed9d93a45/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1d0feb4e92bb4f98c45b4fed9d93a45/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1ea71f7d43e9dfb77e185c569aacdd3/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1ea71f7d43e9dfb77e185c569aacdd3/viewpager-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/604cad85294ac77ee4ad34c567a1bc7d/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/604cad85294ac77ee4ad34c567a1bc7d/loader-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/30b6c7e0bb8a11b3aee0567ce1e81f1c/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/30b6c7e0bb8a11b3aee0567ce1e81f1c/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/210c41e0d81369a5da416a9e8f3ec65b/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/210c41e0d81369a5da416a9e8f3ec65b/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/24703d02b22e5c73c9129ecab2c33d67/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/24703d02b22e5c73c9129ecab2c33d67/customview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/9f6d188c3a4d82bc94d850d4f272a7f9/core-1.3.2/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b2a5eb0fc7d2b8b1be4846d02f432bab/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b2a5eb0fc7d2b8b1be4846d02f432bab/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a9bd7952ca7b229eb8a4438ecfa953a6/cardview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a9bd7952ca7b229eb8a4438ecfa953a6/cardview-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/cde271bbd15d85b33d2909d6d9d8c27f/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/cde271bbd15d85b33d2909d6d9d8c27f/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4a662f3a2743aa2fb134d322be09089b/lifecycle-runtime-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4a662f3a2743aa2fb134d322be09089b/lifecycle-runtime-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/60bae243e739eb81a4ba04f0bfe38f84/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/60bae243e739eb81a4ba04f0bfe38f84/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f483960348cceee13915160d66651366/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/f483960348cceee13915160d66651366/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/fa8e1a4ab843a22a0ce8f50f99ec8405/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/fa8e1a4ab843a22a0ce8f50f99ec8405/interpolator-1.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4ea9dc8c995d588e1af5daede2009176/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/4ea9dc8c995d588e1af5daede2009176/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/c1e1fded02cc4d4eb6c8e4beb11d253b/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/c1e1fded02cc4d4eb6c8e4beb11d253b/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0e96a72ca3a752fe7479a70462cf253d/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0e96a72ca3a752fe7479a70462cf253d/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
-MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/901757bb172caa4ab64362932150acea/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
-MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/901757bb172caa4ab64362932150acea/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/a7914e058f1ea67719a7b447e620aa28/jetified-core-ktx-1.3.2/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.core:core-ktx:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/a7914e058f1ea67719a7b447e620aa28/jetified-core-ktx-1.3.2/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/4b5bf9de51d89be3fa74e63160c491d0/material-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.2.1] /home/shipa/.gradle/caches/transforms-2/files-2.1/4b5bf9de51d89be3fa74e63160c491d0/material-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/ff2dcd301a05b983e683d316ac823295/constraintlayout-2.0.2/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/ff2dcd301a05b983e683d316ac823295/constraintlayout-2.0.2/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/8053239dec2a17c6866096f5057647cb/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/8053239dec2a17c6866096f5057647cb/appcompat-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9e60f461112c8ec9d6c35ccbae902f7f/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/9e60f461112c8ec9d6c35ccbae902f7f/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/813e1e2f2389234717945b9ce29d6fdd/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/813e1e2f2389234717945b9ce29d6fdd/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/da523afc89498e9b8e5b314e169a8fa0/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/da523afc89498e9b8e5b314e169a8fa0/jetified-appcompat-resources-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/5249e93bc5dfc214ef21e96ffe09e77b/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/5249e93bc5dfc214ef21e96ffe09e77b/drawerlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d1a67a3e37f93f026b4e2ceb6f292257/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d1a67a3e37f93f026b4e2ceb6f292257/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/bbf70c784136f8726548de874d82ca48/transition-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/bbf70c784136f8726548de874d82ca48/transition-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/820e17008c4790e2a1169fa6ccd2da84/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/820e17008c4790e2a1169fa6ccd2da84/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/10287d9b4738833a47c9d04e721bfe59/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/10287d9b4738833a47c9d04e721bfe59/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8f6d95ecea878223faad6a70dc78f40/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8f6d95ecea878223faad6a70dc78f40/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/609c0950fce9dbe590edb6aff6259407/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/609c0950fce9dbe590edb6aff6259407/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0da32c1020c6874465b65ed271c8f17a/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0da32c1020c6874465b65ed271c8f17a/jetified-activity-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/861917a5ed0ab2d335d39a80c785696f/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/861917a5ed0ab2d335d39a80c785696f/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e1bd9b37c76836557e1f0667e6fe5335/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/e1bd9b37c76836557e1f0667e6fe5335/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1ec69c91971ca3ec2e7215d729a3ce1d/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1ec69c91971ca3ec2e7215d729a3ce1d/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1786a86e929ca2348d6e5c9dfc028181/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/1786a86e929ca2348d6e5c9dfc028181/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/788b2bdcb9a4ded323c6661047001528/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/788b2bdcb9a4ded323c6661047001528/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1e45e512565f3d96ae9f421fe03b310/lifecycle-runtime-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b1e45e512565f3d96ae9f421fe03b310/lifecycle-runtime-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/83b24fe05c113be38de8d4f1575440f7/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/83b24fe05c113be38de8d4f1575440f7/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/2b1bb92b20f29da1702161b3f95f8b17/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/2b1bb92b20f29da1702161b3f95f8b17/jetified-savedstate-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0ecf1e18a0788bd0d90fa09204a6c3fe/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/0ecf1e18a0788bd0d90fa09204a6c3fe/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a779d724f2c48e462f73e356f8933292/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/a779d724f2c48e462f73e356f8933292/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b9494db27b977cf266bdf721e831d56a/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/b9494db27b977cf266bdf721e831d56a/lifecycle-livedata-core-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/faa68db51e0e47aa238128161af15dc6/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/faa68db51e0e47aa238128161af15dc6/core-runtime-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8903238b4e597dc87ac0792a3ccd8ba/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.0.0] /home/shipa/.gradle/caches/transforms-2/files-2.1/d8903238b4e597dc87ac0792a3ccd8ba/jetified-annotation-experimental-1.0.0/AndroidManifest.xml:20:5-22:41
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
 	android:targetSdkVersion
