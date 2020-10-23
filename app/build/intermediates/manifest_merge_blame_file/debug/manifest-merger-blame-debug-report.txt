@@ -15,7 +15,7 @@
 12        android:allowBackup="true"
 12-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:6:9-35
 13        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-13-->[androidx.core:core:1.3.2] /home/shipa/.gradle/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:24:18-86
+13-->[androidx.core:core:1.3.2] /home/shipa/caches/transforms-2/files-2.1/7aac5c5c522df5bfe2bbd59f99e79e78/core-1.3.2/AndroidManifest.xml:24:18-86
 14        android:debuggable="true"
 15        android:icon="@mipmap/ic_launcher"
 15-->/home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:7:9-43
