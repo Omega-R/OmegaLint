@@ -1,0 +1,4 @@
+root = true
+
+[*{.kt, .xml, .java}]
+max_line_length = 130
