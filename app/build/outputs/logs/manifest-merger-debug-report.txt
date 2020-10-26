@@ -37,7 +37,7 @@ INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidMa
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:2:1-21:12
 	package
-		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:3:5-36
+		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:3:5-31
 		INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
 		INJECTED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml
 	android:versionName
@@ -73,8 +73,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/shipa
 	android:allowBackup
 		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:6:9-35
 	android:theme
-		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:11:9-47
-activity#com.example.omegalint.MainActivity
+		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:11:9-42
+activity#com.example.lint.MainActivity
 ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:9-18:20
 	android:name
 		ADDED from /home/shipa/AndroidStudioProjects/OmegaLint/app/src/main/AndroidManifest.xml:12:19-47

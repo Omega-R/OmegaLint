@@ -36,11 +36,18 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
     }
 
     override fun createUastHandler(context: JavaContext): UElementHandler? {
+        // Note: Visiting UAST nodes is a pretty general purpose mechanism;
+        // Lint has specialized support to do common things like "visit every class
+        // that extends a given super class or implements a given interface", and
+        // "visit every call site that calls a method by a given name" etc.
+        // Take a careful look at UastScanner and the various existing lint check
+        // implementations before doing things the "hard way".
+        // Also be aware of context.getJavaEvaluator() which provides a lot of
+        // utility functionality.
         return object : UElementHandler() {
             override fun visitCatchClause(node: UCatchClause) {
                 val body = node.body
                 val string = body.asRenderString()
-
                 if (string == "{\n}") { //string.matches(Regex("{*\\b/\n\\b.*}))) {
                     context.report(
                         ISSUE,
@@ -49,7 +56,6 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
                         "Catch body is empty. Add exception handling."
                     )
                 }
-
                 val parameters = node.parameters
                 parameters.forEach {
                     if (it.type.canonicalText == "java.lang.Exception") {
@@ -64,6 +70,11 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
                     }
                 }
             }
+
+            /*private fun createFix(): LintFix {
+                return fix().replace().text("}").with("throw \n }").build()
+            }*/
+
         }
     }
 

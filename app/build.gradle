@@ -8,8 +8,8 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.omegalint"
-        minSdkVersion 19
+        applicationId "com.example.lint"
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"

@@ -1,4 +1,4 @@
 include ':library'
 include ':checks'
 include ':app'
-rootProject.name = "OmegaLint"
+rootProject.name = "Lint"
