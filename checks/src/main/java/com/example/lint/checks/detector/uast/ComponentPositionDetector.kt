@@ -58,12 +58,12 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
         const val ENUM_POSITION = 5
         const val ENUM_MESSAGE = "Enum should be earlier than interfaces and classes"
 
-        // 6. interface
+        // 6. interfaces
         const val INTERFACE = "interface"
         const val INTERFACE_POSITION = 6
         const val INTERFACE_MESSAGE = "Enum should be earlier than classes"
 
-        // 7. class
+        // 7. classes
         const val CLASS = "class"
         const val CLASS_POSITION = 7
 
@@ -121,6 +121,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                         if (text != null) {
 
                             /** 1) it's can find companion object*/
+
                             if (text.contains(COMPANION_OBJECT)) {
                                 if (currentPosition <= COMPANION_OBJECT_POSITION) {
                                     currentPosition = COMPANION_OBJECT_POSITION
@@ -130,6 +131,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                             }
 
                             /** 2) Variables*/
+
                             val valList = makeRegexList(VAL)
                             valList.forEach {
                                 if (text.contains(it)) {
@@ -191,6 +193,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                             }
 
                             /** 5 Enum */
+
                             val enumRegexList = makeRegexList(ENUM)
                             enumRegexList.forEach {
                                 if (text.contains(it)) {
@@ -203,6 +206,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                             }
 
                             /** 6) Interface */
+
                             val interfaceRegexList = makeRegexList(INTERFACE)
                             interfaceRegexList.forEach {
                                 if (text.contains(it)) {
@@ -214,6 +218,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                                 }
                             }
                             /** 7) Class */
+
                             val classRegexList = makeRegexList(CLASS)
                             classRegexList.forEach {
                                 if (text.contains(it)) {

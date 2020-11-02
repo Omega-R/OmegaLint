@@ -36,6 +36,7 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
         return listOf(UParameter::class.java)
     }
 
+
     override fun createUastHandler(context: JavaContext): UElementHandler? {
         // Note: Visiting UAST nodes is a pretty general purpose mechanism;
         // Lint has specialized support to do common things like "visit every class
