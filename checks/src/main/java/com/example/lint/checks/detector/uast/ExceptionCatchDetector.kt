@@ -11,13 +11,9 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
+
             id = "ExceptionCatch",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
             briefDescription = "Catch body is empty, it  not match the coding convention",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
             explanation = """
                   Don't leave blank catch body.
                     """,
@@ -36,14 +32,6 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
     }
 
     override fun createUastHandler(context: JavaContext): UElementHandler? {
-        // Note: Visiting UAST nodes is a pretty general purpose mechanism;
-        // Lint has specialized support to do common things like "visit every class
-        // that extends a given super class or implements a given interface", and
-        // "visit every call site that calls a method by a given name" etc.
-        // Take a careful look at UastScanner and the various existing lint check
-        // implementations before doing things the "hard way".
-        // Also be aware of context.getJavaEvaluator() which provides a lot of
-        // utility functionality.
         return object : UElementHandler() {
             override fun visitCatchClause(node: UCatchClause) {
                 val body = node.body
@@ -70,11 +58,6 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
                     }
                 }
             }
-
-            /*private fun createFix(): LintFix {
-                return fix().replace().text("}").with("throw \n }").build()
-            }*/
-
         }
     }
 

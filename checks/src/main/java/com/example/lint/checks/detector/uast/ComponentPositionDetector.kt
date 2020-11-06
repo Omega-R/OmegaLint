@@ -10,13 +10,8 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "ComponentPositionDetector",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
             briefDescription = "The line size does not match the coding convention",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
             explanation = """
                   Line should has 130 symbols or less
                     """,
@@ -74,15 +69,6 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
     }
 
     override fun createUastHandler(context: JavaContext): UElementHandler? {
-        // Note: Visiting UAST nodes is a pretty general purpose mechanism;
-        // Lint has specialized support to do common things like "visit every class
-        // that extends a given super class or implements a given interface", and
-        // "visit every call site that calls a method by a given name" etc.
-        // Take a careful look at UastScanner and the various existing lint check
-        // implementations before doing things the "hard way".
-        // Also be aware of context.getJavaEvaluator() which provides a lot of
-        // utility functionality.
-
         return object : UElementHandler() {
             override fun visitClass(node: UClass) {
                 val listUDeclaration = node.uastDeclarations
@@ -94,7 +80,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                  *  sorting declarations by file's lines
                  * node.uastDeclarations give elements in wrong order
                  * https://github.com/JetBrains/intellij-community/blob/master/uast/uast-java/src/org/jetbrains/uast/java/declarations/JavaUClass.kt
-                */
+                 */
                 lines.forEach { line ->
                     if (line != "") {
                         listUDeclaration.forEach { declaration ->

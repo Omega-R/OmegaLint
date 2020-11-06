@@ -25,9 +25,6 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
     }
 
     override fun appliesTo(folderType: ResourceFolderType): Boolean {
-        // Return true if we want to analyze resource files in the specified resource
-        // folder type. In this case we only need to analyze strings in the 'values'
-        // resource folder.
         return folderType == ResourceFolderType.VALUES
     }
 

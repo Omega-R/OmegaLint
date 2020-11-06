@@ -33,29 +33,20 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
     }
 
     override fun appliesTo(folderType: ResourceFolderType): Boolean {
-        // Return true if we want to analyze resource files in the specified resource
-        // folder type. In this case we only need to analyze strings in the 'values'
-        // resource folder.
         return folderType == ResourceFolderType.VALUES
     }
 
     override fun getApplicableElements(): Collection<String>? {
-        // Return the set of elements we want to analyze. In this case we want to
-        // analyze every `<string>` element that is declared in XML.
         return setOf("string")
     }
 
     override fun visitElement(context: XmlContext, element: Element) {
         if (!element.hasChildNodes()) {
-            // <string> elements should always have a single child node
-            // (the string text), but double check just to be safe.
             return
         }
 
         val textNode = element.firstChild ?: return
         if (textNode.nodeType != Node.TEXT_NODE) {
-            // The first child of a `<string>` element should always be a text
-            // node, but double check just to be safe.
             return
         }
 

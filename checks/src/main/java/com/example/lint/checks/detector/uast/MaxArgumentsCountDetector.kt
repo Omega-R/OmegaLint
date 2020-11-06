@@ -10,13 +10,8 @@ class MaxArgumentsCountDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "MaxArgumentsCount",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
             briefDescription = "Arguments count does not match the coding convention",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
             explanation = """
                   Don't use abbreviations.
                     """,
