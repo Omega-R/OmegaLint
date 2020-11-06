@@ -9,7 +9,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
     companion object {
         val ISSUE = Issue.create(
-            id = "OkayStringXml",
+            id = "NameResourceStringXml",
             briefDescription = "Detects usages of 'Okay' in string resources",
             explanation = "The word 'OK' should be used instead of 'Okay' in string resources",
             category = Category.CORRECTNESS,

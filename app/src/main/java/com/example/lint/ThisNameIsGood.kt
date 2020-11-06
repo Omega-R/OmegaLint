@@ -3,7 +3,7 @@ package com.example.lint
 import android.content.Context
 import javax.security.auth.callback.Callback
 
-class ThisNameIsGood(context: Context, some: Int) : InternetBus, MyClass() {
+class ThisNameIsGood(context: Context, some: Int) : InternetBus {
     fun so(callback: Callback, ctx: Context) {
         callback
     }

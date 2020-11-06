@@ -6,6 +6,7 @@ import com.android.tools.lint.detector.api.Issue
 import com.example.lint.checks.detector.uast.*
 import com.example.lint.checks.detector.xml.NameIdentifierXmlDetector
 import com.example.lint.checks.detector.xml.NameResourceStringXmlDetector
+import com.example.lint.checks.detector.xml.NameResourceStyleXmlDetector
 
 class LintIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
@@ -18,7 +19,8 @@ class LintIssueRegistry : IssueRegistry() {
             ExceptionCatchDetector.ISSUE,
             ComponentPositionDetector.ISSUE,
             NameIdentifierXmlDetector.ISSUE,
-            NameResourceStringXmlDetector.ISSUE
+            NameResourceStringXmlDetector.ISSUE,
+            NameResourceStyleXmlDetector.ISSUE
         )
 
     override val api: Int
