@@ -31,6 +31,8 @@ class NameFileDetector : Detector(), Detector.UastScanner {
         const val SERVICE_VALUE = "Service"
         const val PRESENTER_VALUE = "Presenter"
         const val PROVIDER_VALUE = "Provider"
+
+        const val OBJECT_VALUE = "Object"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -58,7 +60,7 @@ class NameFileDetector : Detector(), Detector.UastScanner {
                  */
                 val superClass = node.javaPsi.superClass ?: return
 
-                if (!superClass.isInterface && (superClass.name != "Object")) {
+                if (!superClass.isInterface && (superClass.name != OBJECT_VALUE)) {
                     val part = superClass.name ?: return
 
                     when {
@@ -89,7 +91,7 @@ class NameFileDetector : Detector(), Detector.UastScanner {
 
                         part.matches(Regex(".*${PROVIDER_VALUE}$")) ->
                             if (!name.matches(Regex(".*${PROVIDER_VALUE}$"))) {
-                                makeContextReport(value = PROVIDER_VALUE, node)
+                               makeContextReport(value = PROVIDER_VALUE, node)
                             }
 
                         else -> if (!name.contains(part)) {

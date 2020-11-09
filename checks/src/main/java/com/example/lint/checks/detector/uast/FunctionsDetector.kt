@@ -4,6 +4,7 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
+import org.jetbrains.uast.getUCallExpression
 
 class FunctionsDetector : Detector(), Detector.UastScanner {
     companion object {
@@ -30,14 +31,6 @@ class FunctionsDetector : Detector(), Detector.UastScanner {
     }
 
     override fun createUastHandler(context: JavaContext): UElementHandler? {
-        // Note: Visiting UAST nodes is a pretty general purpose mechanism;
-        // Lint has specialized support to do common things like "visit every class
-        // that extends a given super class or implements a given interface", and
-        // "visit every call site that calls a method by a given name" etc.
-        // Take a careful look at UastScanner and the various existing lint check
-        // implementations before doing things the "hard way".
-        // Also be aware of context.getJavaEvaluator() which provides a lot of
-        // utility functionality.
         return object : UElementHandler() {
             override fun visitMethod(node: UMethod) {
                 val params = node.uastParameters
@@ -48,10 +41,10 @@ class FunctionsDetector : Detector(), Detector.UastScanner {
                 }
 
                 val body = node.uastBody ?: return
-
                 if (body.asRenderString() == "{\n}") {
                     context.report(
-                        ISSUE, node, context.getLocation(node), "Function body is empty. Write the function body."
+                        ISSUE, node, context.getLocation(body), "Function body is empty. Write the function body."
+
                     )
                 }
 
