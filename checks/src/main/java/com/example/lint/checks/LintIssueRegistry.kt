@@ -22,7 +22,8 @@ class LintIssueRegistry : IssueRegistry() {
             NameIdentifierXmlDetector.ISSUE,
             NameResourceStringXmlDetector.ISSUE,
             NameResourceStyleXmlDetector.ISSUE,
-            PositionAttributesXmlDetector.ISSUE
+            PositionAttributesXmlDetector.ISSUE,
+            MaxMethodCountDetector.ISSUE
         )
 
     override val api: Int
