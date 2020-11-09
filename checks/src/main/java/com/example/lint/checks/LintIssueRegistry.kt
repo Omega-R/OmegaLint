@@ -16,7 +16,7 @@ class LintIssueRegistry : IssueRegistry() {
             NameFileDetector.ISSUE,
             AbbreviationDetector.ISSUE,
             PositionArgumentDetector.ISSUE,
-            MaxArgumentsCountDetector.ISSUE,
+            FunctionsDetector.ISSUE,
             ExceptionCatchDetector.ISSUE,
             ComponentPositionDetector.ISSUE,
             NameIdentifierXmlDetector.ISSUE,

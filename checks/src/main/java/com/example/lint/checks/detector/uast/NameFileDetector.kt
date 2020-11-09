@@ -92,7 +92,7 @@ class NameFileDetector : Detector(), Detector.UastScanner {
                                 makeContextReport(value = PROVIDER_VALUE, node)
                             }
 
-                        else -> if (!name.contains(part)) { // this if doesn't work
+                        else -> if (!name.contains(part)) {
                             makeContextReport(part, node)
                         }
 

@@ -47,7 +47,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
             override fun visitElement(node: UElement) {
                 val name = node.asLogString()
 
-                if (name.contains("ctx")) {
+                if (name ==  "ctx") {
                     context.report(
                         ISSUE,
                         node,

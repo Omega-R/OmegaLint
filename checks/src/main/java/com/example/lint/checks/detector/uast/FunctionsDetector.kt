@@ -5,21 +5,21 @@ import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
-class MaxArgumentsCountDetector : Detector(), Detector.UastScanner {
+class FunctionsDetector : Detector(), Detector.UastScanner {
     companion object {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "MaxArgumentsCount",
-            briefDescription = "Arguments count does not match the coding convention",
+            id = "FunctionCheck",
+            briefDescription = "Arguments count does not match the coding convention. Function body should not be empty.",
             explanation = """
-                  Don't use abbreviations.
+                  Arguments count <= 5
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
             severity = Severity.WARNING,
             implementation = Implementation(
-                MaxArgumentsCountDetector::class.java,
+                FunctionsDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
             )
         )
@@ -46,6 +46,15 @@ class MaxArgumentsCountDetector : Detector(), Detector.UastScanner {
                         ISSUE, node, context.getNameLocation(node), "Method has too much arguments."
                     )
                 }
+
+                val body = node.uastBody ?: return
+
+                if (body.asRenderString() == "{\n}") {
+                    context.report(
+                        ISSUE, node, context.getLocation(node), "Function body is empty. Write the function body."
+                    )
+                }
+
             }
         }
     }
