@@ -36,6 +36,8 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
         const val INFLATE_VAL = "inflate"
 
         const val LAYOUT_PREFIX_VAL = "R.layout."
+        const val UPPER_FRAGMENT = "Fragment"
+        const val LOWER_FRAGMENT = "fragment"
 
         val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
     }
@@ -51,32 +53,48 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
                 var className = file.classes.firstOrNull()?.name ?: return
 
                 val name = node.methodName ?: return
-                if (name == INFLATE_VAL) {
-                    context.report(
-                        ISSUE,
-                        node,
-                        context.getNameLocation(node),
-                        ISSUE.getExplanation(TextFormat.TEXT)
-                    )
-                }
-                if (name == SET_CONTENT_VIEW_VAL) {
-                    var layoutName = node.valueArguments.firstOrNull()?.asRenderString() ?: return
-                    layoutName = layoutName.replace(LAYOUT_PREFIX_VAL, "")
 
-                    if (className.contains(UPPER_ACTIVITY)) {
-                        className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
+                var layoutName = node.valueArguments.firstOrNull()?.asRenderString() ?: return
+                layoutName = layoutName.replace(LAYOUT_PREFIX_VAL, "")
 
-                        if (className.camelToSnakeCase() != layoutName)
-                            context.report(
-                                ISSUE,
-                                node,
-                                context.getNameLocation(node.valueArguments.first()),
-                                ISSUE.getExplanation(TextFormat.TEXT)
-                            )
+                when (name) {
+                    /**
+                     * FOR ACTIVITY
+                     */
+                    SET_CONTENT_VIEW_VAL -> {
+                        if (className.contains(UPPER_ACTIVITY)) {
+                            className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
+
+                            if (className.camelToSnakeCase() != layoutName)
+                                context.report(
+                                    ISSUE,
+                                    node,
+                                    context.getNameLocation(node.valueArguments.first()),
+                                    ISSUE.getExplanation(TextFormat.TEXT)
+                                )
+                        }
+                    }
+
+                    /**
+                     * FOR FRAGMENT
+                     */
+                    INFLATE_VAL -> {
+                        if (className.contains(UPPER_FRAGMENT)) {
+                            className = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}"
+
+                            if (className.camelToSnakeCase() != layoutName)
+                                context.report(
+                                    ISSUE,
+                                    node,
+                                    context.getNameLocation(node.valueArguments.first()),
+                                    ISSUE.getExplanation(TextFormat.TEXT)
+                                )
+                        }
                     }
                 }
 
             }
+
             // String extensions
             fun String.camelToSnakeCase(): String {
                 return CAMEL_REGEX.replace(this) {
@@ -84,6 +102,7 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
                 }.toLowerCase()
             }
         }
+
 
     }
 }
