@@ -4,26 +4,28 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
-import org.jetbrains.uast.getUCallExpression
 
-class FunctionsDetector : Detector(), Detector.UastScanner {
+class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
     companion object {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "FunctionCheck",
+            id = "MaxFunctionsArguments",
             briefDescription = "Arguments count does not match the coding convention. Function body should not be empty.",
             explanation = """
-                  Arguments count <= 5
+                  Method has too much arguments. In functions, the number of parameters must not exceed 5.
+                  http://wiki.omega-r.club/dev-android-code#rec228191623
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
             severity = Severity.WARNING,
             implementation = Implementation(
-                FunctionsDetector::class.java,
+                MaxFunctionsArgumentsDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
             )
         )
+
+        const val MAX_COUNT_OF_ARGUMENTS = 5
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -34,20 +36,14 @@ class FunctionsDetector : Detector(), Detector.UastScanner {
         return object : UElementHandler() {
             override fun visitMethod(node: UMethod) {
                 val params = node.uastParameters
-                if (params.size > 5) {
+                if (params.size > MAX_COUNT_OF_ARGUMENTS) {
                     context.report(
-                        ISSUE, node, context.getNameLocation(node), "Method has too much arguments."
+                        ISSUE,
+                        node,
+                        context.getNameLocation(node),
+                        ISSUE.getExplanation(TextFormat.TEXT)
                     )
                 }
-
-                val body = node.uastBody ?: return
-                if (body.asRenderString() == "{\n}") {
-                    context.report(
-                        ISSUE, node, context.getLocation(body), "Function body is empty. Write the function body."
-
-                    )
-                }
-
             }
         }
     }

@@ -14,7 +14,8 @@ class NameFileDetector : Detector(), Detector.UastScanner {
             id = "FileName",
             briefDescription = "The file name does not match the coding convention",
             explanation = """
-                  Class names are recorded in UpperCamelCase.
+                  Class name should be recorded in UpperCamelCase and someone should has suffix. Rename this file.
+                  http://wiki.omega-r.club/dev-android-code#rec226456384
                     """,
             category = Category.CORRECTNESS,
             priority = 6,
@@ -33,6 +34,7 @@ class NameFileDetector : Detector(), Detector.UastScanner {
         const val PROVIDER_VALUE = "Provider"
 
         const val OBJECT_VALUE = "Object"
+        const val REPORT_MESSAGE_BEGIN = "Class name should end with"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -50,7 +52,7 @@ class NameFileDetector : Detector(), Detector.UastScanner {
                 if (name.contains(Regex("[A-Z][A-Z]")))
                     context.report(
                         ISSUE, node, context.getNameLocation(node),
-                        "Rename this file. File name should match UpperCamelCase.",
+                        ISSUE.getExplanation(TextFormat.TEXT),
                         createFix(name)
                     )
 
@@ -91,13 +93,12 @@ class NameFileDetector : Detector(), Detector.UastScanner {
 
                         part.matches(Regex(".*${PROVIDER_VALUE}$")) ->
                             if (!name.matches(Regex(".*${PROVIDER_VALUE}$"))) {
-                               makeContextReport(value = PROVIDER_VALUE, node)
+                                makeContextReport(value = PROVIDER_VALUE, node)
                             }
 
                         else -> if (!name.contains(part)) {
                             makeContextReport(part, node)
                         }
-
                     }
                 }
 
@@ -105,8 +106,10 @@ class NameFileDetector : Detector(), Detector.UastScanner {
 
             private fun makeContextReport(value: String, node: UClass) {
                 return context.report(
-                    ISSUE, node, context.getNameLocation(node),
-                    "Class name should end with $value"
+                    ISSUE,
+                    node,
+                    context.getNameLocation(node),
+                    "$REPORT_MESSAGE_BEGIN $value. \n${ISSUE.getExplanation(TextFormat.TEXT)}"
                 )
             }
 

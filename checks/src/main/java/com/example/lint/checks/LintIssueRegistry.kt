@@ -7,7 +7,6 @@ import com.example.lint.checks.detector.uast.*
 import com.example.lint.checks.detector.xml.NameIdentifierXmlDetector
 import com.example.lint.checks.detector.xml.NameResourceStringXmlDetector
 import com.example.lint.checks.detector.xml.NameResourceStyleXmlDetector
-import com.example.lint.checks.detector.xml.PositionAttributesXmlDetector
 
 class LintIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
@@ -16,14 +15,14 @@ class LintIssueRegistry : IssueRegistry() {
             NameFileDetector.ISSUE,
             AbbreviationDetector.ISSUE,
             PositionArgumentDetector.ISSUE,
-            FunctionsDetector.ISSUE,
+            MaxFunctionsArgumentsDetector.ISSUE,
             ExceptionCatchDetector.ISSUE,
             ComponentPositionDetector.ISSUE,
             NameIdentifierXmlDetector.ISSUE,
             NameResourceStringXmlDetector.ISSUE,
             NameResourceStyleXmlDetector.ISSUE,
-            PositionAttributesXmlDetector.ISSUE,
             MaxMethodCountDetector.ISSUE,
+            EmptyBodyFunctionDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 

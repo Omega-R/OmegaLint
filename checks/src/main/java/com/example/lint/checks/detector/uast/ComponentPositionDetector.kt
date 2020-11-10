@@ -13,7 +13,8 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
             id = "ComponentPositionDetector",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
-                  Line should has 130 symbols or less
+                  Order warning.
+                  http://wiki.omega-r.club/dev-android-code#rec228155171
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
@@ -102,120 +103,141 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                 if (name != COMPANION_NAME) {
                     var currentPosition = 0
                     newList.forEach { declaration ->
-                        str += declaration.text + "!!!\n"
-                        val text = declaration.text
-                        if (text != null) {
+                        val text = declaration.text ?: return
 
-                            /** 1) it's can find companion object*/
+                        /** 1) it's can find companion object*/
 
-                            if (text.contains(COMPANION_OBJECT)) {
-                                if (currentPosition <= COMPANION_OBJECT_POSITION) {
-                                    currentPosition = COMPANION_OBJECT_POSITION
+                        if (text.contains(COMPANION_OBJECT)) {
+                            if (currentPosition <= COMPANION_OBJECT_POSITION) {
+                                currentPosition = COMPANION_OBJECT_POSITION
+                            } else {
+                                context.report(
+                                    ISSUE,
+                                    node,
+                                    context.getNameLocation(declaration),
+                                    COMPANION_OBJECT_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                )
+                            }
+                        }
+
+                        /** 2) Variables*/
+
+                        val valList = makeRegexList(VAL)
+                        valList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= VARIABLES_POSITION) {
+                                    currentPosition = VARIABLES_POSITION
                                 } else {
-                                    context.report(ISSUE, node, context.getNameLocation(declaration), COMPANION_OBJECT_MESSAGE)
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        VARIABLES_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
 
-                            /** 2) Variables*/
-
-                            val valList = makeRegexList(VAL)
-                            valList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= VARIABLES_POSITION) {
-                                        currentPosition = VARIABLES_POSITION
-                                    } else {
-                                        context.report(
-                                            ISSUE, node, context.getNameLocation(declaration), VARIABLES_MESSAGE +
-                                                    currentPosition.toString()
-                                        )
-                                    }
+                        val varList = makeRegexList(VAR)
+                        varList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= VARIABLES_POSITION) {
+                                    currentPosition = VARIABLES_POSITION
+                                } else {
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        VARIABLES_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
 
-                            val varList = makeRegexList(VAR)
-                            varList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= VARIABLES_POSITION) {
-                                        currentPosition = VARIABLES_POSITION
-                                    } else {
-                                        context.report(
-                                            ISSUE,
-                                            node,
-                                            context.getNameLocation(declaration),
-                                            VARIABLES_MESSAGE + currentPosition.toString()
-                                        )
-                                    }
+                        /** 3) Constructor */
+
+                        val constructorRegexList = makeRegexList(CONSTRUCTOR)
+                        constructorRegexList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= CONSTRUCTOR_POSITION) {
+                                    currentPosition = CONSTRUCTOR_POSITION
+
+                                } else {
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        CONSTRUCTOR_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
 
-                            /** 3) Constructor */
+                        /** 4 Function */
 
-                            val constructorRegexList = makeRegexList(CONSTRUCTOR)
-                            constructorRegexList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= CONSTRUCTOR_POSITION) {
-                                        currentPosition = CONSTRUCTOR_POSITION
-
-                                    } else {
-                                        context.report(
-                                            ISSUE, node, context.getNameLocation(declaration), CONSTRUCTOR_MESSAGE +
-                                                    currentPosition.toString()
-                                        )
-                                    }
+                        val functionRegexList = makeRegexList(FUNCTION)
+                        functionRegexList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= FUNCTION_POSITION) {
+                                    currentPosition = FUNCTION_POSITION
+                                } else {
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        FUNCTION_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
 
-                            /** 4 Function */
+                        /** 5 Enum */
 
-                            val functionRegexList = makeRegexList(FUNCTION)
-                            functionRegexList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= FUNCTION_POSITION) {
-                                        currentPosition = FUNCTION_POSITION
-                                    } else {
-                                        context.report(ISSUE, node, context.getNameLocation(declaration), FUNCTION_MESSAGE)
-                                    }
+                        val enumRegexList = makeRegexList(ENUM)
+                        enumRegexList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= ENUM_POSITION) {
+                                    currentPosition = ENUM_POSITION
+                                } else {
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        ENUM_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
 
-                            /** 5 Enum */
+                        /** 6) Interface */
 
-                            val enumRegexList = makeRegexList(ENUM)
-                            enumRegexList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= ENUM_POSITION) {
-                                        currentPosition = ENUM_POSITION
-                                    } else {
-                                        context.report(ISSUE, node, context.getNameLocation(declaration), ENUM_MESSAGE)
-                                    }
+                        val interfaceRegexList = makeRegexList(INTERFACE)
+                        interfaceRegexList.forEach {
+                            if (text.contains(it)) {
+                                if (currentPosition <= INTERFACE_POSITION) {
+                                    currentPosition = INTERFACE_POSITION
+                                } else {
+                                    context.report(
+                                        ISSUE,
+                                        node,
+                                        context.getNameLocation(declaration),
+                                        INTERFACE_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
+                                    )
                                 }
                             }
+                        }
+                        /** 7) Class */
 
-                            /** 6) Interface */
-
-                            val interfaceRegexList = makeRegexList(INTERFACE)
-                            interfaceRegexList.forEach {
-                                if (text.contains(it)) {
-                                    if (currentPosition <= INTERFACE_POSITION) {
-                                        currentPosition = INTERFACE_POSITION
-                                    } else {
-                                        context.report(ISSUE, node, context.getNameLocation(declaration), INTERFACE_MESSAGE)
-                                    }
-                                }
-                            }
-                            /** 7) Class */
-
-                            val classRegexList = makeRegexList(CLASS)
-                            classRegexList.forEach {
-                                if (text.contains(it)) {
-                                    currentPosition = CLASS_POSITION
-                                }
+                        val classRegexList = makeRegexList(CLASS)
+                        classRegexList.forEach {
+                            if (text.contains(it)) {
+                                currentPosition = CLASS_POSITION
                             }
                         }
                     }
                 }
-                //    context.report(ISSUE, node, context.getNameLocation(node), str)
             }
+
 
             fun makeRegexList(value: String): List<Regex> {
                 return listOf(

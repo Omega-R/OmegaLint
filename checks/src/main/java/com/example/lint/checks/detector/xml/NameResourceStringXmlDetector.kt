@@ -10,8 +10,11 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
     companion object {
         val ISSUE = Issue.create(
             id = "NameResourceStringXml",
-            briefDescription = "Detects usages of 'Okay' in string resources",
-            explanation = "The word 'OK' should be used instead of 'Okay' in string resources",
+            briefDescription = "String resource should begin with prefix",
+            explanation = """
+                String resource should begin with prefix which defines the group to which they belong.
+                http://wiki.omega-r.club/dev-android-code#rec228390838
+                """,
             category = Category.CORRECTNESS,
             severity = Severity.ERROR,
             implementation = Implementation(
@@ -65,10 +68,10 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
             return
         }
         context.report(
-            issue = ISSUE,
-            scope = element,
-            location = context.getLocation(element.getAttributeNode(ATTRIBUTE_NAME_VAL)),
-            message = "String resource should begin with prefix which defines the group to which they belong."
+            ISSUE,
+            element,
+            context.getLocation(element.getAttributeNode(ATTRIBUTE_NAME_VAL)),
+            ISSUE.getExplanation(TextFormat.TEXT)
         )
 
     }

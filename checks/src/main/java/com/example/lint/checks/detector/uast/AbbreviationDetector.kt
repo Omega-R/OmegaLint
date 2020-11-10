@@ -19,6 +19,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
             // `monospace`, *italic*, and **bold**.
             explanation = """
                   Don't use abbreviations.
+                  http://wiki.omega-r.club/dev-android-code#rec228153340
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
@@ -28,6 +29,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
                 Scope.JAVA_FILE_SCOPE
             )
         )
+        const val CONTEXT_ABBREVIATION = "ctx"
+        const val CONTEXT_CORRECTLY_NAME = "context"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -47,12 +50,12 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
             override fun visitElement(node: UElement) {
                 val name = node.asLogString()
 
-                if (name ==  "ctx") {
+                if (name == CONTEXT_ABBREVIATION) {
                     context.report(
                         ISSUE,
                         node,
                         context.getNameLocation(node),
-                        "Don't use abbreviations. Rename this argument to 'context'.",
+                        ISSUE.getExplanation(TextFormat.TEXT),
                         createContextFix()
                     )
                 }
@@ -60,7 +63,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
             }
 
             private fun createContextFix(): LintFix? {
-                return fix().replace().text("ctx").with("context").build()
+                return fix().replace().text(CONTEXT_ABBREVIATION).with(CONTEXT_CORRECTLY_NAME).build()
             }
         }
     }

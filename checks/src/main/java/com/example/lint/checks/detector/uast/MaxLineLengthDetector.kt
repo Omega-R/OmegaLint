@@ -11,15 +11,11 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
             id = "MaxLineLength",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
             briefDescription = "The line size does not match the coding convention",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
             explanation = """
-                  Line should has 130 symbols or less
+                  Line should has 130 symbols or less. Divide this line.
+                  http://wiki.omega-r.club/dev-android-code#rec228180723
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
@@ -29,6 +25,11 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
                 Scope.JAVA_FILE_SCOPE
             )
         )
+
+        const val IMPORT_VAL = "import"
+        const val PACKAGE_VAL = "package"
+
+        const val MAX_LENGTH = 130
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -45,15 +46,16 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
                 lines.forEach { line ->
                     val length = line.length
 
-                    if ((length > 130) && !(line.contains("import")) && !(line.contains("package"))) {
+                    if ((length > MAX_LENGTH) && !(line.contains(IMPORT_VAL)) && !(line.contains(PACKAGE_VAL))) {
                         context.report(
-                            ISSUE, node, context.getRangeLocation(node.parent, beginPosition, length),
-                            "The line contains more than 130 symbols. Divide this line."
+                            ISSUE, node,
+                            context.getRangeLocation(node.parent, beginPosition, length),
+                            ISSUE.getExplanation(TextFormat.TEXT)
                         )
                     }
 
                     beginPosition += length
-                    beginPosition++ // add new string sym
+                    beginPosition++ // for adding new string symbol
                 }
             }
         }

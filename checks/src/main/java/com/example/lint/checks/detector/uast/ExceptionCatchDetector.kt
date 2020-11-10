@@ -13,9 +13,10 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
         val ISSUE: Issue = Issue.create(
 
             id = "ExceptionCatch",
-            briefDescription = "Catch body is empty, it  not match the coding convention",
+            briefDescription = "Catch body is empty, it not match the coding convention",
             explanation = """
-                  Don't leave blank catch body.
+                   Catch body is empty. Add exception handling.
+                   http://wiki.omega-r.club/dev-android-code#rec226449864
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
@@ -25,6 +26,13 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
                 Scope.JAVA_FILE_SCOPE
             )
         )
+
+        val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
+
+        const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
+        const val THROW_VAL = "throw"
+        const val GENERALIZED_EXCEPTION_MESSAGE = "Catch generalized exception. Should throw specific exception in catch body \n" +
+                "http://wiki.omega-r.club/dev-android-code#rec226454364"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -36,23 +44,23 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
             override fun visitCatchClause(node: UCatchClause) {
                 val body = node.body
                 val string = body.asRenderString()
-                if (string == "{\n}") { //string.matches(Regex("{*\\b/\n\\b.*}))) {
+                if (string.matches(EMPTY_BODY_REGEX)) {
                     context.report(
                         ISSUE,
                         body,
                         context.getNameLocation(body),
-                        "Catch body is empty. Add exception handling."
+                        ISSUE.getExplanation(TextFormat.TEXT)
                     )
                 }
                 val parameters = node.parameters
                 parameters.forEach {
-                    if (it.type.canonicalText == "java.lang.Exception") {
-                        if (!string.contains("throw")) {
+                    if (it.type.canonicalText == GENERALIZED_EXCEPTION_VAL) {
+                        if (!string.contains(THROW_VAL)) {
                             context.report(
                                 ISSUE,
                                 body,
                                 context.getNameLocation(it),
-                                "Catch generalized exception. Should throw specific exception in catch body"
+                                GENERALIZED_EXCEPTION_MESSAGE
                             )
                         }
                     }

@@ -17,7 +17,8 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
             explanation = """
-                  Something
+                  Wrong layout name.
+                  http://wiki.omega-r.club/dev-android-code#rec226396979
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
@@ -27,6 +28,16 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
                 Scope.JAVA_FILE_SCOPE
             )
         )
+
+        const val SET_CONTENT_VIEW_VAL = "setContentView"
+        const val UPPER_ACTIVITY = "Activity"
+        const val LOWER_ACTIVITY = "activity"
+
+        const val INFLATE_VAL = "inflate"
+
+        const val LAYOUT_PREFIX_VAL = "R.layout."
+
+        val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -38,41 +49,40 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
             override fun visitCallExpression(node: UCallExpression) {
                 val file = node.getContainingUFile() ?: return
                 var className = file.classes.firstOrNull()?.name ?: return
+
                 val name = node.methodName ?: return
-                if (name == "setContentView") {
+                if (name == INFLATE_VAL) {
+                    context.report(
+                        ISSUE,
+                        node,
+                        context.getNameLocation(node),
+                        ISSUE.getExplanation(TextFormat.TEXT)
+                    )
+                }
+                if (name == SET_CONTENT_VIEW_VAL) {
                     var layoutName = node.valueArguments.firstOrNull()?.asRenderString() ?: return
-                    layoutName = layoutName.replace("R.layout.", "")
-                    if(className.contains("Activity")) {
-                        className = "activity${className.replace("Activity", "")}"
-                        if(className.camelToSnakeCase() != layoutName)
-                        context.report(ISSUE, node, context.getNameLocation(node.valueArguments.first()), "Wrong layout name.")
+                    layoutName = layoutName.replace(LAYOUT_PREFIX_VAL, "")
+
+                    if (className.contains(UPPER_ACTIVITY)) {
+                        className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
+
+                        if (className.camelToSnakeCase() != layoutName)
+                            context.report(
+                                ISSUE,
+                                node,
+                                context.getNameLocation(node.valueArguments.first()),
+                                ISSUE.getExplanation(TextFormat.TEXT)
+                            )
                     }
                 }
 
             }
-
-            val camelRegex = "(?<=[a-zA-Z])[A-Z]".toRegex()
-            val snakeRegex = "_[a-zA-Z]".toRegex()
-
             // String extensions
             fun String.camelToSnakeCase(): String {
-                return camelRegex.replace(this) {
+                return CAMEL_REGEX.replace(this) {
                     "_${it.value}"
                 }.toLowerCase()
             }
-
-            fun String.snakeToLowerCamelCase(): String {
-                return snakeRegex.replace(this) {
-                    it.value.replace("_", "")
-                        .toUpperCase()
-                }
-            }
-
-            fun String.snakeToUpperCamelCase(): String {
-                return this.snakeToLowerCamelCase().capitalize()
-            }
-
-
         }
 
     }

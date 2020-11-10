@@ -9,8 +9,11 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
     companion object {
         val ISSUE = Issue.create(
             id = "NameResourceStyleXml",
-            briefDescription = "Detects usages of 'Okay' in string resources",
-            explanation = "The word 'OK' should be used instead of 'Okay' in string resources",
+            briefDescription = "Inheritance warning",
+            explanation = """
+                It is desirable to carry out inheritance through the name.
+                http://wiki.omega-r.club/dev-android-code#rec228391441
+                """,
             category = Category.CORRECTNESS,
             severity = Severity.WARNING,
             implementation = Implementation(
@@ -29,14 +32,12 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
     }
 
     override fun getApplicableElements(): Collection<String>? {
-        // Return the set of elements we want to analyze. In this case we want to
-        // analyze every `<string>` element that is declared in XML.
         return setOf("style")
     }
 
     override fun visitElement(context: XmlContext, element: Element) {
         val name = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
-        if(name.matches(Regex(".*${SUFFIX_STYLE}$"))) {
+        if (name.matches(Regex(".*${SUFFIX_STYLE}$"))) {
             context.report(
                 issue = ISSUE,
                 scope = element,
@@ -54,7 +55,7 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
             issue = ISSUE,
             scope = element,
             location = context.getLocation(element),
-            message = "It is desirable to carry out inheritance through the name.",
+            message = ISSUE.getExplanation(TextFormat.TEXT),
             quickfixData = createContextFix(name, parent)
         )
 

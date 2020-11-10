@@ -10,7 +10,10 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
         val ISSUE = Issue.create(
             id = "NameIdentifierXml",
             briefDescription = "Detects wrongs name of view's identifier",
-            explanation = "Name of identifier should begin with prefix, which depends of view name",
+            explanation = """
+                    Name of identifier should begin with prefix, which depends of view name.
+                    http://wiki.omega-r.club/dev-android-code#rec228390320
+                    """,
             category = Category.CORRECTNESS,
             priority = 6,
             severity = Severity.WARNING,
@@ -69,7 +72,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + TEXT_VIEW_PREFIX
+                            message = "$REPORT_MESSAGE $TEXT_VIEW_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -80,7 +83,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + IMAGE_VIEW_PREFIX
+                            message = "$REPORT_MESSAGE $IMAGE_VIEW_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -91,7 +94,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + BUTTON_PREFIX
+                            message = "$REPORT_MESSAGE $BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -102,7 +105,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + EDIT_TEXT_PREFIX
+                            message = "$REPORT_MESSAGE $EDIT_TEXT_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -113,7 +116,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + LAYOUT_PREFIX
+                            message = "$REPORT_MESSAGE $LAYOUT_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -124,7 +127,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + FLOATING_ACTION_BUTTON_PREFIX
+                            message = "$REPORT_MESSAGE $FLOATING_ACTION_BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
@@ -135,7 +138,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
                             issue = ISSUE,
                             scope = attribute,
                             location = context.getValueLocation(attribute),
-                            message = REPORT_MESSAGE + IMAGE_BUTTON_PREFIX
+                            message = "$REPORT_MESSAGE $IMAGE_BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                         )
                     }
                 }
