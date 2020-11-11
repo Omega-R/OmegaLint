@@ -23,16 +23,16 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
             )
         )
 
-        const val APP_NAME = "app_name"
-        const val ERROR_PREFIX = "error"
-        const val MESSAGE_PREFIX = "message"
-        const val TITLE_PREFIX = "title"
-        const val LABEL_PREFIX = "label"
-        const val BUTTON_PREFIX = "button"
-        const val ACTION_PREFIX = "action"
-        const val HINT_PREFIX = "hint"
+        private const val APP_NAME = "app_name"
+        private const val ERROR_PREFIX = "error"
+        private const val MESSAGE_PREFIX = "message"
+        private const val TITLE_PREFIX = "title"
+        private const val LABEL_PREFIX = "label"
+        private const val BUTTON_PREFIX = "button"
+        private const val ACTION_PREFIX = "action"
+        private const val HINT_PREFIX = "hint"
 
-        const val ATTRIBUTE_NAME_VAL = "name"//Attribute
+        private const val ATTRIBUTE_NAME_VAL = "name"//Attribute
     }
 
     override fun appliesTo(folderType: ResourceFolderType): Boolean {
@@ -73,6 +73,5 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
             context.getLocation(element.getAttributeNode(ATTRIBUTE_NAME_VAL)),
             ISSUE.getExplanation(TextFormat.TEXT)
         )
-
     }
 }

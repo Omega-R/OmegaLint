@@ -29,8 +29,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
                 Scope.JAVA_FILE_SCOPE
             )
         )
-        const val CONTEXT_ABBREVIATION = "ctx"
-        const val CONTEXT_CORRECTLY_NAME = "context"
+        private const val CONTEXT_ABBREVIATION = "ctx"
+        private const val CONTEXT_CORRECTLY_NAME = "context"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

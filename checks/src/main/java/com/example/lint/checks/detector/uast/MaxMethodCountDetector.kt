@@ -26,7 +26,7 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val MAX_METHOD_COUNT = 30
+        private const val MAX_METHOD_COUNT = 30
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

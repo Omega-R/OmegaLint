@@ -4,9 +4,7 @@ import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
 import com.example.lint.checks.detector.uast.*
-import com.example.lint.checks.detector.xml.NameIdentifierXmlDetector
-import com.example.lint.checks.detector.xml.NameResourceStringXmlDetector
-import com.example.lint.checks.detector.xml.NameResourceStyleXmlDetector
+import com.example.lint.checks.detector.xml.*
 
 class LintIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
@@ -23,6 +21,9 @@ class LintIssueRegistry : IssueRegistry() {
             NameResourceStyleXmlDetector.ISSUE,
             MaxMethodCountDetector.ISSUE,
             EmptyBodyFunctionDetector.ISSUE,
+            NameValuesXmlDetector.ISSUE,
+            NameDrawableXmlDetector.ISSUE,
+            CompanionObjectFieldsDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 

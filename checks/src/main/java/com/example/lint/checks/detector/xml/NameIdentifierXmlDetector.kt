@@ -26,24 +26,24 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
         const val REPORT_MESSAGE = "Wrong prefix of identifier name. Should begin with: "
 
         //elements
-        const val TEXT_VIEW_ELEMENT = "TextView"
-        const val IMAGE_VIEW_ELEMENT = "ImageView"
-        const val BUTTON_ELEMENT = "Button"
-        const val EDIT_TEXT_ELEMENT = "EditText"
-        const val LAYOUT_ELEMENT = "Layout"
-        const val TABLE_LAYOUT_ELEMENT = "TableLayout"
-        const val LINEAR_LAYOUT_ELEMENT = "LinearLayout"
-        const val FLOATING_ACTION_BUTTON_ELEMENT = "com.google.android.material.floatingactionbutton.FloatingActionButton"
-        const val IMAGE_BUTTON_ELEMENT = "ImageButton"
+        private const val TEXT_VIEW_ELEMENT = "TextView"
+        private const val IMAGE_VIEW_ELEMENT = "ImageView"
+        private const val BUTTON_ELEMENT = "Button"
+        private const val EDIT_TEXT_ELEMENT = "EditText"
+        private const val LAYOUT_ELEMENT = "Layout"
+        private const val TABLE_LAYOUT_ELEMENT = "TableLayout"
+        private const val LINEAR_LAYOUT_ELEMENT = "LinearLayout"
+        private const val FLOATING_ACTION_BUTTON_ELEMENT = "com.google.android.material.floatingactionbutton.FloatingActionButton"
+        private const val IMAGE_BUTTON_ELEMENT = "ImageButton"
 
         //prefixes
-        const val TEXT_VIEW_PREFIX = "@+id/text"
-        const val IMAGE_VIEW_PREFIX = "@+id/image"
-        const val BUTTON_PREFIX = "@+id/button"
-        const val EDIT_TEXT_PREFIX = "@+id/input"
-        const val LAYOUT_PREFIX = "@+id/layout"
-        const val FLOATING_ACTION_BUTTON_PREFIX = "@+id/fab"
-        const val IMAGE_BUTTON_PREFIX = "@+id/button"
+        private const val TEXT_VIEW_PREFIX = "@+id/text"
+        private const val IMAGE_VIEW_PREFIX = "@+id/image"
+        private const val BUTTON_PREFIX = "@+id/button"
+        private const val EDIT_TEXT_PREFIX = "@+id/input"
+        private const val LAYOUT_PREFIX = "@+id/layout"
+        private const val FLOATING_ACTION_BUTTON_PREFIX = "@+id/fab"
+        private const val IMAGE_BUTTON_PREFIX = "@+id/button"
     }
 
 

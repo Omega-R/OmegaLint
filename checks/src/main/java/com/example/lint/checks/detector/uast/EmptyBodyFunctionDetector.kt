@@ -26,7 +26,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
+        private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -40,7 +40,6 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
                 if (body.asRenderString().matches(EMPTY_BODY_REGEX)) {
                     context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
                 }
-
             }
         }
     }

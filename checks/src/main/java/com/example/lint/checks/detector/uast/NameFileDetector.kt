@@ -26,15 +26,15 @@ class NameFileDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val ACTIVITY_VALUE = "Activity"
-        const val FRAGMENT_VALUE = "Fragment"
-        const val VIEW_VALUE = "View"
-        const val SERVICE_VALUE = "Service"
-        const val PRESENTER_VALUE = "Presenter"
-        const val PROVIDER_VALUE = "Provider"
+        private const val ACTIVITY_VALUE = "Activity"
+        private const val FRAGMENT_VALUE = "Fragment"
+        private const val VIEW_VALUE = "View"
+        private const val SERVICE_VALUE = "Service"
+        private const val PRESENTER_VALUE = "Presenter"
+        private const val PROVIDER_VALUE = "Provider"
 
-        const val OBJECT_VALUE = "Object"
-        const val REPORT_MESSAGE_BEGIN = "Class name should end with"
+        private const val OBJECT_VALUE = "Object"
+        private const val REPORT_MESSAGE_BEGIN = "Class name should end with"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

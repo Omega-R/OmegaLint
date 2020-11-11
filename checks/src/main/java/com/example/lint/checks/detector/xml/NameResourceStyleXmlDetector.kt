@@ -22,9 +22,11 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
             )
         )
 
-        const val ATTRIBUTE_NAME_VAL = "name"
-        const val SUFFIX_STYLE = "Style"
-        const val PARENT_VAL = "parent"
+        private const val ATTRIBUTE_NAME_VAL = "name"
+        private const val SUFFIX_STYLE = "Style"
+        private const val PARENT_VAL = "parent"
+
+        private const val REPORT_MESSAGE = "Delete Style from name\nhttp://wiki.omega-r.club/dev-android-code#rec228391441"
     }
 
     override fun appliesTo(folderType: ResourceFolderType): Boolean {
@@ -42,7 +44,7 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
                 issue = ISSUE,
                 scope = element,
                 location = context.getLocation(element),
-                message = "Delete Style from name",
+                message = REPORT_MESSAGE,
                 quickfixData = createDeleteStyleContextFix(name)
             )
         }
@@ -54,7 +56,7 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
         context.report(
             issue = ISSUE,
             scope = element,
-            location = context.getLocation(element),
+            location = context.getNameLocation(element),
             message = ISSUE.getExplanation(TextFormat.TEXT),
             quickfixData = createContextFix(name, parent)
         )

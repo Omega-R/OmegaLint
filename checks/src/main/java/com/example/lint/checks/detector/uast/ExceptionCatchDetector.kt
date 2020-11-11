@@ -27,11 +27,11 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
+        private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
 
-        const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
-        const val THROW_VAL = "throw"
-        const val GENERALIZED_EXCEPTION_MESSAGE = "Catch generalized exception. Should throw specific exception in catch body \n" +
+        private const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
+        private const val THROW_VAL = "throw"
+        private const val GENERALIZED_EXCEPTION_MESSAGE = "Catch generalized exception. Should throw specific exception in catch body \n" +
                 "http://wiki.omega-r.club/dev-android-code#rec226454364"
     }
 

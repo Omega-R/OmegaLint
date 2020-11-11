@@ -25,43 +25,43 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val COMPANION_NAME = "Companion"
+        private const val COMPANION_NAME = "Companion"
 
         // 1. companion object
-        val COMPANION_OBJECT = Regex("^companion object")
-        const val COMPANION_OBJECT_POSITION = 1
-        const val COMPANION_OBJECT_MESSAGE = "companion object should be the first"
+        private val COMPANION_OBJECT = Regex("^companion object")
+        private const val COMPANION_OBJECT_POSITION = 1
+        private const val COMPANION_OBJECT_MESSAGE = "companion object should be the first"
 
         // 2. val + var variables
-        const val VAL = "val"
-        const val VAR = "var"
-        const val VARIABLES_POSITION = 2
-        const val VARIABLES_MESSAGE =
+        private const val VAL = "val"
+        private const val VAR = "var"
+        private const val VARIABLES_POSITION = 2
+        private const val VARIABLES_MESSAGE =
             "Variables should be earlier than constructors, functions, enums, interfaces and classes"
 
         // 3. constructors and inits
-        const val CONSTRUCTOR = "constructor"
-        const val CONSTRUCTOR_POSITION = 3
-        const val CONSTRUCTOR_MESSAGE = "Constructor should be earlier than functions, enums, interfaces and classes"
+        private const val CONSTRUCTOR = "constructor"
+        private const val CONSTRUCTOR_POSITION = 3
+        private const val CONSTRUCTOR_MESSAGE = "Constructor should be earlier than functions, enums, interfaces and classes"
 
         // 4. functions
-        const val FUNCTION = "fun"
-        const val FUNCTION_POSITION = 4
-        const val FUNCTION_MESSAGE = "Functions should be earlier than  enums, interfaces and classes"
+        private const val FUNCTION = "fun"
+        private const val FUNCTION_POSITION = 4
+        private const val FUNCTION_MESSAGE = "Functions should be earlier than  enums, interfaces and classes"
 
         // 5. enums
-        const val ENUM = "enum"
-        const val ENUM_POSITION = 5
-        const val ENUM_MESSAGE = "Enum should be earlier than interfaces and classes"
+        private const val ENUM = "enum"
+        private const val ENUM_POSITION = 5
+        private const val ENUM_MESSAGE = "Enum should be earlier than interfaces and classes"
 
         // 6. interfaces
-        const val INTERFACE = "interface"
-        const val INTERFACE_POSITION = 6
-        const val INTERFACE_MESSAGE = "Enum should be earlier than classes"
+        private const val INTERFACE = "interface"
+        private const val INTERFACE_POSITION = 6
+        private const val INTERFACE_MESSAGE = "Enum should be earlier than classes"
 
         // 7. classes
-        const val CLASS = "class"
-        const val CLASS_POSITION = 7
+        private const val CLASS = "class"
+        private const val CLASS_POSITION = 7
 
     }
 

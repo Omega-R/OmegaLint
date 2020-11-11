@@ -25,7 +25,7 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val MAX_COUNT_OF_ARGUMENTS = 5
+        private const val MAX_COUNT_OF_ARGUMENTS = 5
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

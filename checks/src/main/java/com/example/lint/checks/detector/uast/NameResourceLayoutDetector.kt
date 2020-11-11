@@ -29,17 +29,17 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val SET_CONTENT_VIEW_VAL = "setContentView"
-        const val UPPER_ACTIVITY = "Activity"
-        const val LOWER_ACTIVITY = "activity"
+        private const val SET_CONTENT_VIEW_VAL = "setContentView"
+        private const val UPPER_ACTIVITY = "Activity"
+        private const val LOWER_ACTIVITY = "activity"
 
-        const val INFLATE_VAL = "inflate"
+        private const val INFLATE_VAL = "inflate"
 
-        const val LAYOUT_PREFIX_VAL = "R.layout."
-        const val UPPER_FRAGMENT = "Fragment"
-        const val LOWER_FRAGMENT = "fragment"
+        private const val LAYOUT_PREFIX_VAL = "R.layout."
+        private const val UPPER_FRAGMENT = "Fragment"
+        private const val LOWER_FRAGMENT = "fragment"
 
-        val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
+        private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

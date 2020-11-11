@@ -27,12 +27,12 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        const val CONTEXT_ABBREVIATION = "ctx"
-        const val CONTEXT_CORRECTLY_NAME = "context"
-        const val CONTEXT_REPORT_MESSAGE = "Context argument should be the first"
+        private const val CONTEXT_ABBREVIATION = "ctx"
+        private const val CONTEXT_CORRECTLY_NAME = "context"
+        private const val CONTEXT_REPORT_MESSAGE = "Context argument should be the first"
 
-        const val CALLBACK_NAME = "callback"
-        const val CALLBACK_REPORT_MESSAGE = "Callback argument should be the last."
+        private const val CALLBACK_NAME = "callback"
+        private const val CALLBACK_REPORT_MESSAGE = "Callback argument should be the last."
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
