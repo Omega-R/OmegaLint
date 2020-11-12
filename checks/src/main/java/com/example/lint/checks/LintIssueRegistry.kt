@@ -28,6 +28,7 @@ class LintIssueRegistry : IssueRegistry() {
             MaxClassLengthDetector.ISSUE,
             SimplificationsFunctionDetector.ISSUE,
             AnnotationDetector.ISSUE,
+            SpaceMethodDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 

@@ -25,7 +25,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*\s*\}""")
+        private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*\s*\}""")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

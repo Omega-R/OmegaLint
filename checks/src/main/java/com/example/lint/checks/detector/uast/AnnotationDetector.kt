@@ -27,7 +27,7 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*@""")
+        private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*@""")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
