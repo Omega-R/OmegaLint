@@ -24,6 +24,8 @@ class LintIssueRegistry : IssueRegistry() {
             NameValuesXmlDetector.ISSUE,
             NameDrawableXmlDetector.ISSUE,
             CompanionObjectFieldsDetector.ISSUE,
+            MaxFunctionLengthDetector.ISSUE,
+            MaxClassLengthDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 
