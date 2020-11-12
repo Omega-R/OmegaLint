@@ -26,6 +26,8 @@ class LintIssueRegistry : IssueRegistry() {
             CompanionObjectFieldsDetector.ISSUE,
             MaxFunctionLengthDetector.ISSUE,
             MaxClassLengthDetector.ISSUE,
+            SimplificationsFunctionDetector.ISSUE,
+            AnnotationDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 
