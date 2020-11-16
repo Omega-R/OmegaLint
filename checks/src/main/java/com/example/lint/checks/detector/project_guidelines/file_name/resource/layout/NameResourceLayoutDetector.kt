@@ -10,10 +10,10 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "NameResourceLayout",
+            id = "NAME_RESOURCE_LAYOUT_CORRECTLY",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
-            briefDescription = "Something",
+            briefDescription = "Layout files must start with the name of the Android component they are intended for.",
             // Full explanation of the issue; you can use some markdown markup such as
             // `monospace`, *italic*, and **bold**.
             explanation = """

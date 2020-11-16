@@ -11,7 +11,7 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "FileName",
+            id = "USE_UPPER_CAMEL_CASE_FOR_CLASS_NAME",
             briefDescription = "The file name does not match the coding convention",
             explanation = """
                   Class name should be recorded in UpperCamelCase. Rename this file.

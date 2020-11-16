@@ -10,7 +10,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "EmptyBodyFunction",
+            id = "NOT_LEFT_EMPTY_BODY",
             briefDescription =
             "Function body is empty.It does not match the coding convention. Function body should not be empty.",
             explanation = """

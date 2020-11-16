@@ -9,7 +9,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
     companion object {
         val ISSUE = Issue.create(
-            id = "NameResourceStringXml",
+            id = "NAME_RESOURCE_STRING_CORRECTLY",
             briefDescription = "String resource should begin with prefix",
             explanation = """
                 String resource should begin with prefix which defines the group to which they belong.

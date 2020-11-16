@@ -38,7 +38,7 @@ class LintIssueRegistry : IssueRegistry() {
             NameIdentifierXmlDetector.ISSUE,
             NameResourceStringXmlDetector.ISSUE,
             NameResourceStyleXmlDetector.ISSUE,
-            MaxMethodCountDetector.ISSUE,
+            MaxMethodCountDetector.ISSUE, //
             EmptyBodyFunctionDetector.ISSUE,
             CompanionObjectFieldsDetector.ISSUE,
             MaxFunctionLengthDetector.ISSUE,

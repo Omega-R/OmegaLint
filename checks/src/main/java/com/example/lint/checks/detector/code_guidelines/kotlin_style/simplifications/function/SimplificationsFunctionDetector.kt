@@ -11,7 +11,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "SimplificationsFunction",
+            id = "CAN_USE_EXPRESSION_FUNCTION",
             briefDescription = "When a function contains only one expression, it can be represented as an \"expression function\".",
             explanation = """
                   You can change it to "expression function"

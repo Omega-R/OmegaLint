@@ -10,7 +10,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "ComponentPosition",
+            id = "USE_COMPONENTS_IN_CORRECT_ORDER",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
                   Order warning.

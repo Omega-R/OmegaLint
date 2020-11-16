@@ -11,7 +11,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "SpaceMethod",
+            id = "USE_SPACES_CORRECTLY",
             briefDescription = "Use spaces around operands ",
             explanation = """
                   About using spaces around operands.

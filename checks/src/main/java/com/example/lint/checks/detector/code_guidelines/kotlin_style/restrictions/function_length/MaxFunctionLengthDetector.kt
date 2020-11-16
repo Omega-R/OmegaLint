@@ -10,7 +10,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "FunctionMaxLength",
+            id = "NOT_EXCEED_MAX_FUNCTION_LENGTH",
             briefDescription =
             "The size of a function should be no more than 30 lines, excluding blank lines and comments." +
                     " Large functions are difficult to read, modify, and test",

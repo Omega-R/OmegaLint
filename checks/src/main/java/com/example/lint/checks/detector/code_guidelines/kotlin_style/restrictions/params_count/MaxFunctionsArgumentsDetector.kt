@@ -10,7 +10,7 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "MaxFunctionsArguments",
+            id = "NOT_EXCEED_MAX_ARGUMENTS_COUNT_IN_FUNCTION",
             briefDescription = "Arguments count does not match the coding convention. Function body should not be empty.",
             explanation = """
                   Method has too much arguments. In functions, the number of parameters must not exceed 5.

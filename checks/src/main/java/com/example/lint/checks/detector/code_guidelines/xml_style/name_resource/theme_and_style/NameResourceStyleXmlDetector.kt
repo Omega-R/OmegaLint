@@ -8,7 +8,7 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 
     companion object {
         val ISSUE = Issue.create(
-            id = "NameResourceStyleXml",
+            id = "NAME_RESOURCE_STYLE_CORRECTLY",
             briefDescription = "Inheritance warning",
             explanation = """
                 It is desirable to carry out inheritance through the name.

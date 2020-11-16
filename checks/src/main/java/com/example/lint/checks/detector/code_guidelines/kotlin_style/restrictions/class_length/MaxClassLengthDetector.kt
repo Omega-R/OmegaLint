@@ -11,7 +11,7 @@ class MaxClassLengthDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "MaxClassLength",
+            id = "NOT_EXCEED_MAX_CLASS_LENGTH",
             briefDescription = "The file name does not match the coding convention",
             explanation = """
                   Количество строк в классе должно быть не больше 900.
