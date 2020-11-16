@@ -20,6 +20,7 @@ import com.example.lint.checks.detector.code_guidelines.kotlin_style.restriction
 import com.example.lint.checks.detector.code_guidelines.kotlin_style.use_spaces.around_operands.SpaceMethodDetector
 import com.example.lint.checks.detector.code_guidelines.kotlin_style.simplifications.function.SimplificationsFunctionDetector
 import com.example.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.annotation.AnnotationDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxClassInPackageDetector
 import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.identifier.NameIdentifierXmlDetector
 import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.resource.NameResourceStringXmlDetector
 import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.theme_and_style.NameResourceStyleXmlDetector
@@ -48,6 +49,7 @@ class LintIssueRegistry : IssueRegistry() {
             SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
             AttributesPositionXmlDetector.ISSUE,
+            MaxClassInPackageDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 
