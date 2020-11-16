@@ -3,28 +3,27 @@ package com.example.lint.checks
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
-import com.example.lint.checks.detector.coding_convention_1.cc_1_1.cc_1_1_1.NameFileUpperCamelCaseDetector
-import com.example.lint.checks.detector.coding_convention_1.cc_1_1.cc_1_1_2.cc_1_1_2_1.NameDrawableXmlDetector
-import com.example.lint.checks.detector.coding_convention_1.cc_1_1.cc_1_1_2.cc_1_1_2_2.NameResourceLayoutDetector
-import com.example.lint.checks.detector.coding_convention_1.cc_1_1.cc_1_1_2.cc_1_1_2_3.NameValuesXmlDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_1.cc_2_1_1_and_2_1_2.ExceptionCatchDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_1.сс_2_2_1_2.NameFileSufixDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_1.сс_2_2_1_3.CompanionObjectFieldsDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_1.сс_2_2_1_6.AbbreviationDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_2.cc_2_2_2_1_and_2_2_2_2_and_2_2_2_3.ComponentPositionDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_2.cc_2_2_2_4.PositionArgumentDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_1.MaxLineLengthDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_2.MaxFunctionsArgumentsDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_4.MaxFunctionLengthDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_5.EmptyBodyFunctionDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_6.MaxClassLengthDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_3.cc_2_2_3_7.MaxMethodCountDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_4.cc_2_2_4_2.SpaceMethodDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_5.cc_2_2_5_1.SimplificationsFunctionDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_2.cc_2_2_6.cc_2_2_6_2.AnnotationDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_3.cc_2_3_2.cc_2_3_2_1.NameIdentifierXmlDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_3.cc_2_3_2.cc_2_3_2_2.NameResourceStringXmlDetector
-import com.example.lint.checks.detector.coding_convention_2.cc_2_3.cc_2_3_2.cc_2_3_2_3.NameResourceStyleXmlDetector
+import com.example.lint.checks.detector.project_guidelines.file_name.`class`.NameFileUpperCamelCaseDetector
+import com.example.lint.checks.detector.project_guidelines.file_name.resource.layout.NameResourceLayoutDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_rules.exception.ExceptionCatchDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.name.`class`.NameFileSufixDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.name.field.CompanionObjectFieldsDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.name.abbreviation.AbbreviationDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.order.file_class_interface.ComponentPositionDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.PositionArgumentDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxLineLengthDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.params_count.MaxFunctionsArgumentsDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.function_length.MaxFunctionLengthDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.emptiness.EmptyBodyFunctionDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_length.MaxClassLengthDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_methods_count.MaxMethodCountDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.use_spaces.around_operands.SpaceMethodDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.simplifications.function.SimplificationsFunctionDetector
+import com.example.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.annotation.AnnotationDetector
+import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.identifier.NameIdentifierXmlDetector
+import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.resource.NameResourceStringXmlDetector
+import com.example.lint.checks.detector.code_guidelines.xml_style.name_resource.theme_and_style.NameResourceStyleXmlDetector
+import com.example.lint.checks.detector.code_guidelines.xml_style.attributes_order.AttributesPositionXmlDetector
 
 class LintIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
@@ -41,8 +40,6 @@ class LintIssueRegistry : IssueRegistry() {
             NameResourceStyleXmlDetector.ISSUE,
             MaxMethodCountDetector.ISSUE,
             EmptyBodyFunctionDetector.ISSUE,
-            NameValuesXmlDetector.ISSUE,
-            NameDrawableXmlDetector.ISSUE,
             CompanionObjectFieldsDetector.ISSUE,
             MaxFunctionLengthDetector.ISSUE,
             MaxClassLengthDetector.ISSUE,
@@ -50,6 +47,7 @@ class LintIssueRegistry : IssueRegistry() {
             AnnotationDetector.ISSUE,
             SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
+            AttributesPositionXmlDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 
