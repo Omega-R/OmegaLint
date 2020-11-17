@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
-	@SuppressLint("NOT_LEFT_EMPTY_BODY")
+	@SuppressLint( "NOT_EMPTY_BODY")
 	private fun some() {
 
 	}
