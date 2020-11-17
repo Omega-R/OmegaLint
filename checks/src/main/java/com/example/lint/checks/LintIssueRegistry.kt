@@ -56,7 +56,7 @@ class LintIssueRegistry : IssueRegistry() {
             AttributesPositionXmlDetector.ISSUE,
             MaxClassInPackageDetector.ISSUE,
             MaxPackageCountDetector.ISSUE,
-//            SimplificationsControlInstructionsDetector.ISSUE,
+            SimplificationsControlInstructionsDetector.ISSUE,
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
             LambdaDetector.ISSUE,

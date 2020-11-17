@@ -1,18 +1,20 @@
 package com.example.lint
 
+import android.annotation.SuppressLint
 import android.content.Context
 import javax.security.auth.callback.Callback
 
 class ThisNameIsGood(context: Context, some: Int) : InternetBus {
     fun so(callback: Callback, ctx: Context) {
         callback
+        emptyFun()
     }
 
     fun sss(a: Int, b: Int, c: Int, d: Int, f: Int, k: Int) {}
 
-    val str = "some_words_some_words_some_words_some_words_some_words_some_words_some_words_some_words_some_words_some" +
-            "_words_some_words_some_words_some_words_some_words_some_words_some_words_some_words_some_words_"
+    val str = "s_words_"
 
+    @SuppressLint("FunctionCheck")
     override fun some111(
         a: Int,
         a1: String,
@@ -27,7 +29,11 @@ class ThisNameIsGood(context: Context, some: Int) : InternetBus {
         b7: String,
         b11: String
     ) {
-        TODO("Not yet implemented")
+        //nuasdasd
+    }
+
+    fun emptyFun () {
+        val s = 1
     }
 
 }
