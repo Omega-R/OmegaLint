@@ -29,7 +29,7 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
         private const val IMPORT_VAL = "import"
         private const val PACKAGE_VAL = "package"
 
-        private const val MAX_LENGTH = 130
+        const val MAX_LENGTH = 130
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

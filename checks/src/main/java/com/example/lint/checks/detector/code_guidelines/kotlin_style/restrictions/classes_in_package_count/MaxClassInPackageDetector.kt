@@ -1,4 +1,4 @@
-package com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length
+package com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.classes_in_package_count
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
@@ -30,7 +30,7 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
 
         private const val MAX_CLASSES_IN_PACKAGE_COUNT = 5
 
-        private var classesMap = mutableMapOf<String, Int>()
+        private var classesMap = mutableMapOf<String, ArrayList<String>>()
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -41,21 +41,26 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
         return object : UElementHandler() {
             override fun visitClass(node: UClass) {
                 val file = node.uastParent ?: return
+                val name = node.name ?: return
                 val text = file.asRenderString()
                 val packageString = getPackageLine(text.split("\n"))
 
                 if (packageString.isNotEmpty()) {
-                    val key = classesMap[packageString]
-                    if (key == null) {
-                        classesMap[packageString] = 1
+                    val value = classesMap[packageString]
+                    if (value == null) {
+                        classesMap[packageString] = arrayListOf(name)
                     } else {
-                        classesMap[packageString] = key + 1
-                        if (key + 1 > MAX_CLASSES_IN_PACKAGE_COUNT) {
+                        if (!getIsNewClass(value, name)) {
+                            value.add(name)
+                            classesMap[packageString] = value
+                        }
+
+                        if (value.size > MAX_CLASSES_IN_PACKAGE_COUNT) {
                             context.report(
                                 ISSUE,
                                 node,
                                 context.getNameLocation(node),
-                                (key + 1).toString() + " " + ISSUE.getExplanation(TextFormat.TEXT)
+                                (value ).toString() + " " + ISSUE.getExplanation(TextFormat.TEXT)
                             )
                         }
                     }
@@ -69,6 +74,15 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
                     }
                 }
                 return ""
+            }
+
+            private fun getIsNewClass(classesList: List<String>, className: String): Boolean {
+                classesList.forEach { next ->
+                    if (next == className) {
+                        return true
+                    }
+                }
+                return false
             }
         }
     }
