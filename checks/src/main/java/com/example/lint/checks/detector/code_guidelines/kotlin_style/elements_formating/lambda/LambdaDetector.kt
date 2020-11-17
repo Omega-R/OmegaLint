@@ -29,6 +29,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 
         private const val LAMBDA_VAL = "->"
         private const val CLOSE_SCOPE_VAL = "{"
+        private const val SWITCH_VAL = "switch"
         private val EMPTY_ARROW_REGEX = Regex("""\s*->""")
     }
 
@@ -58,7 +59,11 @@ class LambdaDetector : Detector(), Detector.UastScanner {
                             )
                         } else if (i - 1 >= 0) {
                             val previousLine = lines[i - 1]
-                            if (previousLine.contains(CLOSE_SCOPE_VAL) && !line.contains(CLOSE_SCOPE_VAL) && previousLine.length + line.trim().length < MAX_LENGTH) {
+                            if (previousLine.contains(CLOSE_SCOPE_VAL)
+                                && !line.contains(CLOSE_SCOPE_VAL)
+                                && !line.contains(SWITCH_VAL)
+                                && previousLine.length + line.trim().length < MAX_LENGTH
+                            ) {
                                 context.report(
                                     ISSUE, node,
                                     context.getRangeLocation(node.parent, beginPosition, length),
