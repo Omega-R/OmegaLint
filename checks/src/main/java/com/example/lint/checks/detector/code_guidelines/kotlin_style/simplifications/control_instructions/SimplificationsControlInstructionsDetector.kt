@@ -36,7 +36,6 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
     override fun createUastHandler(context: JavaContext): UElementHandler? {
         return object : UElementHandler() {
             override fun visitExpression(node: UExpression) {
-//                val expression = node.expression ?: return
                 val text = node.asRenderString()
                 if (text.contains(WHEN_REGEX)) {
                     var body = text.split("\n")

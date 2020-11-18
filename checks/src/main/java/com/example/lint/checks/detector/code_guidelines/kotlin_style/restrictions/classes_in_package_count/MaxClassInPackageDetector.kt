@@ -42,15 +42,15 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
             override fun visitClass(node: UClass) {
                 val file = node.uastParent ?: return
                 val name = node.name ?: return
-                val text = file.asRenderString()
-                val packageString = getPackageLine(text.split("\n"))
+                val lines = file.asRenderString().split("\n")
+                val packageString = lines.firstOrNull { it.contains(PACKAGE_VAL) } ?: return
 
                 if (packageString.isNotEmpty()) {
                     val value = classesMap[packageString]
                     if (value == null) {
                         classesMap[packageString] = arrayListOf(name)
                     } else {
-                        if (!getIsNewClass(value, name)) {
+                        if (!value.contains(name)) {
                             value.add(name)
                             classesMap[packageString] = value
                         }
@@ -60,29 +60,11 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
                                 ISSUE,
                                 node,
                                 context.getNameLocation(node),
-                                (value ).toString() + " " + ISSUE.getExplanation(TextFormat.TEXT)
+                                "${value.size} ${ISSUE.getExplanation(TextFormat.TEXT)}"
                             )
                         }
                     }
                 }
-            }
-
-            private fun getPackageLine(lines: List<String>): String {
-                lines.forEach { line ->
-                    if (line.contains(PACKAGE_VAL)) {
-                        return line
-                    }
-                }
-                return ""
-            }
-
-            private fun getIsNewClass(classesList: List<String>, className: String): Boolean {
-                classesList.forEach { next ->
-                    if (next == className) {
-                        return true
-                    }
-                }
-                return false
             }
         }
     }

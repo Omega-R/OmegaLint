@@ -53,58 +53,63 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
                         if (line.contains(pair.value)) {
                             val beforeIndex = line.indexOf(" ${pair.key}")
                             val afterIndex = line.indexOf("${pair.key} ")
+                            when {
+                                (beforeIndex > 0 && afterIndex <= 0) -> {
+                                    context.report(
+                                        MaxLineLengthDetector.ISSUE, node,
+                                        context.getRangeLocation
+                                            (node.parent, beginPosition + beforeIndex, pair.key.length + 1),
+                                        "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
+                                    )
+                                }
 
-                            if (beforeIndex > 0 && afterIndex <= 0) {
+                                (afterIndex > 0 && beforeIndex <= 0) -> {
+                                    context.report(
+                                        MaxLineLengthDetector.ISSUE, node,
+                                        context.getRangeLocation
+                                            (node.parent, beginPosition + afterIndex, pair.key.length + 1),
+                                        "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
+                                    )
+                                }
+
+                                (afterIndex > 0 && beforeIndex > 0) -> {
+                                    context.report(
+                                        MaxLineLengthDetector.ISSUE, node,
+                                        context.getRangeLocation
+                                            (node.parent, beginPosition + beforeIndex, pair.key.length + 2),
+                                        "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
+                                    )
+                                }
+                            }
+
+                        }
+
+                        if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX)) {
+                            val index = line.indexOf(" (")
+                            if (index > 0) {
                                 context.report(
                                     MaxLineLengthDetector.ISSUE, node,
-                                    context.getRangeLocation
-                                        (node.parent, beginPosition + beforeIndex, pair.key.length + 1),
-                                    "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-                                )
-                            } else if (afterIndex > 0 && beforeIndex <= 0) {
-                                context.report(
-                                    MaxLineLengthDetector.ISSUE, node,
-                                    context.getRangeLocation
-                                        (node.parent, beginPosition + afterIndex, pair.key.length + 1),
-                                    "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-                                )
-                            } else if (afterIndex > 0 && beforeIndex > 0) {
-                                context.report(
-                                    MaxLineLengthDetector.ISSUE, node,
-                                    context.getRangeLocation
-                                        (node.parent, beginPosition + beforeIndex, pair.key.length + 2),
+                                    context.getRangeLocation(node.parent, beginPosition + index, 2),
                                     "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
                                 )
                             }
                         }
-                    }
 
-                    if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX)) {
-                        val index = line.indexOf(" (")
-                        if (index > 0) {
+                        if (!line.contains(RIGHT_END_FUNCTION_DECLARATION_REGEX)
+                            && line.contains(END_FUNCTION_DECLARATION_REGEX)
+                            && !line.matches(END_FUNCTION_DECLARATION_REGEX)
+                        ) {
                             context.report(
                                 MaxLineLengthDetector.ISSUE, node,
-                                context.getRangeLocation(node.parent, beginPosition + index, 2),
-                                "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
+                                context.getRangeLocation(node.parent, beginPosition + length - 1, 1),
+                                ISSUE.getExplanation(TextFormat.TEXT)
                             )
                         }
-                    }
 
-                    if (!line.contains(RIGHT_END_FUNCTION_DECLARATION_REGEX)
-                        && line.contains(END_FUNCTION_DECLARATION_REGEX)
-                        && !line.matches(END_FUNCTION_DECLARATION_REGEX)
-                    ) {
-                        context.report(
-                            MaxLineLengthDetector.ISSUE, node,
-                            context.getRangeLocation(node.parent, beginPosition + length - 1, 1),
-                            ISSUE.getExplanation(TextFormat.TEXT)
-                        )
+                        beginPosition += length
+                        beginPosition++ // for adding new string pair.key
                     }
-
-                    beginPosition += length
-                    beginPosition++ // for adding new string pair.key
                 }
             }
         }
     }
-}

@@ -41,8 +41,8 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
         return object : UElementHandler() {
             override fun visitClass(node: UClass) {
                 val file = node.uastParent ?: return
-                val text = file.asRenderString()
-                val packageString = getPackageLine(text.split("\n"))
+                val lines = file.asRenderString().split("\n")
+                val packageString = lines.firstOrNull { it.contains(PACKAGE_VAL) } ?: return
 
                 if (packageString.isNotEmpty()) {
                     val path = packageString.replace("package", "").trim()
@@ -54,7 +54,7 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
                             val nextPackage = packagesList[i + 1]
                             if (nextPackagesList != null) {
 
-                                if (!getIsNewPackage(nextPackagesList, nextPackage)) {
+                                if (!nextPackagesList.contains(nextPackage)) {
                                     nextPackagesList.add(nextPackage)
                                     packageMap.replace(currentPackage, nextPackagesList)
                                     if (nextPackagesList.size > MAX_CLASSES_IN_PACKAGE_COUNT) {
@@ -73,24 +73,6 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
                         }
                     }
                 }
-            }
-
-            private fun getPackageLine(lines: List<String>): String {
-                lines.forEach { line ->
-                    if (line.contains(PACKAGE_VAL)) {
-                        return line
-                    }
-                }
-                return ""
-            }
-
-            private fun getIsNewPackage(nextPackagesList: List<String>, nextPackage: String): Boolean {
-                nextPackagesList.forEach { next ->
-                    if (next == nextPackage) {
-                        return true
-                    }
-                }
-                return false
             }
         }
     }

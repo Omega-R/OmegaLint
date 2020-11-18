@@ -27,7 +27,6 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
         private val ANDROID_PREFIX_REGEX = Regex("""^\s*android:""")
         private val APP_PREFIX_REGEX = Regex("""^\s*app:""")
-
         private val TOOLS_PREFIX_REGEX = Regex("""^\s*tools:""")
 
         /** 0. XMLN for main layout */
@@ -94,9 +93,9 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
         var beginPosition = 0
 
         tags.forEach {
+            val tag = it
             var currentRank = 0
             var previousAttribute = ""
-            val tag = it
 
             val attributes = tag.split("\n")
 

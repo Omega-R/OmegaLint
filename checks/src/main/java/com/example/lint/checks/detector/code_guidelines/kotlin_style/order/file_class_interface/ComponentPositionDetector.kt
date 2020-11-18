@@ -28,42 +28,76 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
         private const val COMPANION_NAME = "Companion"
 
         // 1. companion object
-        private val COMPANION_OBJECT = Regex("^companion object")
-        private const val COMPANION_OBJECT_POSITION = 1
+        private const val COMPANION_OBJECT = "companion object"
+        private const val COMPANION_OBJECT_RANK = 1
         private const val COMPANION_OBJECT_MESSAGE = "companion object should be the first"
+        private val COMPANION_OBJECT_REGEX_LIST = makeRegexList(COMPANION_OBJECT)
+        private val COMPANION_OBJECT_PARAMS = Params(COMPANION_OBJECT_REGEX_LIST, COMPANION_OBJECT_RANK, COMPANION_OBJECT_MESSAGE)
 
         // 2. val + var variables
         private const val VAL = "val"
         private const val VAR = "var"
-        private const val VARIABLES_POSITION = 2
+        private const val VARIABLES_RANK = 2
         private const val VARIABLES_MESSAGE =
             "Variables should be earlier than constructors, functions, enums, interfaces and classes"
+        private val VAL_REGEX_LIST = makeRegexList(VAL)
+        private val VAR_REGEX_LIST = makeRegexList(VAR)
+        private val VAL_PARAMS = Params(VAL_REGEX_LIST, VARIABLES_RANK, VARIABLES_MESSAGE)
+        private val VAR_PARAMS = Params(VAR_REGEX_LIST, VARIABLES_RANK, VARIABLES_MESSAGE)
 
         // 3. constructors and inits
         private const val CONSTRUCTOR = "constructor"
-        private const val CONSTRUCTOR_POSITION = 3
+        private const val CONSTRUCTOR_RANK = 3
         private const val CONSTRUCTOR_MESSAGE = "Constructor should be earlier than functions, enums, interfaces and classes"
+        private val CONSTRUCTOR_REGEX_LIST = makeRegexList(CONSTRUCTOR)
+        private val CONSTRUCTOR_PARAMS = Params(CONSTRUCTOR_REGEX_LIST, CONSTRUCTOR_RANK, CONSTRUCTOR_MESSAGE)
 
         // 4. functions
         private const val FUNCTION = "fun"
-        private const val FUNCTION_POSITION = 4
+        private const val FUNCTION_RANK = 4
         private const val FUNCTION_MESSAGE = "Functions should be earlier than  enums, interfaces and classes"
+        private val FUNCTION_REGEX_LIST = makeRegexList(FUNCTION)
+        private val FUNCTION_PARAMS = Params(FUNCTION_REGEX_LIST, FUNCTION_RANK, FUNCTION_MESSAGE)
 
         // 5. enums
         private const val ENUM = "enum"
-        private const val ENUM_POSITION = 5
+        private const val ENUM_RANK = 5
         private const val ENUM_MESSAGE = "Enum should be earlier than interfaces and classes"
+        private val ENUM_REGEX_LIST = makeRegexList(ENUM)
+        private val ENUM_PARAMS = Params(ENUM_REGEX_LIST, ENUM_RANK, ENUM_MESSAGE)
 
         // 6. interfaces
         private const val INTERFACE = "interface"
-        private const val INTERFACE_POSITION = 6
+        private const val INTERFACE_RANK = 6
         private const val INTERFACE_MESSAGE = "Enum should be earlier than classes"
+        private val INTERFACE_REGEX_LIST = makeRegexList(INTERFACE)
+        private val INTERFACE_PARAMS = Params(INTERFACE_REGEX_LIST, INTERFACE_RANK, INTERFACE_MESSAGE)
 
         // 7. classes
         private const val CLASS = "class"
-        private const val CLASS_POSITION = 7
+        private const val CLASS_RANK = 7
+        private val CLASS_REGEX_LIST = makeRegexList(CLASS)
+        private val CLASS_PARAMS = Params(CLASS_REGEX_LIST, CLASS_RANK, "")
+
+        private fun makeRegexList(value: String): List<Regex> {
+            return listOf(
+                Regex("^abstract $value"),
+                Regex("^override $value"),
+                Regex("^public $value"),
+                Regex("^internal $value"),
+                Regex("^protected $value"),
+                Regex("^private $value"),
+                Regex("^${value}")
+            )
+        }
 
     }
+
+    /**
+     * Sorting declarations by file's lines
+     * node.uastDeclarations give elements in wrong order
+     * https://github.com/JetBrains/intellij-community/blob/master/uast/uast-java/src/org/jetbrains/uast/java/declarations/JavaUClass.kt
+     */
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
         return listOf(UClass::class.java)
@@ -73,15 +107,50 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
         return object : UElementHandler() {
             override fun visitClass(node: UClass) {
                 val listUDeclaration = node.uastDeclarations
-                val list = mutableListOf<UDeclaration>()
                 val name = node.name ?: return
-
                 val lines = node.parent.text.lines()
-                /**
-                 *  sorting declarations by file's lines
-                 * node.uastDeclarations give elements in wrong order
-                 * https://github.com/JetBrains/intellij-community/blob/master/uast/uast-java/src/org/jetbrains/uast/java/declarations/JavaUClass.kt
-                 */
+                val sortedDeclarationList = getLinesList(lines, listUDeclaration, name)
+
+                if (name != COMPANION_NAME) {
+                    var currentRank = 0
+                    sortedDeclarationList.forEach { declaration ->
+                        val text = declaration.text ?: return
+
+                        /** 1) it's can find companion object*/
+                        currentRank = checkOrder(text, currentRank, node, declaration, COMPANION_OBJECT_PARAMS)
+
+                        /** 2) Variables*/
+                        currentRank = checkOrder(text, currentRank, node, declaration, VAL_PARAMS)
+
+                        currentRank = checkOrder(text, currentRank, node, declaration, VAR_PARAMS)
+
+                        /** 3) Constructor */
+                        currentRank = checkOrder(text, currentRank, node, declaration, CONSTRUCTOR_PARAMS)
+
+                        /** 4 Function */
+                        currentRank = checkOrder(text, currentRank, node, declaration, FUNCTION_PARAMS)
+
+                        /** 5 Enum */
+                        currentRank = checkOrder(text, currentRank, node, declaration, ENUM_PARAMS)
+
+                        /** 6) Interface */
+                        currentRank = checkOrder(text, currentRank, node, declaration, INTERFACE_PARAMS)
+
+                        /** 7) Class */
+                        val classRegex = CLASS_REGEX_LIST.firstOrNull { text.contains(it) }
+                        if (classRegex != null) {
+                            currentRank = CLASS_RANK
+                        }
+                    }
+                }
+            }
+
+            private fun getLinesList(
+                lines: List<String>,
+                listUDeclaration: List<UDeclaration>,
+                name: String
+            ): List<UDeclaration> {
+                val list = mutableListOf<UDeclaration>()
                 lines.forEach { line ->
                     if (line != "") {
                         listUDeclaration.forEach { declaration ->
@@ -97,162 +166,38 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                     }
                 }
 
-                var str = ""
-                val newList = list.distinctBy { it.text }
+                return list.distinctBy { it.text }
+            }
 
-                if (name != COMPANION_NAME) {
-                    var currentPosition = 0
-                    newList.forEach { declaration ->
-                        val text = declaration.text ?: return
-
-                        /** 1) it's can find companion object*/
-
-                        if (text.contains(COMPANION_OBJECT)) {
-                            if (currentPosition <= COMPANION_OBJECT_POSITION) {
-                                currentPosition = COMPANION_OBJECT_POSITION
-                            } else {
-                                context.report(
-                                    ISSUE,
-                                    node,
-                                    context.getNameLocation(declaration),
-                                    COMPANION_OBJECT_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                )
-                            }
-                        }
-
-                        /** 2) Variables*/
-
-                        val valList = makeRegexList(VAL)
-                        valList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= VARIABLES_POSITION) {
-                                    currentPosition = VARIABLES_POSITION
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        VARIABLES_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-
-                        val varList = makeRegexList(VAR)
-                        varList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= VARIABLES_POSITION) {
-                                    currentPosition = VARIABLES_POSITION
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        VARIABLES_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-
-                        /** 3) Constructor */
-
-                        val constructorRegexList = makeRegexList(CONSTRUCTOR)
-                        constructorRegexList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= CONSTRUCTOR_POSITION) {
-                                    currentPosition = CONSTRUCTOR_POSITION
-
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        CONSTRUCTOR_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-
-                        /** 4 Function */
-
-                        val functionRegexList = makeRegexList(FUNCTION)
-                        functionRegexList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= FUNCTION_POSITION) {
-                                    currentPosition = FUNCTION_POSITION
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        FUNCTION_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-
-                        /** 5 Enum */
-
-                        val enumRegexList = makeRegexList(ENUM)
-                        enumRegexList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= ENUM_POSITION) {
-                                    currentPosition = ENUM_POSITION
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        ENUM_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-
-                        /** 6) Interface */
-
-                        val interfaceRegexList = makeRegexList(INTERFACE)
-                        interfaceRegexList.forEach {
-                            if (text.contains(it)) {
-                                if (currentPosition <= INTERFACE_POSITION) {
-                                    currentPosition = INTERFACE_POSITION
-                                } else {
-                                    context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getNameLocation(declaration),
-                                        INTERFACE_MESSAGE + ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
-                                }
-                            }
-                        }
-                        /** 7) Class */
-
-                        val classRegexList = makeRegexList(CLASS)
-                        classRegexList.forEach {
-                            if (text.contains(it)) {
-                                currentPosition = CLASS_POSITION
-                            }
-                        }
+            private fun checkOrder(text: String, currentRank: Int, node: UClass, declaration: UDeclaration, params: Params): Int {
+                var isVariable = params.regexList.firstOrNull { text.contains(it) }
+                if (isVariable != null) {
+                    if (currentRank <= params.rank) {
+                        return params.rank
+                    } else {
+                        makeContextReport(node, declaration, params.message)
                     }
                 }
+                return currentRank
             }
 
-
-            fun makeRegexList(value: String): List<Regex> {
-                return listOf(
-                    Regex("^abstract $value"),
-                    Regex("^override $value"),
-                    Regex("^public $value"),
-                    Regex("^internal $value"),
-                    Regex("^protected $value"),
-                    Regex("^private $value"),
-                    Regex("^${value}")
+            private fun makeContextReport(node: UClass, declaration: UDeclaration, message: String) {
+                context.report(
+                    ISSUE,
+                    node,
+                    context.getNameLocation(declaration),
+                    "$message ${ISSUE.getExplanation(TextFormat.TEXT)}"
                 )
             }
-        }
 
+        }
     }
+
+    class Params(
+        val regexList: List<Regex>,
+        val rank: Int,
+        val message: String
+    )
 }
 
 

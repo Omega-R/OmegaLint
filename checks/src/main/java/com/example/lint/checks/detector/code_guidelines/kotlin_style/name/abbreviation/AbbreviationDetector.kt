@@ -11,7 +11,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "NON_USE_ABBREVIATIONS.",
+            id = "ABBREVIATION_AS_WORD.",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
             briefDescription = "Use this abbreviation does not match the coding convention",
