@@ -11,7 +11,7 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "SINGLE_LINE_ANNOTATION",
+            id = "OMEGA_SINGLE_LINE_ANNOTATION",
             briefDescription = "If there are multiple annotations for a class / field / method, place each annotation on a new line",
             explanation = """
                   If there are multiple annotations for a class / field / method, place each annotation on a new line.

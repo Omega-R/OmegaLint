@@ -11,7 +11,7 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NAME_CONSTANTS_CORRECTLY",
+            id = "OMEGA_NAME_CONSTANTS_CORRECTLY",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
                   The immutable fields in the Companion Object and compile-time constants are named in the 

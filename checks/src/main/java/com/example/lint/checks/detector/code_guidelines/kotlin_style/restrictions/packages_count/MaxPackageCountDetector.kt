@@ -11,7 +11,7 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NOT_EXCEED_MAX_PACKAGE_COUNT",
+            id = "OMEGA_NOT_EXCEED_MAX_PACKAGE_COUNT",
             briefDescription = "The number of packages should be no more than 30.",
             explanation = """
                   The number of packages should be no more than 30.

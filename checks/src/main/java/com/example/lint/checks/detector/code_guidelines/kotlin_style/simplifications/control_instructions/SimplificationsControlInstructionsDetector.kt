@@ -10,7 +10,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "CAN_USE_SIMPLIFICATION_OF_CONTROL_INSTRUCTIONS",
+            id = "OMEGA_CAN_USE_SIMPLIFICATION_OF_CONTROL_INSTRUCTIONS",
             briefDescription = "Place the short branches on the same line as the condition, without parentheses.",
             explanation = """
                   Place the short branches on the same line as the condition, without parentheses.

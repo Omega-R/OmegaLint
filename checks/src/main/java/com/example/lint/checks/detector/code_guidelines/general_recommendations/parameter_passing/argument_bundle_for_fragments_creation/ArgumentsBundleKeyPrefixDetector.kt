@@ -12,7 +12,7 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "USE_KEY_PREFIX_FOR_FRAGMENT_IN_ARGUMENTS_BUNDLE_PARAMS",
+            id = "OMEGA_USE_KEY_PREFIX_FOR_FRAGMENT_IN_ARGUMENTS_BUNDLE_PARAMS",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
             briefDescription = "Use KEY prefix for Fragment in  Arguments Bundle param.",

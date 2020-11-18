@@ -12,7 +12,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
 
-            id = "NOT_IGNORE_EXCEPTIONS",
+            id = "OMEGA_NOT_IGNORE_EXCEPTIONS",
             briefDescription = "Catch body is empty, it not match the coding convention",
             explanation = """
                    Catch body is empty. Add exception handling.

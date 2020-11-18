@@ -11,7 +11,7 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NOT_EXCEED_MAX_CLASSES_IN_PACKAGE_COUNT",
+            id = "OMEGA_NOT_EXCEED_MAX_CLASSES_IN_PACKAGE_COUNT",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
                   The number of classes in the package should be no more than 30.

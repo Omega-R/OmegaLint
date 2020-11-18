@@ -12,7 +12,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NOT_EXCEED_MAX_LINE_LENGTH",
+            id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
             briefDescription = "When declaring parameter names in a multi-line lambda, put the names on the first line, followed by an arrow and a new line:",
             explanation = """
                   When declaring parameter names in a multi-line lambda, put the names on the first line, followed by an arrow and a new line:

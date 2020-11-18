@@ -11,7 +11,7 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NOT_EXCEED_MAX_LINE_LENGTH",
+            id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
                   Line should has 130 symbols or less. Divide this line.

@@ -8,7 +8,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 
     companion object {
         val ISSUE = Issue.create(
-            id = "NAME_VARIABLES_CORRECTLY",
+            id = "OMEGA_NAME_VARIABLES_CORRECTLY",
             briefDescription = "Detects wrongs name of view's identifier",
             explanation = """
                     Name of identifier should begin with prefix, which depends of view name.

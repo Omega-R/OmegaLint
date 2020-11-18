@@ -11,7 +11,7 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "NOT_EXCEED_MAX_METHODS_COUNT",
+            id = "OMEGA_NOT_EXCEED_MAX_METHODS_COUNT",
             briefDescription = "Class methods count does not match the coding convention",
             explanation = """
                   Class should has 30 methods or less.

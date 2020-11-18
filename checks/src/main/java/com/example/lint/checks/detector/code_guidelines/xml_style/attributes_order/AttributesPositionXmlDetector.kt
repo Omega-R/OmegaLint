@@ -9,7 +9,7 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
     companion object {
         val ISSUE = Issue.create(
-            id = "USE_ATTRIBUTES_IN_CORRECT_ORDER",
+            id = "OMEGA_USE_ATTRIBUTES_IN_CORRECT_ORDER",
             briefDescription = "Generally, you should try to group similar attributes together.",
             explanation = """
                 You should try to group similar attributes together.

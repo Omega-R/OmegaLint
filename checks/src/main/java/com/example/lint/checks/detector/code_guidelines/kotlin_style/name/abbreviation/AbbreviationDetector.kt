@@ -12,7 +12,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
         /** Issue describing the problem and pointing to the detector implementation */
         @JvmField
         val ISSUE: Issue = Issue.create(
-            id = "ABBREVIATION_AS_WORD",
+            id = "OMEGA_ABBREVIATION_AS_WORD",
             briefDescription = "Use this abbreviation does not match the coding convention",
             explanation = """
                   Don't use abbreviations.

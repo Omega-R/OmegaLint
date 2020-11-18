@@ -11,7 +11,7 @@ class IntentExtraParametersDetector : Detector(), Detector.UastScanner {
         @JvmField
         val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
-            id = "USE_EXTRA_PREFIX_FOR_INTENT_PARAMS",
+            id = "OMEGA_USE_EXTRA_PREFIX_FOR_INTENT_PARAMS",
             // Title -- shown in the IDE's preference dialog, as category headers in the
             // Analysis results window, etc
             briefDescription = "Use EXTRA prefix for intent arguments.",
