@@ -7,10 +7,10 @@ import org.jetbrains.uast.UElement
 
 @Suppress("UnstableApiUsage")
 class ExceptionCatchDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
 
             id = "OMEGA_NOT_IGNORE_EXCEPTIONS",
             briefDescription = "Catch body is empty, it not match the coding convention",
@@ -27,46 +27,47 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
+		private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
 
-        private const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
-        private const val THROW_VAL = "throw"
-        private const val GENERALIZED_EXCEPTION_MESSAGE = "Catch generalized exception. Should throw specific exception in catch body \n" +
-                "http://wiki.omega-r.club/dev-android-code#rec226454364"
-    }
+		private const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
+		private const val THROW_VAL = "throw"
+		private const val GENERALIZED_EXCEPTION_MESSAGE =
+			"Catch generalized exception. Should throw specific exception in catch body \n" +
+					"http://wiki.omega-r.club/dev-android-code#rec226454364"
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UCatchClause::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UCatchClause::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitCatchClause(node: UCatchClause) {
-                val body = node.body
-                val string = body.asRenderString()
-                if (string.matches(EMPTY_BODY_REGEX)) {
-                    context.report(
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitCatchClause(node: UCatchClause) {
+				val body = node.body
+				val string = body.asRenderString()
+				if (string.matches(EMPTY_BODY_REGEX)) {
+					context.report(
                         ISSUE,
                         body,
                         context.getNameLocation(body),
                         ISSUE.getExplanation(TextFormat.TEXT)
                     )
-                }
-                val parameters = node.parameters
-                parameters.forEach {
-                    if (it.type.canonicalText == GENERALIZED_EXCEPTION_VAL) {
-                        if (!string.contains(THROW_VAL)) {
-                            context.report(
+				}
+				val parameters = node.parameters
+				parameters.forEach {
+					if (it.type.canonicalText == GENERALIZED_EXCEPTION_VAL) {
+						if (!string.contains(THROW_VAL)) {
+							context.report(
                                 ISSUE,
                                 body,
                                 context.getNameLocation(it),
                                 GENERALIZED_EXCEPTION_MESSAGE
                             )
-                        }
-                    }
-                }
-            }
-        }
-    }
+						}
+					}
+				}
+			}
+		}
+	}
 
 }

@@ -6,10 +6,10 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UExpression
 
 class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_CAN_USE_SIMPLIFICATION_OF_CONTROL_INSTRUCTIONS",
             briefDescription = "Place the short branches on the same line as the condition, without parentheses.",
             explanation = """
@@ -25,47 +25,49 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
             )
         )
 
-        private val WHEN_REGEX = Regex("""^switch""")
+		private val WHEN_REGEX = Regex("""^switch""")
+		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
+		private val END_BRANCH_OF_WHEN_REGEX = Regex("""^\s*\}""")
 
-    }
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UExpression::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UExpression::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitExpression(node: UExpression) {
-                val text = node.asRenderString()
-                if (text.contains(WHEN_REGEX)) {
-                    var body = text.split("\n")
-                    var beginPosition = 0
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitExpression(node: UExpression) {
+				val text = node.asRenderString()
+				if (text.contains(WHEN_REGEX)) {
+					val body = text.split("\n")
+					var beginPosition = 0
 
-                    for (i in body.indices) {
-                        val line = body[i]
-                        if (line.contains(Regex("""->\s*\{"""))) {
-                            if (i + 2 < body.size) {
-                                val endBodyLine = body[i + 2]
-                                if (endBodyLine.contains(Regex("""^\s*\}"""))) {
-                                    context.report(
+					for (i in body.indices) {
+						val line = body[i]
+						if (line.contains(BEGIN_BRANCH_OF_WHEN_REGEX)) {
+							if (i + 2 < body.size) {
+								val endBodyLine = body[i + 2]
+								if (endBodyLine.contains(END_BRANCH_OF_WHEN_REGEX)) {
+									context.report(
                                         ISSUE,
                                         node,
                                         context.getRangeLocation(
                                             node,
-                                            beginPosition-1,
+                                            beginPosition - 1,
                                             line.trim().length
                                         ),
                                         ISSUE.getExplanation(TextFormat.TEXT)
                                     )
-                                }
-                            }
-                        }
-                        beginPosition += line.length
-                        beginPosition++
-                    }
+								}
+							}
+						}
+						beginPosition += line.length
+						beginPosition++
+					}
 
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 }

@@ -14,7 +14,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
 			briefDescription =
 			"Function body is empty.It does not match the coding convention. Function body should not be empty.",
 			explanation = """
-                  Function body is empty. Write function body or add comment and ignore annotation.
+                  Function body is empty. Write function body or add comment.
                   http://wiki.omega-r.club/dev-android-code#rec228194993
                     """,
 			category = Category.CORRECTNESS,
@@ -40,7 +40,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
 
 				val text = node.text ?: return
 				if (text.contains(EMPTY_BODY_REGEX) && (body.asRenderString().matches(EMPTY_BODY_REGEX))) {
-					context.report(ISSUE, node, context.getLocation(body), text)
+					context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
 				}
 			}
 		}

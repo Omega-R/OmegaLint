@@ -29,7 +29,7 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
         private const val IMPORT_VAL = "import"
         private const val PACKAGE_VAL = "package"
 
-        const val MAX_LENGTH = 130
+        internal const val MAX_LENGTH = 130
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -46,7 +46,7 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
                 lines.forEach { line ->
                     val length = line.length
 
-                    if ((length > MAX_LENGTH) && !(line.contains(IMPORT_VAL)) && !(line.contains(PACKAGE_VAL))) {
+                    if (length > MAX_LENGTH && !line.contains(IMPORT_VAL) && !line.contains(PACKAGE_VAL)) {
                         context.report(
                             ISSUE, node,
                             context.getRangeLocation(node.parent, beginPosition, length),

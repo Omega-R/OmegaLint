@@ -6,10 +6,10 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
 class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_NOT_EXCEED_MAX_FUNCTION_LENGTH",
             briefDescription =
             "The size of a function should be no more than 30 lines, excluding blank lines and comments." +
@@ -27,36 +27,35 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val WHEN_VAL = "switch"
-        private const val MAX_FUNCTION_LINES_COUNT = 30
-        private const val MAX_FUNCTION_LINES_COUNT_WITH_WHEN = 40
-        private const val DELTA = 2
-    }
+		private const val WHEN_VAL = "switch"
+		private const val MAX_FUNCTION_LINES_COUNT = 30
+		private const val MAX_FUNCTION_LINES_COUNT_WITH_WHEN = 40
+		private const val DELTA = 2
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UMethod::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UMethod::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitMethod(node: UMethod) {
-                val body = node.uastBody ?: return
-                var currentMax = MAX_FUNCTION_LINES_COUNT
-                val bodyAsRenderString = body.asRenderString()
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitMethod(node: UMethod) {
+				val body = node.uastBody ?: return
+				var currentMax = MAX_FUNCTION_LINES_COUNT
+				val bodyAsRenderString = body.asRenderString()
 
-                if (bodyAsRenderString.contains(WHEN_VAL)) {
-//                    context.report(ISSUE, node, context.getLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
-                    currentMax = MAX_FUNCTION_LINES_COUNT_WITH_WHEN
-                }
-                val lines = bodyAsRenderString.split("\n")
+				if (bodyAsRenderString.contains(WHEN_VAL)) {
+					currentMax = MAX_FUNCTION_LINES_COUNT_WITH_WHEN
+				}
+				val lines = bodyAsRenderString.split("\n")
 
-                /** Need to delete 2 strings, because body "{ }" */
-                val size = lines.size - DELTA
+				/** Need to delete 2 strings, because body has "{ }" */
+				val size = lines.size - DELTA
 
-                if (size > currentMax) {
-                    context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
-                }
-            }
-        }
-    }
+				if (size > currentMax) {
+					context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
+				}
+			}
+		}
+	}
 }

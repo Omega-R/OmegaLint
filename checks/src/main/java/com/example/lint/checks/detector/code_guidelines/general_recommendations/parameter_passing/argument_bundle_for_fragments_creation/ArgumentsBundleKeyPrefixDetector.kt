@@ -7,10 +7,10 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.getContainingUFile
 
 class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
             id = "OMEGA_USE_KEY_PREFIX_FOR_FRAGMENT_IN_ARGUMENTS_BUNDLE_PARAMS",
             // Title -- shown in the IDE's preference dialog, as category headers in the
@@ -31,32 +31,32 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val KEY_PREFIX_REGEX = Regex("""^KEY_""")
-        val PUT_PARCELABLE_METHOD_REGEX = Regex("""^putParcelable$""")
-        val FRAGMENT_REGEX = Regex("""Fragment$""")
-    }
+		val KEY_PREFIX_REGEX = Regex("""^KEY_""")
+		val PUT_PARCELABLE_METHOD_REGEX = Regex("""^putParcelable$""")
+		val FRAGMENT_REGEX = Regex("""Fragment$""")
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UCallExpression::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UCallExpression::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitCallExpression(node: UCallExpression) {
-                val file = node.getContainingUFile() ?: return
-                var className = file.classes.firstOrNull()?.name ?: return
-                val name = node.methodName ?: return
-                if (className.contains(FRAGMENT_REGEX)) {
-                    if (name.matches(PUT_PARCELABLE_METHOD_REGEX)) {
-                        val firstParam = node.valueArguments.firstOrNull() ?: return
-                        val extraParam = firstParam.asRenderString()
-                        if (!extraParam.contains(KEY_PREFIX_REGEX)) {
-                            context.report(ISSUE, node, context.getLocation(firstParam), ISSUE.getExplanation(TextFormat.TEXT))
-                        }
-                    }
-                }
-            }
-        }
-    }
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitCallExpression(node: UCallExpression) {
+				val file = node.getContainingUFile() ?: return
+				val className = file.classes.firstOrNull()?.name ?: return
+				val name = node.methodName ?: return
+				if (className.contains(FRAGMENT_REGEX)) {
+					if (name.matches(PUT_PARCELABLE_METHOD_REGEX)) {
+						val firstParam = node.valueArguments.firstOrNull() ?: return
+						val extraParam = firstParam.asRenderString()
+						if (!extraParam.contains(KEY_PREFIX_REGEX)) {
+							context.report(ISSUE, node, context.getLocation(firstParam), ISSUE.getExplanation(TextFormat.TEXT))
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
