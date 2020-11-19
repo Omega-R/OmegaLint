@@ -10,20 +10,20 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_CAN_USE_SIMPLIFICATION_OF_CONTROL_INSTRUCTIONS",
-            briefDescription = "Place the short branches on the same line as the condition, without parentheses.",
-            explanation = """
+			id = "OMEGA_CAN_USE_SIMPLIFICATION_OF_CONTROL_INSTRUCTIONS",
+			briefDescription = "Place the short branches on the same line as the condition, without parentheses.",
+			explanation = """
                   Place the short branches on the same line as the condition, without parentheses.
                   http://wiki.omega-r.club/dev-android-code#rec228389564
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.INFORMATIONAL,
-            implementation = Implementation(
-                SimplificationsControlInstructionsDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.INFORMATIONAL,
+			implementation = Implementation(
+				SimplificationsControlInstructionsDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private val WHEN_REGEX = Regex("""^switch""")
 		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
@@ -50,15 +50,11 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 								val endBodyLine = body[i + 2]
 								if (endBodyLine.contains(END_BRANCH_OF_WHEN_REGEX)) {
 									context.report(
-                                        ISSUE,
-                                        node,
-                                        context.getRangeLocation(
-                                            node,
-                                            beginPosition - 1,
-                                            line.trim().length
-                                        ),
-                                        ISSUE.getExplanation(TextFormat.TEXT)
-                                    )
+										ISSUE,
+										node,
+										context.getRangeLocation(node, beginPosition - 1, line.trim().length),
+										ISSUE.getExplanation(TextFormat.TEXT)
+									)
 								}
 							}
 						}

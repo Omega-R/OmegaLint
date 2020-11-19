@@ -7,10 +7,10 @@ import org.jetbrains.uast.UElement
 
 @Suppress("UnstableApiUsage")
 class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_USE_UPPER_CAMEL_CASE_FOR_CLASS_NAME",
             briefDescription = "The file name does not match the coding convention",
             explanation = """
@@ -26,27 +26,25 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private val WRONG_NAME_REGEX = Regex("[A-Z][A-Z]")
-    }
+		private val WRONG_NAME_REGEX = Regex("[A-Z][A-Z]")
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UClass::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UClass::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitClass(node: UClass) {
-                /**
-                 * UpperCamelCase check
-                 */
-                val name = node.name ?: return
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitClass(node: UClass) {
+				/**
+				 * UpperCamelCase check
+				 */
+				val name = node.name ?: return
 
-                if (name.contains(WRONG_NAME_REGEX))
-                    context.report(
-                        ISSUE, node, context.getNameLocation(node),
-                        ISSUE.getExplanation(TextFormat.TEXT)
-                    )
-            }
-        }
-    }
+				if (name.contains(WRONG_NAME_REGEX)) {
+					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+				}
+			}
+		}
+	}
 }

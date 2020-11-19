@@ -62,27 +62,27 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 							when {
 								beforeIndex > 0 && afterIndex <= 0 -> {
 									context.report(
-										ISSUE, node,
-										context.getRangeLocation
-											(node.parent, beginPosition + beforeIndex, pair.key.length + 1),
+										ISSUE,
+										node,
+										context.getRangeLocation(node.parent, beginPosition + beforeIndex, pair.key.length + 1),
 										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
 									)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
 									context.report(
-										ISSUE, node,
-										context.getRangeLocation
-											(node.parent, beginPosition + afterIndex, pair.key.length + 1),
+										ISSUE,
+										node,
+										context.getRangeLocation(node.parent, beginPosition + afterIndex, pair.key.length + 1),
 										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
 									)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
 									context.report(
-										ISSUE, node,
-										context.getRangeLocation
-											(node.parent, beginPosition + beforeIndex, pair.key.length + 2),
+										ISSUE,
+										node,
+										context.getRangeLocation(node.parent, beginPosition + beforeIndex, pair.key.length + 2),
 										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
 									)
 								}
@@ -95,7 +95,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						val index = line.indexOf(" (")
 						if (index > 0) {
 							context.report(
-								ISSUE, node,
+								ISSUE,
+								node,
 								context.getRangeLocation(node.parent, beginPosition + index, 2),
 								"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
 							)
@@ -107,7 +108,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
 						context.report(
-							ISSUE, node,
+							ISSUE,
+							node,
 							context.getRangeLocation(node.parent, beginPosition + length - 1, 1),
 							ISSUE.getExplanation(TextFormat.TEXT)
 						)

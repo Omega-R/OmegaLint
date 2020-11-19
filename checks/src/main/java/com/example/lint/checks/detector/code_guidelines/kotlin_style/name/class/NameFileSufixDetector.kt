@@ -112,10 +112,6 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
                     "$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}"
                 )
             }
-
-            private fun createFix(string: String): LintFix? {
-                return fix().replace().text(string).build()
-            }
         }
     }
 }

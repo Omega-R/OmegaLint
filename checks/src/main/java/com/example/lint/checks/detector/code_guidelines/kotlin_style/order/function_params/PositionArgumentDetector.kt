@@ -46,7 +46,7 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
                 val parent = node.uastParent as? UMethod ?: return
                 val params = parent.uastParameters
 
-                if ((params[0] != node) && ((node.name == CONTEXT_CORRECTLY_NAME) || (node.name == CONTEXT_ABBREVIATION))) {
+                if (params[0] != node && ((node.name == CONTEXT_CORRECTLY_NAME) || (node.name == CONTEXT_ABBREVIATION))) {
                     context.report(
                         ISSUE,
                         node as UElement,

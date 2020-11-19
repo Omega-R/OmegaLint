@@ -9,19 +9,19 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 	companion object {
 		val ISSUE = Issue.create(
-            id = "OMEGA_USE_ATTRIBUTES_IN_CORRECT_ORDER",
-            briefDescription = "Generally, you should try to group similar attributes together.",
-            explanation = """
+			id = "OMEGA_USE_ATTRIBUTES_IN_CORRECT_ORDER",
+			briefDescription = "Generally, you should try to group similar attributes together.",
+			explanation = """
                 You should try to group similar attributes together.
                 http://wiki.omega-r.club/dev-android-code#rec228391990
                 """,
-            category = Category.CORRECTNESS,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                AttributesPositionXmlDetector::class.java,
-                Scope.RESOURCE_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				AttributesPositionXmlDetector::class.java,
+				Scope.RESOURCE_FILE_SCOPE
+			)
+		)
 
 		private const val BEGIN_TAG_SYMBOL = "<"
 
@@ -132,39 +132,52 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 						attribute.contains(LAYOUT_VAL)
 								&& (attribute.contains(ANDROID_PREFIX_REGEX) || attribute.contains(STYLE_PREFIX_REGEX)) -> {
-                            if (currentRank < LAYOUT_RANK) {
-								currentRank = LAYOUT_RANK
-								previousAttribute = attribute
-							} else if (currentRank == LAYOUT_RANK) {
-								/** alphabet*/
-								if (!isOrderedAlphabetically(attribute, previousAttribute)) {
-									makeContextReport(context, document, beginPosition, LAYOUT_ALPHABETICALLY_MESSAGE, attribute)
+							when {
+								currentRank < LAYOUT_RANK -> {
+									currentRank = LAYOUT_RANK
+									previousAttribute = attribute
 								}
-								previousAttribute = attribute
-							} else {
-								makeContextReport(context, document, beginPosition, LAYOUT_MESSAGE, attribute)
+
+								currentRank == LAYOUT_RANK -> {
+									/** alphabet*/
+									/** alphabet*/
+									if (!isOrderedAlphabetically(attribute, previousAttribute)) {
+										makeContextReport(context, document, beginPosition, LAYOUT_ALPHABETICALLY_MESSAGE, attribute)
+									}
+									previousAttribute = attribute
+								}
+
+								else -> {
+									makeContextReport(context, document, beginPosition, LAYOUT_MESSAGE, attribute)
+								}
 							}
 						}
 
 						attribute.contains(ANDROID_PREFIX_REGEX)
 								|| attribute.contains(APP_PREFIX_REGEX)
 								|| attribute.contains(TOOLS_PREFIX_REGEX) -> {
-							if (currentRank < ANOTHER_ATTRIBUTES_RANK) {
-								currentRank = ANOTHER_ATTRIBUTES_RANK
-								previousAttribute = ""
-							} else if (currentRank == ANOTHER_ATTRIBUTES_RANK) {
-								if (!isOrderedAlphabetically(attribute, previousAttribute)) {
-									makeContextReport(
-                                        context,
-                                        document,
-                                        beginPosition,
-                                        ANOTHER_ATTRIBUTES_ALPHABETICALLY_MESSAGE,
-                                        attribute
-                                    )
+							when {
+								currentRank < ANOTHER_ATTRIBUTES_RANK -> {
+									currentRank = ANOTHER_ATTRIBUTES_RANK
+									previousAttribute = ""
 								}
-								previousAttribute = attribute
-							} else {
-								makeContextReport(context, document, beginPosition, ANOTHER_ATTRIBUTES_MESSAGE, attribute)
+
+								currentRank == ANOTHER_ATTRIBUTES_RANK -> {
+									if (!isOrderedAlphabetically(attribute, previousAttribute)) {
+										makeContextReport(
+											context,
+											document,
+											beginPosition,
+											ANOTHER_ATTRIBUTES_ALPHABETICALLY_MESSAGE,
+											attribute
+										)
+									}
+									previousAttribute = attribute
+								}
+
+								else -> {
+									makeContextReport(context, document, beginPosition, ANOTHER_ATTRIBUTES_MESSAGE, attribute)
+								}
 							}
 						}
 					}
@@ -194,18 +207,18 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 	}
 
 	private fun makeContextReport(
-        context: XmlContext,
-        document: Document,
-        beginPosition: Int,
-        message: String,
-        attribute: String
-    ) {
+		context: XmlContext,
+		document: Document,
+		beginPosition: Int,
+		message: String,
+		attribute: String
+	) {
 		context.report(
-            ISSUE,
-            document,
-            context.getLocation(document, beginPosition, beginPosition + attribute.length),
-            "$message\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-        )
+			ISSUE,
+			document,
+			context.getLocation(document, beginPosition, beginPosition + attribute.length),
+			"$message\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+		)
 	}
 
 

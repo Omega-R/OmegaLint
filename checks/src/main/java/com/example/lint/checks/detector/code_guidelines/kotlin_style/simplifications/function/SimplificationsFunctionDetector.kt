@@ -39,7 +39,8 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
                 val body = node.uastBody ?: return
                 if (body.asRenderString().matches(ONE_EXPRESSION_REGEX)) {
                     context.report(
-                        MaxLineLengthDetector.ISSUE, node,
+                        MaxLineLengthDetector.ISSUE,
+                        node,
                         context.getNameLocation(node),
                         ISSUE.getExplanation(TextFormat.TEXT)
                     )

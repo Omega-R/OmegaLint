@@ -109,7 +109,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                 val listUDeclaration = node.uastDeclarations
                 val name = node.name ?: return
                 val lines = node.parent.text.lines()
-                val sortedDeclarationList = getLinesList(lines, listUDeclaration, name)
+                val sortedDeclarationList = getSortedDeclarationList(lines, listUDeclaration, name)
 
                 if (name != COMPANION_NAME) {
                     var currentRank = 0
@@ -145,7 +145,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
                 }
             }
 
-            private fun getLinesList(
+            private fun getSortedDeclarationList(
                 lines: List<String>,
                 listUDeclaration: List<UDeclaration>,
                 name: String

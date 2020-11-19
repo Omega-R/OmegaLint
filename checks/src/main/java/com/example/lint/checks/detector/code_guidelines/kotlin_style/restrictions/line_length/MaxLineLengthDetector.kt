@@ -48,7 +48,8 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
 
                     if (length > MAX_LENGTH && !line.contains(IMPORT_VAL) && !line.contains(PACKAGE_VAL)) {
                         context.report(
-                            ISSUE, node,
+                            ISSUE,
+                            node,
                             context.getRangeLocation(node.parent, beginPosition, length),
                             ISSUE.getExplanation(TextFormat.TEXT)
                         )

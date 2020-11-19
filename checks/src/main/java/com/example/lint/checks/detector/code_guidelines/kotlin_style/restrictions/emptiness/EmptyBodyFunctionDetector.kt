@@ -37,8 +37,8 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val body = node.uastBody ?: return
-
 				val text = node.text ?: return
+
 				if (text.contains(EMPTY_BODY_REGEX) && (body.asRenderString().matches(EMPTY_BODY_REGEX))) {
 					context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
 				}
