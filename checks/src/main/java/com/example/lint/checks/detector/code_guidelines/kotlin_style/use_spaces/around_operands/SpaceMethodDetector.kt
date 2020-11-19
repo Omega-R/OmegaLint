@@ -32,6 +32,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
         private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
 
         private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
+        private const val FUNCTION_VALUE = "fun"
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -85,13 +86,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
                         }
                     }
 
-                    if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX)) {
+                    if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
                         val index = line.indexOf(" (")
                         if (index > 0) {
                             context.report(
                                 ISSUE, node,
                                 context.getRangeLocation(node.parent, beginPosition + index, 2),
-                                "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)} $beginPosition $index $text"
+                                "$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
                             )
                         }
                     }
