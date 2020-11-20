@@ -1,9 +1,0 @@
-root = true
-
-[*{.kt, .java}]
-charset = utf-8
-max_line_length = 130
-end_of_line = lf
-indent_style = tab
-tab_width = 4
-trim_trailing_whitespace = true

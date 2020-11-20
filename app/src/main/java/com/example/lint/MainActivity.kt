@@ -1,6 +1,5 @@
 package com.example.lint
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,60 +8,70 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-	companion object {
-		const val SS_S_SFDAS = 2
+    companion object {
 
-		private const val EXTRA_PHOTO = "photo"
+        const val SS_S_SFDAS = 2
 
-		fun createIntent(context: Context, photo: String): Intent {
-			return Intent(context, MainActivity::class.java)
-				.putExtra(EXTRA_PHOTO, photo)
-		}
-	}
+        val some = 2
 
-	fun spme() {
-		String?.toString()
-	}
+        private const val EXTRA_PHOTO = "photo"
 
+        fun createIntent(context: Context, photo: String): Intent {
+            return Intent(context, MainActivity ::class.java).putExtra(EXTRA_PHOTO, photo)
+        }
+    }
 
-	@SuppressLint( "NOT_EMPTY_BODY")
-	private fun some() {
+    val SSs = 2
 
-	}
+    fun spme() {
+        String?.toString()
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
 
-		val ctx: Context = this
-		String.toString()
+        val cTX: Context = this
+        String.toString()
 
 
-		val list = listOf<String>()
+        val list = listOf<String>()
 
-		list.forEach { line ->
-			val s = line
-		}
-	}
+        list.forEach { line ->
+            val s = line
+        }
+    }
 
-	@Suppress
-	fun emptyFun() {
-		//nothing
-	}
+    private fun SSsome() {
 
-	protected val s2: String = ""
+    }
 
-	fun Get(): String {
-		val s = 2
-		String.toString()
-		return "some"
-	}
+    class SomeClass() {
+        val soURL = 2
+    }
 
-	fun aAA() {
 
-	}
+    fun emptyFun() {
+        try {
+            val s = 2
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+    protected val s2: String = ""
+
+
+    fun Get() {
+        val s = 2
+        s.toString()
+        //nothing
+    }
+
+    fun aAA() {
+
+    }
 
 }
