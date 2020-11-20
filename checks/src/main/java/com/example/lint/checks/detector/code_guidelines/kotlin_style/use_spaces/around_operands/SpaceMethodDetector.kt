@@ -30,7 +30,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>)\s\{$""")
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
-		private val POINT_BEGIN_REGEX = Regex("""^\s*.""")
+		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
 
 		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
@@ -53,53 +53,30 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 
 					regexps.forEach { pair ->
 						if (line.contains(pair.value)) {
-							var beforeIndex = 0
-							if (!line.contains(POINT_BEGIN_REGEX)) {
-								beforeIndex = line.indexOf(" ${pair.key}")
-							}
 
+							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
+
 							when {
-								beforeIndex > 0 && afterIndex <= 0 -> {
-									context.report(
-										ISSUE,
-										node,
-										context.getRangeLocation(node.parent, beginPosition + beforeIndex, pair.key.length + 1),
-										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-									)
+								beforeIndex > 0 && afterIndex <= 0 && !line.contains(POINT_BEGIN_REGEX) -> {
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
-									context.report(
-										ISSUE,
-										node,
-										context.getRangeLocation(node.parent, beginPosition + afterIndex, pair.key.length + 1),
-										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-									)
+									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
-									context.report(
-										ISSUE,
-										node,
-										context.getRangeLocation(node.parent, beginPosition + beforeIndex, pair.key.length + 2),
-										"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-									)
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2)
 								}
 							}
-
 						}
 					}
 
 					if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
 						val index = line.indexOf(" (")
 						if (index > 0) {
-							context.report(
-								ISSUE,
-								node,
-								context.getRangeLocation(node.parent, beginPosition + index, 2),
-								"$DELETE_SPACES_MESSAGE ${ISSUE.getExplanation(TextFormat.TEXT)}"
-							)
+							makeContextReport(node, beginPosition + index, 2)
 						}
 					}
 
@@ -107,17 +84,21 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& line.contains(END_FUNCTION_DECLARATION_REGEX)
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
-						context.report(
-							ISSUE,
-							node,
-							context.getRangeLocation(node.parent, beginPosition + length - 1, 1),
-							ISSUE.getExplanation(TextFormat.TEXT)
-						)
+						makeContextReport(node, beginPosition + length - 1, 1)
 					}
 
 					beginPosition += length
 					beginPosition++ // for adding new string pair.key
 				}
+			}
+
+			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int) {
+				context.report(
+					ISSUE,
+					node,
+					context.getRangeLocation(node.parent, beginPosition, length),
+					ISSUE.getExplanation(TextFormat.TEXT)
+				)
 			}
 		}
 	}

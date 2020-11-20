@@ -96,9 +96,6 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
                                 makeContextReport(value = PROVIDER_VALUE, node)
                             }
 
-                        else -> if (!name.contains(part)) {
-                            makeContextReport(part, node)
-                        }
                     }
                 }
 

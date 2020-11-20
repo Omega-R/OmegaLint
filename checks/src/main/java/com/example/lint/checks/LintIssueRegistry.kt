@@ -51,7 +51,7 @@ class LintIssueRegistry : IssueRegistry() {
             SimplificationsFunctionDetector.ISSUE,
             MaxLineLengthDetector.ISSUE,
             AnnotationDetector.ISSUE,
-//            SpaceMethodDetector.ISSUE,
+            SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
             AttributesPositionXmlDetector.ISSUE,
 //            MaxClassInPackageDetector.ISSUE,

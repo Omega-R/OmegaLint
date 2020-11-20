@@ -47,8 +47,8 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		/** 3. Layout width and layout height **/
 		private const val LAYOUT_WIDTH_VAL = "layout_width"
 		private const val LAYOUT_HEIGHT_VAL = "layout_height"
-		private const val LAYOUT_HEIGHT_WIDTH_RANK = 3
-		private const val LAYOUT_HEIGHT_WIDTH_MESSAGE = "Only View Id and Style can stay before layout_width or layout_height."
+		private const val LAYOUT_H_W_RANK = 3
+		private const val LAYOUT_H_W_MESSAGE = "Only View Id and Style can stay before layout_width or layout_height."
 
 		/** 4. Another layout attributes sorted alphabetically **/
 		private const val LAYOUT_VAL = "layout"
@@ -107,31 +107,19 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 						}
 
 						attribute.contains(VIEW_ID_VAL) -> {
-							if (currentRank <= VIEW_ID_RANK) {
-								currentRank = VIEW_ID_RANK
-							} else {
-								makeContextReport(context, document, beginPosition, VIEW_ID_MESSAGE, attribute)
-							}
+							checkOrder(context, document, beginPosition, VIEW_ID_MESSAGE, attribute, VIEW_ID_RANK)
 						}
 
 						attribute.contains(STYLE_PREFIX_REGEX) -> {
-							if (currentRank <= STYLE_RANK) {
-								currentRank = STYLE_RANK
-							} else {
-								makeContextReport(context, document, beginPosition, STYLE_MESSAGE, attribute)
-							}
+							checkOrder(context, document, beginPosition, STYLE_MESSAGE, attribute, STYLE_RANK)
 						}
 
 						attribute.contains(LAYOUT_HEIGHT_VAL) || attribute.contains(LAYOUT_WIDTH_VAL) -> {
-							if (currentRank <= LAYOUT_HEIGHT_WIDTH_RANK) {
-								currentRank = LAYOUT_HEIGHT_WIDTH_RANK
-							} else {
-								makeContextReport(context, document, beginPosition, LAYOUT_HEIGHT_WIDTH_MESSAGE, attribute)
-							}
+							checkOrder(context, document, beginPosition, LAYOUT_H_W_MESSAGE, attribute, LAYOUT_H_W_RANK)
 						}
 
-						attribute.contains(LAYOUT_VAL)
-								&& (attribute.contains(ANDROID_PREFIX_REGEX) || attribute.contains(STYLE_PREFIX_REGEX)) -> {
+						attribute.contains(LAYOUT_VAL) &&
+								(attribute.contains(ANDROID_PREFIX_REGEX) || attribute.contains(STYLE_PREFIX_REGEX)) -> {
 							when {
 								currentRank < LAYOUT_RANK -> {
 									currentRank = LAYOUT_RANK
@@ -140,9 +128,14 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 								currentRank == LAYOUT_RANK -> {
 									/** alphabet*/
-									/** alphabet*/
 									if (!isOrderedAlphabetically(attribute, previousAttribute)) {
-										makeContextReport(context, document, beginPosition, LAYOUT_ALPHABETICALLY_MESSAGE, attribute)
+										makeContextReport(
+											context,
+											document,
+											beginPosition,
+											LAYOUT_ALPHABETICALLY_MESSAGE,
+											attribute
+										)
 									}
 									previousAttribute = attribute
 								}
@@ -163,6 +156,7 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 								}
 
 								currentRank == ANOTHER_ATTRIBUTES_RANK -> {
+									/** alphabet*/
 									if (!isOrderedAlphabetically(attribute, previousAttribute)) {
 										makeContextReport(
 											context,
@@ -189,21 +183,20 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		}
 	}
 
-	private fun isOrderedAlphabetically(attribute: String, previousAttribute: String): Boolean {
-		if (previousAttribute.isEmpty()) {
-			return true
+	private fun checkOrder(
+		context: XmlContext,
+		document: Document,
+		beginPosition: Int,
+		message: String,
+		attribute: String,
+		currentRank: Int
+	): Int {
+		if (currentRank <= VIEW_ID_RANK) {
+			return VIEW_ID_RANK
 		}
-		val attributeCharArray = attribute.toCharArray()
-		val previousAttributeCharArray = previousAttribute.toCharArray()
 
-		for (i in 0 until min(attributeCharArray.size, previousAttributeCharArray.size)) {
-			if (attributeCharArray[i] < previousAttributeCharArray[i]) {
-				return false
-			} else if (attributeCharArray[i] != previousAttributeCharArray[i]) {
-				return true
-			}
-		}
-		return false
+		makeContextReport(context, document, beginPosition, message, attribute)
+		return currentRank
 	}
 
 	private fun makeContextReport(
@@ -221,5 +214,20 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		)
 	}
 
+	private fun isOrderedAlphabetically(attribute: String, previousAttribute: String): Boolean {
+		if (previousAttribute.isEmpty()) {
+			return true
+		}
+		val attributeCharArray = attribute.toCharArray()
+		val previousAttributeCharArray = previousAttribute.toCharArray()
 
+		for (i in 0 until min(attributeCharArray.size, previousAttributeCharArray.size)) {
+			if (attributeCharArray[i] < previousAttributeCharArray[i]) {
+				return false
+			} else if (attributeCharArray[i] != previousAttributeCharArray[i]) {
+				return true
+			}
+		}
+		return false
+	}
 }
