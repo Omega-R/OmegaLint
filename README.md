@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/Omega-R/OmegaLing.svg)](https://jitpack.io/#Omega-R/OmegaLint)
+[![](https://jitpack.io/v/Omega-R/OmegaLint.svg)](https://jitpack.io/#Omega-R/OmegaLint)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
 # OmegaLint
