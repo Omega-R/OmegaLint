@@ -36,8 +36,8 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 		/** 1. View Id**/
 		private val VIEW_ID_VAL = Regex("""^\s*android:id""")
-		private const val VIEW_ID_RANK = 1
-		private const val VIEW_ID_MESSAGE = "View Id should be the first attribute(if tag not contains \"xmlns\")."
+		private const val ID_RANK = 1
+		private const val ID_MESSAGE = "View Id should be the first attribute(if tag not contains \"xmlns\")."
 
 		/** 2. Style**/
 		private val STYLE_PREFIX_REGEX = Regex("""^\s*style""")
@@ -107,15 +107,18 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 						}
 
 						attribute.contains(VIEW_ID_VAL) -> {
-							checkOrder(context, document, beginPosition, VIEW_ID_MESSAGE, attribute, VIEW_ID_RANK)
+							currentRank =
+								checkOrder(context, document, beginPosition, ID_MESSAGE, attribute, currentRank, ID_RANK)
 						}
 
 						attribute.contains(STYLE_PREFIX_REGEX) -> {
-							checkOrder(context, document, beginPosition, STYLE_MESSAGE, attribute, STYLE_RANK)
+							currentRank =
+								checkOrder(context, document, beginPosition, STYLE_MESSAGE, attribute, currentRank, STYLE_RANK)
 						}
 
 						attribute.contains(LAYOUT_HEIGHT_VAL) || attribute.contains(LAYOUT_WIDTH_VAL) -> {
-							checkOrder(context, document, beginPosition, LAYOUT_H_W_MESSAGE, attribute, LAYOUT_H_W_RANK)
+							currentRank =
+								checkOrder(context, document, beginPosition, LAYOUT_H_W_MESSAGE, attribute, currentRank, LAYOUT_H_W_RANK)
 						}
 
 						attribute.contains(LAYOUT_VAL) &&
@@ -189,10 +192,11 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		beginPosition: Int,
 		message: String,
 		attribute: String,
-		currentRank: Int
+		currentRank: Int,
+		viewRank: Int
 	): Int {
-		if (currentRank <= VIEW_ID_RANK) {
-			return VIEW_ID_RANK
+		if (currentRank <= viewRank) {
+			return viewRank
 		}
 
 		makeContextReport(context, document, beginPosition, message, attribute)

@@ -45,12 +45,12 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
                 val packageString = lines.firstOrNull { it.contains(PACKAGE_VAL) } ?: return
 
                 if (packageString.isNotEmpty()) {
-                    val path = packageString.replace("package", "").trim()
+                    val path = packageString.replace(PACKAGE_VAL, "").trim()
                     val packagesList = path.split(".")
                     for (i in packagesList.indices) {
                         val currentPackage = packagesList[i]
                         if (i < packagesList.size - 1) {
-                            var nextPackagesList = packageMap[currentPackage]
+                            val nextPackagesList = packageMap[currentPackage]
                             val nextPackage = packagesList[i + 1]
                             if (nextPackagesList != null) {
 
@@ -68,7 +68,6 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
                                 }
                             } else {
                                 packageMap[currentPackage] = arrayListOf(nextPackage)
-
                             }
                         }
                     }

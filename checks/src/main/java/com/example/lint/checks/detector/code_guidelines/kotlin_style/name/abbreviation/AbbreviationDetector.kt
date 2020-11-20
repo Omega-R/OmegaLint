@@ -39,35 +39,97 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
-			override fun visitClass(node: UClass) {
-				val name = node.name ?: return
 
+			override fun visitClass(node: UClass) {
+				val companion = node.innerClasses.firstOrNull() ?: return
+				node.methods.forEach { method ->
+					if (method.name.contains(ABBREVIATION_REGEX)) {
+						context.report(
+							ISSUE,
+							method,
+							context.getNameLocation(method),
+							method.name + " " + method.parent.text
+						)
+					}
+				}
+
+				node.fields.forEach { field ->
+					if (field.name.contains(ABBREVIATION_REGEX)) {
+						context.report(
+							ISSUE,
+							field,
+							context.getNameLocation(field),
+							field.name + " " + field.parent.text
+						)
+					}
+				}
+/*				val name = node.name ?: return
+				val text = node.text ?: return*/
+/*
 				val methods = node.methods
 				methods.forEach { method ->
-
-					if (method.name.contains(ABBREVIATION_REGEX)) {
+					if (method.name.contains(ABBREVIATION_REGEX) && !isComponentMethod(method)) {
 						context.report(
 							ISSUE,
 							node,
 							context.getNameLocation(method),
-							ISSUE.getExplanation(TextFormat.TEXT)
+							method.name
 						)
 					}
 				}
 
 				val fields = node.fields
 				fields.forEach { field ->
-					if (field.name.contains(ABBREVIATION_REGEX)) {
+					if (field.name.contains(ABBREVIATION_REGEX) && !isComponentField(field)) {
 						context.report(
 							ISSUE,
 							node,
 							context.getNameLocation(field),
-							ISSUE.getExplanation(TextFormat.TEXT)
+							field.name
 						)
+					}
+				}*/
+			}
+
+			/*	private fun getCompanionObject(node: UClass): UClass? {
+					val companionObjectClass = node.innerClasses.firstOrNull() ?: return null
+					val name = companionObjectClass.name ?: return null
+					return if (name.contains(COMPANION_OBJECT_NAME_REGEX)) {
+						companionObjectClass
+					} else {
+						null
 					}
 				}
 
-			}
+				private fun isComponentMethod(currentMethod: UMethod): Boolean {
+					val methods = companion?.methods ?: return false
+
+					methods.forEach {
+						context.report(
+							ISSUE,
+							currentMethod,
+							context.getNameLocation(currentMethod),
+							it.name
+						)
+					}
+
+					return false
+				}
+
+				private fun isComponentField(currentField: UField): Boolean {
+					val fields = companion?.fields ?: return false
+
+					fields.forEach {
+						context.report(
+							ISSUE,
+							currentField,
+							context.getNameLocation(currentField),
+							it.name
+						)
+					}
+
+					return false
+				}*/
 		}
 	}
 }
