@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Lint</string>
+    <string name="some_style">Lint</string>
+    <string name="font_family_regular">s</string>
+    <string name="something">something</string>
 </resources>
