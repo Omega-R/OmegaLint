@@ -2,7 +2,6 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.use_spaces.
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import com.example.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxLineLengthDetector
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 

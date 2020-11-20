@@ -26,7 +26,7 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
             priority = 7,
             severity = Severity.WARNING,
             implementation = Implementation(
-                _root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector::class.java,
+                ArgumentsBundleKeyPrefixDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
             )
         )
@@ -46,12 +46,12 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 				val file = node.getContainingUFile() ?: return
 				val className = file.classes.firstOrNull()?.name ?: return
 				val name = node.methodName ?: return
-				if (className.contains(_root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector.Companion.FRAGMENT_REGEX)) {
-					if (name.matches(_root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector.Companion.PUT_PARCELABLE_METHOD_REGEX)) {
+				if (className.contains(ArgumentsBundleKeyPrefixDetector.Companion.FRAGMENT_REGEX)) {
+					if (name.matches(ArgumentsBundleKeyPrefixDetector.Companion.PUT_PARCELABLE_METHOD_REGEX)) {
 						val firstParam = node.valueArguments.firstOrNull() ?: return
 						val extraParam = firstParam.asRenderString()
-						if (!extraParam.contains(_root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector.Companion.KEY_PREFIX_REGEX)) {
-							context.report(_root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector.Companion.ISSUE, node, context.getLocation(firstParam), _root_ide_package_.com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector.Companion.ISSUE.getExplanation(TextFormat.TEXT))
+						if (!extraParam.contains(ArgumentsBundleKeyPrefixDetector.Companion.KEY_PREFIX_REGEX)) {
+							context.report(ArgumentsBundleKeyPrefixDetector.Companion.ISSUE, node, context.getLocation(firstParam), ArgumentsBundleKeyPrefixDetector.Companion.ISSUE.getExplanation(TextFormat.TEXT))
 						}
 					}
 				}
