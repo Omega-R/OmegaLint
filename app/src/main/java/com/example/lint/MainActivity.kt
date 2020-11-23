@@ -1,9 +1,9 @@
 package com.example.lint
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,11 +19,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun createLauncher() = createActivityLauncher()
+    fun createLauncher() {
+        createActivityLauncher()
+    }
 
 
-    fun createActivityLauncher() {
-
+    private fun createActivityLauncher(): String {
+        return "createLauncher()"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         val cTX: Context = this
         String
             .toString()
-        String ::class.java
+        String::class.java
 
 
         val list = listOf<String>()
@@ -48,13 +50,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun getTabName(position: Int): String {
         return when (position) {
-            0 -> getString(R.string.app_name)
+            0 ->  getString(R.string.app_name)
             else -> getString(R.string.app_name)
         }
     }
 
 
-    private fun SSsome() {
+    @SuppressLint("OMEGA_NOT_EXCEED_MAX_LINE_LENGTH")
+    private fun SSsome(): Int {
+        val s = 2
+        val list = listOf("")
+        list.forEach { line ->
+            val some = line
+        }
+
+        val s3 = 1
+        return when (s) {
+            s3 -> { 0 }
+
+            0, 2 -> {
+                val some = 2
+                1
+            }
+            else ->  2
+        }
 
     }
 
@@ -69,6 +88,14 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    object Auth : Screen()
+
+    open class Screen() {}
+
+    fun some(): String {
+        return "S"
     }
 
     protected val s2: String = ""

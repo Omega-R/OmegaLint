@@ -56,7 +56,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 						ISSUE,
 						node,
 						context.getLocation(node),
-						firstText + "\n***\n" + text + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 			}
 			/*override fun visitExpression(node: UExpression) {
