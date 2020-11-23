@@ -19,7 +19,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
                     """,
             category = Category.CORRECTNESS,
             priority = 7,
-            severity = Severity.INFORMATIONAL,
+            severity = Severity.WARNING,
             implementation = Implementation(
                 SimplificationsFunctionDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
@@ -37,12 +37,13 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
         return object : UElementHandler() {
             override fun visitMethod(node: UMethod) {
                 val body = node.uastBody ?: return
+
                 if (body.asRenderString().matches(ONE_EXPRESSION_REGEX)) {
                     context.report(
                         ISSUE,
                         node,
                         context.getNameLocation(node),
-                        body.asRenderString()
+                        body.asRenderString() + "\n!!!\n" + node.text
                     )
                 }
             }
