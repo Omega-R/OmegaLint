@@ -40,17 +40,20 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
 			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
-				val value = node.caseValues.size ?: return
 				val renderText = node.asRenderString()
+
 				if (renderText.trim().split("\n").size != 3) {
 					return
 				}
+
 				val method = node.getContainingUMethod() ?: return
 				val text = method.text ?: return
 				var firstText = renderText.trim().split("\n").firstOrNull() ?: return
-				if(firstText == ELSE_LABEL) {
+
+				if (firstText == ELSE_LABEL) {
 					firstText = ELSE_TEXT
 				}
+
 				if (text.contains(firstText))
 					context.report(
 						ISSUE,
@@ -59,34 +62,6 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 			}
-			/*override fun visitExpression(node: UExpression) {
-				val text = node.asRenderString()
-				if (text.contains(WHEN_REGEX)) {
-//					val evaStr = node.evaluateString() ?: return
-					val body = text.split("\n")
-					var beginPosition = 0
-
-					for (i in body.indices) {
-						val line = body[i]
-						if (line.contains(BEGIN_BRANCH_OF_WHEN_REGEX)) {
-							if (i + 2 < body.size) {
-								val endBodyLine = body[i + 2]
-								if (endBodyLine.contains(END_BRANCH_OF_WHEN_REGEX)) {
-									context.report(
-										ISSUE,
-										node,
-										context.getRangeLocation(node, beginPosition - 1, line.trim().length),
-										text + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
-									)
-								}
-							}
-						}
-						beginPosition += line.length
-						beginPosition++
-					}
-
-				}
-			}*/
 		}
 	}
 }

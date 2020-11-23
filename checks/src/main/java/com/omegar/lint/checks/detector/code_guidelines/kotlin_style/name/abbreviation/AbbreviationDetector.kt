@@ -2,10 +2,8 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbrev
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UField
-import org.jetbrains.uast.UMethod
+import org.jetbrains.uast.tryResolveNamed
 
 @Suppress("UnstableApiUsage")
 class AbbreviationDetector : Detector(), Detector.UastScanner {
@@ -28,108 +26,31 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
-		private val COMPANION_OBJECT_NAME_REGEX = Regex("""^Companion""")
+		private const val CONST_RENDER_VAL = "static final"
+		private const val IDENTIFIER_LABEL = "UIdentifier"
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
 		return listOf(
-			UClass::class.java
+			UElement::class.java
 		)
 	}
 
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
+			override fun visitElement(node: UElement) {
+				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
+				val checkText = renderText.replace(IDENTIFIER_LABEL, "")
 
-			override fun visitClass(node: UClass) {
-				val companion = node.innerClasses.firstOrNull() ?: return
-				node.methods.forEach { method ->
-					if (method.name.contains(ABBREVIATION_REGEX)) {
-						context.report(
-							ISSUE,
-							method,
-							context.getNameLocation(method),
-							method.name + " " + method.parent.text
-						)
-					}
+				if (checkText.contains(ABBREVIATION_REGEX) && !checkText.contains(CONST_RENDER_VAL)) {
+					context.report(
+						ISSUE,
+						node,
+						context.getNameLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT)
+					)
 				}
-
-				node.fields.forEach { field ->
-					if (field.name.contains(ABBREVIATION_REGEX)) {
-						context.report(
-							ISSUE,
-							field,
-							context.getNameLocation(field),
-							field.name + " " + field.parent.text
-						)
-					}
-				}
-/*				val name = node.name ?: return
-				val text = node.text ?: return*/
-/*
-				val methods = node.methods
-				methods.forEach { method ->
-					if (method.name.contains(ABBREVIATION_REGEX) && !isComponentMethod(method)) {
-						context.report(
-							ISSUE,
-							node,
-							context.getNameLocation(method),
-							method.name
-						)
-					}
-				}
-
-				val fields = node.fields
-				fields.forEach { field ->
-					if (field.name.contains(ABBREVIATION_REGEX) && !isComponentField(field)) {
-						context.report(
-							ISSUE,
-							node,
-							context.getNameLocation(field),
-							field.name
-						)
-					}
-				}*/
 			}
-
-			/*	private fun getCompanionObject(node: UClass): UClass? {
-					val companionObjectClass = node.innerClasses.firstOrNull() ?: return null
-					val name = companionObjectClass.name ?: return null
-					return if (name.contains(COMPANION_OBJECT_NAME_REGEX)) {
-						companionObjectClass
-					} else {
-						null
-					}
-				}
-
-				private fun isComponentMethod(currentMethod: UMethod): Boolean {
-					val methods = companion?.methods ?: return false
-
-					methods.forEach {
-						context.report(
-							ISSUE,
-							currentMethod,
-							context.getNameLocation(currentMethod),
-							it.name
-						)
-					}
-
-					return false
-				}
-
-				private fun isComponentField(currentField: UField): Boolean {
-					val fields = companion?.fields ?: return false
-
-					fields.forEach {
-						context.report(
-							ISSUE,
-							currentField,
-							context.getNameLocation(currentField),
-							it.name
-						)
-					}
-
-					return false
-				}*/
 		}
 	}
 }

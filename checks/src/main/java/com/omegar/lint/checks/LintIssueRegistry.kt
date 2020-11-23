@@ -9,6 +9,7 @@ import com.omegar.lint.checks.detector.code_guidelines.kotlin_rules.exception.Ex
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.annotation.AnnotationDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.lambda.LambdaDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.`class`.NameFileSufixDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbreviation.AbbreviationDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.field.CompanionObjectFieldsDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.file_class_interface.ComponentPositionDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.PositionArgumentDetector
@@ -32,7 +33,7 @@ class LintIssueRegistry : IssueRegistry() {
     override val issues: List<Issue>
         get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
-//            AbbreviationDetector.ISSUE, TODO  underline const values, need to fix
+            AbbreviationDetector.ISSUE,// TODO need testing
             PositionArgumentDetector.ISSUE,
             MaxFunctionsArgumentsDetector.ISSUE,
             ExceptionCatchDetector.ISSUE,
