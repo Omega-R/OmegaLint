@@ -45,7 +45,7 @@ class LintIssueRegistry : IssueRegistry() {
             CompanionObjectFieldsDetector.ISSUE,
             MaxFunctionLengthDetector.ISSUE,
             MaxClassLengthDetector.ISSUE,
-            SimplificationsFunctionDetector.ISSUE,
+            SimplificationsFunctionDetector.ISSUE, //TODO always see scopes
             MaxLineLengthDetector.ISSUE,
             AnnotationDetector.ISSUE,
             SpaceMethodDetector.ISSUE,
@@ -53,7 +53,7 @@ class LintIssueRegistry : IssueRegistry() {
             AttributesPositionXmlDetector.ISSUE,
 //            MaxClassInPackageDetector.ISSUE,  TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
 //            MaxPackageCountDetector.ISSUE,    TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
-            SimplificationsControlInstructionsDetector.ISSUE,
+//            SimplificationsControlInstructionsDetector.ISSUE, // when
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
             LambdaDetector.ISSUE,

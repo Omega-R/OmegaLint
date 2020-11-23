@@ -45,7 +45,7 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 
                     if (line.contains(ONE_EXPRESSION_REGEX)) {
                         context.report(
-                            MaxLineLengthDetector.ISSUE,
+                            ISSUE,
                             node,
                             context.getRangeLocation(node.parent, beginPosition, length),
                             ISSUE.getExplanation(TextFormat.TEXT)

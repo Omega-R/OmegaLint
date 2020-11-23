@@ -29,8 +29,8 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 
 		private const val LAMBDA_VAL = "->"
 		private const val CLOSE_SCOPE_VAL = "{"
-		private const val SWITCH_VAL = "switch"
 		private val EMPTY_ARROW_REGEX = Regex("""\s*->""")
+		private val SWITCH_VAL = Regex("""[switch|when]""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

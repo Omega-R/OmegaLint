@@ -30,9 +30,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
 		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
+		private val QUESTION_MARK_POINT_BEGIN_REGEX = Regex("""^\s*\?\.""")
 
 		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
+
+		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
+		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -41,7 +45,6 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
-			private val regexps = arrayOf(".", "::", "?.").map { it to Regex("""\s*$it\s""") }.toMap()
 
 			override fun visitClass(node: UClass) {
 				val text = node.parent.text ?: return
@@ -50,14 +53,17 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				lines.forEach { line ->
 					val length = line.length
 
-					regexps.forEach { pair ->
+					REGEXPS.forEach { pair ->
 						if (line.contains(pair.value)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
 
 							when {
-								beforeIndex > 0 && afterIndex <= 0 && !line.contains(POINT_BEGIN_REGEX) -> {
+								beforeIndex > 0
+										&& afterIndex <= 0
+										&& !line.contains(POINT_BEGIN_REGEX)
+										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
 									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1)
 								}
 

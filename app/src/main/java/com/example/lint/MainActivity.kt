@@ -1,7 +1,6 @@
 package com.example.lint
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
@@ -10,31 +9,34 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        const val SS_S_SFDAS = 2
-
-        val some = 2
-
-        private const val EXTRA_PHOTO = "photo"
-
-        fun createIntent(context: Context, photo: String): Intent {
-            return Intent(context, MainActivity ::class.java).putExtra(EXTRA_PHOTO, photo)
-        }
     }
 
     val SSs = 2
 
     fun spme() {
-        String?.toString()
+        String
+            ?.toString()
+    }
+
+
+    fun createLauncher() = createActivityLauncher()
+
+
+    fun createActivityLauncher() {
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
         val cTX: Context = this
-        String.toString()
+        String
+            .toString()
+        String ::class.java
 
 
         val list = listOf<String>()
@@ -43,6 +45,14 @@ class MainActivity : AppCompatActivity() {
             val s = line
         }
     }
+
+    private fun getTabName(position: Int): String {
+        return when (position) {
+            0 -> getString(R.string.app_name)
+            else -> getString(R.string.app_name)
+        }
+    }
+
 
     private fun SSsome() {
 
