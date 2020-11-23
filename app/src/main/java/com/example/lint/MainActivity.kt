@@ -9,13 +9,13 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
+        private const val SSS = 2
     }
 
-    val SSs = 2
 
-    fun spme() {
-        String
-            ?.toString()
+
+    fun spme () {
+        String ?.toString()
     }
 
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("OMEGA_NOT_EXCEED_MAX_LINE_LENGTH")
+
     private fun SSsome(): Int {
         val s = 2
         val list = listOf("")
@@ -76,6 +76,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 
     class SomeClass() {
         val soURL = 2
