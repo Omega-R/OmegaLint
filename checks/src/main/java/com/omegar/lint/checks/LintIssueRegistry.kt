@@ -45,7 +45,7 @@ class LintIssueRegistry : IssueRegistry() {
             CompanionObjectFieldsDetector.ISSUE,
             MaxFunctionLengthDetector.ISSUE,
             MaxClassLengthDetector.ISSUE,
-            SimplificationsFunctionDetector.ISSUE, //TODO always see scopes
+            SimplificationsFunctionDetector.ISSUE,
             MaxLineLengthDetector.ISSUE,
             AnnotationDetector.ISSUE,
             SpaceMethodDetector.ISSUE,
