@@ -53,7 +53,7 @@ class LintIssueRegistry : IssueRegistry() {
             AttributesPositionXmlDetector.ISSUE,
 //            MaxClassInPackageDetector.ISSUE,  TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
 //            MaxPackageCountDetector.ISSUE,    TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
-//            SimplificationsControlInstructionsDetector.ISSUE, // when
+            SimplificationsControlInstructionsDetector.ISSUE, // when
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
             LambdaDetector.ISSUE,
