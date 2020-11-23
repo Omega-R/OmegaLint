@@ -44,7 +44,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node,
 						context.getNameLocation(node),
-						text + ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
