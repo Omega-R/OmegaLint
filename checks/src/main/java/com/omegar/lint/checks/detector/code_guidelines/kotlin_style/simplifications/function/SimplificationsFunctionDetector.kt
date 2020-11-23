@@ -7,10 +7,10 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
 class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_CAN_USE_EXPRESSION_FUNCTION",
             briefDescription = "When a function contains only one expression, it can be represented as an \"expression function\".",
             explanation = """
@@ -26,27 +26,27 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*\s*\}""")
-    }
+		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*\s*\}""")
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UMethod::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UMethod::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitMethod(node: UMethod) {
-                val body = node.uastBody ?: return
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitMethod(node: UMethod) {
+				val text = node.text ?: return
 
-                if (body.asRenderString().matches(ONE_EXPRESSION_REGEX)) {
-                    context.report(
+				if (text.contains(ONE_EXPRESSION_REGEX)) {
+					context.report(
                         ISSUE,
                         node,
                         context.getNameLocation(node),
-                        body.asRenderString() + "\n!!!\n" + node.text
+                        ISSUE.getExplanation(TextFormat.TEXT)
                     )
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 }
