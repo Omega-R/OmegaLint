@@ -11,22 +11,23 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_CAN_USE_EXPRESSION_FUNCTION",
-            briefDescription = "When a function contains only one expression, it can be represented as an \"expression function\".",
-            explanation = """
+			id = "OMEGA_CAN_USE_EXPRESSION_FUNCTION",
+			briefDescription = "When a function contains only one expression, it can be represented as an \"expression function\".",
+			explanation = """
                   You can change it to "expression function"
                   http://wiki.omega-r.club/dev-android-code#rec228389255
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                SimplificationsFunctionDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.INFORMATIONAL,
+			implementation = Implementation(
+				SimplificationsFunctionDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*\s*\}""")
+		private const val MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION = 3
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -37,14 +38,14 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-
-				if (text.contains(ONE_EXPRESSION_REGEX)) {
+				val linesCount = text.split("\n").size
+				if (text.contains(ONE_EXPRESSION_REGEX) && (linesCount <= MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION)) {
 					context.report(
-                        ISSUE,
-                        node,
-                        context.getNameLocation(node),
-                        ISSUE.getExplanation(TextFormat.TEXT)
-                    )
+						ISSUE,
+						node,
+						context.getNameLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT)
+					)
 				}
 			}
 		}
