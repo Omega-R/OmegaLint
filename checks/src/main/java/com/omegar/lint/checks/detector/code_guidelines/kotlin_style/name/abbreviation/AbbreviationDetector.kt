@@ -2,8 +2,11 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbrev
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import org.jetbrains.uast.UDeclaration
 import org.jetbrains.uast.UElement
+import org.jetbrains.uast.UMethod
 import org.jetbrains.uast.tryResolveNamed
+import java.lang.reflect.Method
 
 @Suppress("UnstableApiUsage")
 class AbbreviationDetector : Detector(), Detector.UastScanner {
@@ -30,22 +33,22 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		private const val IDENTIFIER_LABEL = "UIdentifier"
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
 		return listOf(
-			UElement::class.java
+			UDeclaration::class.java
 		)
 	}
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
-			override fun visitElement(node: UElement) {
+			override fun visitDeclaration(node: UDeclaration) {
 				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
 				val checkText = renderText.replace(IDENTIFIER_LABEL, "")
 
 				if (checkText.contains(ABBREVIATION_REGEX) && !checkText.contains(CONST_RENDER_VAL)) {
 					context.report(
 						ISSUE,
-						node,
+						node as UElement,
 						context.getNameLocation(node),
 						ISSUE.getExplanation(TextFormat.TEXT)
 					)

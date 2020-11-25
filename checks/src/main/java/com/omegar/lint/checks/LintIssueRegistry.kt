@@ -64,3 +64,7 @@ class LintIssueRegistry : IssueRegistry() {
     override val api: Int
         get() = CURRENT_API
 }
+/* ERROR
+    override val sessionComponent = RemoteSessionComponent(
+        context.getSharedPreferences(PREF_NAME_SESSION, Context.MODE_PRIVATE),
+ */
