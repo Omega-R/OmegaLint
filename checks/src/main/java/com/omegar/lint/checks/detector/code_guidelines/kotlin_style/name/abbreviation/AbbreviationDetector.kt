@@ -29,6 +29,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
+		private const val OPEN_SCOPE = "("
 		private const val CONST_RENDER_VAL = "static final"
 		private const val IDENTIFIER_LABEL = "UIdentifier"
 	}
@@ -43,14 +44,18 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
 				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
-				val checkText = renderText.replace(IDENTIFIER_LABEL, "")
+				var checkText = renderText.replace(IDENTIFIER_LABEL, "")
+
+				if (checkText.indexOf(OPEN_SCOPE) > 0) {
+					checkText = checkText.substring(0, checkText.indexOf(OPEN_SCOPE))
+				}
 
 				if (checkText.contains(ABBREVIATION_REGEX) && !checkText.contains(CONST_RENDER_VAL)) {
 					context.report(
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						checkText/*ISSUE.getExplanation(TextFormat.TEXT)*/
 					)
 				}
 			}
