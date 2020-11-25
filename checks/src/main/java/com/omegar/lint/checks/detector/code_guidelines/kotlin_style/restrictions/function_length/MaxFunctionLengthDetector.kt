@@ -11,22 +11,22 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_NOT_EXCEED_MAX_FUNCTION_LENGTH",
-            briefDescription =
-            "The size of a function should be no more than 30 lines, excluding blank lines and comments." +
-                    " Large functions are difficult to read, modify, and test",
-            explanation = """
+			id = "OMEGA_NOT_EXCEED_MAX_FUNCTION_LENGTH",
+			briefDescription =
+			"The size of a function should be no more than 30 lines, excluding blank lines and comments." +
+					" Large functions are difficult to read, modify, and test",
+			explanation = """
                   Function size must be less than 30 lines(max value change to 40 lines if you use "when")
                   http://wiki.omega-r.club/dev-android-code#rec228194333
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                MaxFunctionLengthDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				MaxFunctionLengthDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private const val WHEN_VAL = "switch"
 		private const val CLASS_VAL = "class"
@@ -43,7 +43,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-				if(isClass(text.split("\n").firstOrNull())) {
+				if (isClass(text.split("\n").firstOrNull())) {
 					return
 				}
 				val body = node.uastBody ?: return
@@ -58,8 +58,13 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 				/** Need to delete 2 strings, because body has "{ }" */
 				val size = lines.size - DELTA
 
-				if (size > currentMax)  {
-					context.report(ISSUE, node, context.getLocation(body), "FUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}")
+				if (size > currentMax) {
+					context.report(
+						ISSUE,
+						node,
+						context.getLocation(body),
+						"FUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+					)
 				}
 			}
 		}
@@ -68,18 +73,18 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 	private fun getLines(lines: List<String>): List<String> {
 		var resultLines = mutableListOf<String>()
 		lines.forEach {
-			if(!it.trim().isNullOrEmpty()) {
+			if (!it.trim().isNullOrEmpty()) {
 				resultLines.add(it)
 			}
 		}
-		return  resultLines
+		return resultLines
 	}
 
 	private fun isClass(firstString: String?): Boolean {
-		if(firstString == null) {
+		if (firstString == null) {
 			return false
 		}
-		if(firstString.contains(CLASS_VAL)) {
+		if (firstString.contains(CLASS_VAL)) {
 			return true
 		}
 		return false

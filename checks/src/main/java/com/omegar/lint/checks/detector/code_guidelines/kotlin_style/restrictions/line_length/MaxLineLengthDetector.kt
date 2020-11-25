@@ -7,10 +7,10 @@ import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 
 class MaxLineLengthDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
             briefDescription = "The line size does not match the coding convention",
             explanation = """
@@ -26,40 +26,40 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val IMPORT_VAL = "import"
-        private const val PACKAGE_VAL = "package"
+		private const val IMPORT_VAL = "import"
+		private const val PACKAGE_VAL = "package"
 
-        internal const val MAX_LENGTH = 130
-    }
+		internal const val MAX_LENGTH = 130
+	}
 
-    override fun getApplicableUastTypes (): List<Class<out UElement?>>? {
-        return listOf(UClass::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UClass::class.java)
+	}
 
-    override fun createUastHandler (context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitClass(node: UClass) {
-                val text = node.parent.text
-                val lines = text.lines()
-                var beginPosition = 0
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitClass(node: UClass) {
+				val text = node.parent.text
+				val lines = text.lines()
+				var beginPosition = 0
 
-                lines.forEach { line ->
-                    val length = line.length
+				lines.forEach { line ->
+					val length = line.length
 
-                    if (length > MAX_LENGTH && !line.contains(IMPORT_VAL) && !line.contains(PACKAGE_VAL)) {
-                        context.report(
+					if (length > MAX_LENGTH && !line.contains(IMPORT_VAL) && !line.contains(PACKAGE_VAL)) {
+						context.report(
                             ISSUE,
                             node,
                             context.getRangeLocation(node.parent, beginPosition, length),
                             ISSUE.getExplanation(TextFormat.TEXT)
                         )
-                    }
+					}
 
-                    beginPosition += length
-                    beginPosition++ // for adding new string symbol
-                }
-            }
-        }
-    }
+					beginPosition += length
+					beginPosition++ // for adding new string symbol
+				}
+			}
+		}
+	}
 }
 

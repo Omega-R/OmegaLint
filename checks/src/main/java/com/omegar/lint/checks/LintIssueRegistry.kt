@@ -30,8 +30,8 @@ import com.omegar.lint.checks.detector.project_guidelines.file_name.`class`.Name
 import com.omegar.lint.checks.detector.project_guidelines.file_name.resource.layout.NameResourceLayoutDetector
 
 class LintIssueRegistry : IssueRegistry() {
-    override val issues: List<Issue>
-        get() = listOf(
+	override val issues: List<Issue>
+		get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
             AbbreviationDetector.ISSUE,// TODO need testing
             PositionArgumentDetector.ISSUE,
@@ -61,6 +61,6 @@ class LintIssueRegistry : IssueRegistry() {
             NameResourceLayoutDetector.ISSUE
         )
 
-    override val api: Int
-        get() = CURRENT_API
+	override val api: Int
+		get() = CURRENT_API
 }
