@@ -80,7 +80,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					}
 
 					if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
-						val functionLine = line.substring(0 , line.indexOf(OPEN_SCOPE_VALUE) + 1)
+						val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
 						val index = functionLine.indexOf(" (")
 						if (index > 0) {
 							makeContextReport(node, beginPosition + index, 2)
@@ -91,7 +91,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& line.contains(END_FUNCTION_DECLARATION_REGEX)
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
-						makeContextReport(node, beginPosition + length - 1, 1)
+						if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
+							makeContextReport(node, beginPosition + length - 1, 1)
 					}
 
 					beginPosition += length
