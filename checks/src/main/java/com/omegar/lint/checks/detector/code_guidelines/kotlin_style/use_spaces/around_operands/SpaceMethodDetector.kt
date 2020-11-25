@@ -26,7 +26,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val END_FUNCTION_DECLARATION_REGEX = Regex("""\s*\{$""")
-		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>)\s\{$""")
+		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>|\?)\s\{$""")
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
 		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
