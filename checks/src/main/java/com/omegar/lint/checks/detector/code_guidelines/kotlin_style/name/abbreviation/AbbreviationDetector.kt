@@ -29,6 +29,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		private const val OPEN_SCOPE_LABEL = "("
 		private const val EQUAL_LABEL = "="
 
+		//exclusion
+		private const val MILLISECONDS_LABEL = "MSec"
 
 	}
 
@@ -41,22 +43,20 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
-				node.uastAnchor
 				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
 				var checkText = renderText
-//				val text = node.text ?: return
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
 				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
 
-
+				checkText = deleteExclusions(checkText)
 
 				if (checkText.contains(ABBREVIATION_REGEX) && !node.isStatic) {
 					context.report(
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
@@ -71,4 +71,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		}
 
 	}
+
+	private fun deleteExclusions(checkText: String): String = checkText.replace(MILLISECONDS_LABEL, " ")
+
+
 }
