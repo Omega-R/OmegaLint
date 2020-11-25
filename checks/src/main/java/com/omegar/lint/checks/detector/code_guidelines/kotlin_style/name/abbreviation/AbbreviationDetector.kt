@@ -4,9 +4,6 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UDeclaration
 import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UMethod
-import org.jetbrains.uast.tryResolveNamed
-import java.lang.reflect.Method
 
 @Suppress("UnstableApiUsage")
 class AbbreviationDetector : Detector(), Detector.UastScanner {
@@ -29,9 +26,10 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
-		private const val OPEN_SCOPE = "("
-		private const val CONST_RENDER_VAL = "static final"
-		private const val IDENTIFIER_LABEL = "UIdentifier"
+		private const val OPEN_SCOPE_LABEL = "("
+		private const val EQUAL_LABEL = "="
+
+
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
@@ -43,22 +41,34 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
+				node.uastAnchor
 				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
-				var checkText = renderText.replace(IDENTIFIER_LABEL, "")
+				var checkText = renderText
+//				val text = node.text ?: return
 
-				if (checkText.indexOf(OPEN_SCOPE) > 0) {
-					checkText = checkText.substring(0, checkText.indexOf(OPEN_SCOPE))
-				}
+				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
+				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
 
-				if (checkText.contains(ABBREVIATION_REGEX) && !checkText.contains(CONST_RENDER_VAL)) {
+
+
+				if (checkText.contains(ABBREVIATION_REGEX) && !node.isStatic) {
 					context.report(
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText/*ISSUE.getExplanation(TextFormat.TEXT)*/
+						checkText
 					)
 				}
 			}
+
+			private fun deleteAfterSymbol(checkText: String, symbol: String): String {
+				var text = checkText
+				if (text.indexOf(symbol) > 0) {
+					text = checkText.substring(0, checkText.indexOf(symbol))
+				}
+				return text
+			}
 		}
+
 	}
 }
