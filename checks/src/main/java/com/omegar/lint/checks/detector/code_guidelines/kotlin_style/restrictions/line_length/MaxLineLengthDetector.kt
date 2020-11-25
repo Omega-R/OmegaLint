@@ -39,7 +39,7 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
-				val text = node.parent.text
+				val text = node.parent?.text ?: return
 				val lines = text.lines()
 				var beginPosition = 0
 

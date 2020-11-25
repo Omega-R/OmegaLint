@@ -108,7 +108,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
             override fun visitClass(node: UClass) {
                 val listUDeclaration = node.uastDeclarations
                 val name = node.name ?: return
-                val lines = node.parent.text.lines()
+                val lines = node.parent?.text?.lines() ?: return
                 val sortedDeclarationList = getSortedDeclarationList(lines, listUDeclaration, name)
 
                 if (name != COMPANION_NAME) {

@@ -16,7 +16,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
                 http://wiki.omega-r.club/dev-android-code#rec228390838
                 """,
             category = Category.CORRECTNESS,
-            severity = Severity.ERROR,
+            severity = Severity.WARNING,
             implementation = Implementation(
                 NameResourceStringXmlDetector::class.java,
                 Scope.RESOURCE_FILE_SCOPE
