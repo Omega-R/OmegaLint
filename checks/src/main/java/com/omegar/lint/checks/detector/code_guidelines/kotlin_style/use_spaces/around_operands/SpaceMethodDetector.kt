@@ -48,7 +48,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 
 			override fun visitClass(node: UClass) {
-				val text = node.parent.text ?: return
+				val text = node.parent?.text ?: return
 				val lines = text.lines()
 				var beginPosition = 0
 				lines.forEach { line ->
