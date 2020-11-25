@@ -55,7 +55,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
-				val renderText = node.asRenderString().split("\n").firstOrNull() ?: return
+				val renderText = node.text?.lines()?.firstOrNull() ?: return
 				var checkText = renderText
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
@@ -68,7 +68,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						checkText
 					)
 				}
 			}

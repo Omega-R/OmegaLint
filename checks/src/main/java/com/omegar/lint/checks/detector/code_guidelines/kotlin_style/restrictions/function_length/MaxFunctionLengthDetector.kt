@@ -30,6 +30,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 
 		private const val WHEN_VAL = "switch"
 		private const val CLASS_VAL = "class"
+		private const val COMMENT_VAL = "/**"
 		private const val MAX_FUNCTION_LINES_COUNT = 30
 		private const val MAX_FUNCTION_LINES_COUNT_WITH_WHEN = 40
 		private const val DELTA = 2
@@ -43,7 +44,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-				if (isClass(text.split("\n").firstOrNull())) {
+				if (isClass(text.lines().firstOrNull())) {
 					return
 				}
 				val body = node.uastBody ?: return
@@ -84,7 +85,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		if (firstString == null) {
 			return false
 		}
-		if (firstString.contains(CLASS_VAL)) {
+		if (firstString.contains(CLASS_VAL) || firstString.contains(COMMENT_VAL)) {
 			return true
 		}
 		return false
