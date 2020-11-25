@@ -31,17 +31,11 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
-		private const val RETROFIT_GET_LABEL = "@retrofit2.http.GET"
-		private const val RETROFIT_POST_LABEL = "@retrofit2.http.POST"
-		private const val RETROFIT_PUT_LABEL = "@retrofit2.http.PUT"
-		private const val RETROFIT_DELETE_LABEL = "@retrofit2.http.DELETE"
+		private const val TODO_LABEL = "TODO"
 
 		val exclusionsList = listOf(
 			MILLISECONDS_LABEL,
-			RETROFIT_GET_LABEL,
-			RETROFIT_POST_LABEL,
-			RETROFIT_PUT_LABEL,
-			RETROFIT_DELETE_LABEL
+			TODO_LABEL
 		)
 
 	}

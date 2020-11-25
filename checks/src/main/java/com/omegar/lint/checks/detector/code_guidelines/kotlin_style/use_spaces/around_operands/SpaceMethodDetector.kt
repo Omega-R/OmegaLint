@@ -35,16 +35,17 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
 		private const val OPEN_SCOPE_VALUE = "("
+		private const val QUOTE_VALUE = "\""
 
 		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
 		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
 		return listOf(UClass::class.java)
 	}
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 
 			override fun visitClass(node: UClass) {
@@ -55,7 +56,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					val length = line.length
 
 					REGEXPS.forEach { pair ->
-						if (line.contains(pair.value)) {
+						if (line.contains(pair.value) && !line.contains(QUOTE_VALUE)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
