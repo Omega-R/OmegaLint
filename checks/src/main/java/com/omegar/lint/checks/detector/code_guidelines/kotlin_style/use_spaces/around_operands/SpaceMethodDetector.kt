@@ -34,6 +34,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 
 		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
+		private const val OPEN_SCOPE_VALUE = "("
 
 		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
 		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
@@ -79,7 +80,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					}
 
 					if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
-						val index = line.indexOf(" (")
+						val functionLine = line.substring(0 , line.indexOf(OPEN_SCOPE_VALUE) + 1)
+						val index = functionLine.indexOf(" (")
 						if (index > 0) {
 							makeContextReport(node, beginPosition + index, 2)
 						}
