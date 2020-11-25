@@ -31,6 +31,18 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
+		private const val RETROFIT_GET_LABEL = "@retrofit2.http.GET"
+		private const val RETROFIT_POST_LABEL = "@retrofit2.http.POST"
+		private const val RETROFIT_PUT_LABEL = "@retrofit2.http.PUT"
+		private const val RETROFIT_DELETE_LABEL = "@retrofit2.http.DELETE"
+
+		val exclusionsList = listOf(
+			MILLISECONDS_LABEL,
+			RETROFIT_GET_LABEL,
+			RETROFIT_POST_LABEL,
+			RETROFIT_PUT_LABEL,
+			RETROFIT_DELETE_LABEL
+		)
 
 	}
 
@@ -47,7 +59,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 				var checkText = renderText
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
-				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
+//				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
 
 				checkText = deleteExclusions(checkText)
 
@@ -73,7 +85,13 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 	}
 
-	private fun deleteExclusions(checkText: String): String = checkText.replace(MILLISECONDS_LABEL, " ")
+	private fun deleteExclusions(checkText: String): String {
+		var resultText = checkText
+		exclusionsList.forEach {
+			resultText = resultText.replace(it, " ")
+		}
+		return resultText
+	}
 
 
 }
