@@ -59,7 +59,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 				var checkText = renderText
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
-//				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
+				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
 
 				checkText = deleteExclusions(checkText)
 
@@ -68,8 +68,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText
-//						ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
