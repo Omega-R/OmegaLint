@@ -31,8 +31,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 
 		private const val ELSE_LABEL = "-> {"
 		private const val ELSE_TEXT = "else -> {"
-		private const val DELTA = 3
-
+		private const val DELTA = 2
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -74,7 +73,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			val line = lines[i]
 			if (line.contains(firstText)) {
 				if (i + 1 < lines.size) {
-					val newStringSize = line.length + lines[i + 1].length - DELTA
+					val newStringSize = line.length + lines[i + 1].trim().length - DELTA
 					return newStringSize < MAX_LENGTH
 				}
 			}
