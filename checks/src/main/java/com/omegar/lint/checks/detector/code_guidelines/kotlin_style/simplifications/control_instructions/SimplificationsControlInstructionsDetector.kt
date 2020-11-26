@@ -28,6 +28,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		private val WHEN_REGEX = Regex("""^(switch|when)""")
 		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
 		private val END_BRANCH_OF_WHEN_REGEX = Regex("""^\s*\}""")
+		private val EMPTY_BRANCH_REGEX = Regex("""\{\s*\}""")
 
 		private const val ELSE_LABEL = "-> {"
 		private const val ELSE_TEXT = "else -> {"
@@ -43,7 +44,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
 				val renderText = node.asRenderString()
 
-				if (renderText.trim().split("\n").size > 3) {
+				if (renderText.trim().split("\n").size > 3 || renderText.contains(EMPTY_BRANCH_REGEX)) {
 					return
 				}
 
