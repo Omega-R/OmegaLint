@@ -9,25 +9,25 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
-            id = "OMEGA_NAME_RESOURCE_LAYOUT_CORRECTLY",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Layout files must start with the name of the Android component they are intended for.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = """
+			// ID: used in @SuppressLint warnings etc
+			id = "OMEGA_NAME_RESOURCE_LAYOUT_CORRECTLY",
+			// Title -- shown in the IDE's preference dialog, as category headers in the
+			// Analysis results window, etc
+			briefDescription = "Layout files must start with the name of the Android component they are intended for.",
+			// Full explanation of the issue; you can use some markdown markup such as
+			// `monospace`, *italic*, and **bold**.
+			explanation = """
                   Wrong layout name.
                   http://wiki.omega-r.club/dev-android-code#rec226396979
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                NameResourceLayoutDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				NameResourceLayoutDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private const val SET_CONTENT_VIEW_VAL = "setContentView"
 		private const val UPPER_ACTIVITY = "Activity"
@@ -56,19 +56,19 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 					/**
 					 * FOR ACTIVITY
 					 */
-                    SET_CONTENT_VIEW_VAL -> {
-                        if (className.contains(UPPER_ACTIVITY)) {
-                            className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
+					SET_CONTENT_VIEW_VAL -> {
+						if (className.contains(UPPER_ACTIVITY)) {
+							className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
 
-                            if (className.camelToSnakeCase() != layoutName)
-                                context.report(
-                                    ISSUE,
-                                    node,
-                                    context.getNameLocation(node.valueArguments.first()),
-                                    ISSUE.getExplanation(TextFormat.TEXT)
-                                )
-                        }
-                    }
+							if (className.camelToSnakeCase() != layoutName)
+								context.report(
+									ISSUE,
+									node,
+									context.getNameLocation(node.valueArguments.first()),
+									ISSUE.getExplanation(TextFormat.TEXT)
+								)
+						}
+					}
 				}
 
 			}

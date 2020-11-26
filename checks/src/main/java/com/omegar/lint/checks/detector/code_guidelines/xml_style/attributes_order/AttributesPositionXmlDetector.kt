@@ -118,7 +118,15 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 						attribute.contains(LAYOUT_HEIGHT_VAL) || attribute.contains(LAYOUT_WIDTH_VAL) -> {
 							currentRank =
-								checkOrder(context, document, beginPosition, LAYOUT_H_W_MESSAGE, attribute, currentRank, LAYOUT_H_W_RANK)
+								checkOrder(
+									context,
+									document,
+									beginPosition,
+									LAYOUT_H_W_MESSAGE,
+									attribute,
+									currentRank,
+									LAYOUT_H_W_RANK
+								)
 						}
 
 						attribute.contains(LAYOUT_VAL) &&

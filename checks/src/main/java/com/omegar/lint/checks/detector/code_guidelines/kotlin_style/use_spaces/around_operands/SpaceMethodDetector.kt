@@ -70,11 +70,11 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
-									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1, line,  afterIndex)
+									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1, line, afterIndex)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2, line,  beforeIndex)
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2, line, beforeIndex)
 								}
 							}
 						}
@@ -93,7 +93,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
 						if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
-							makeContextReport(node, beginPosition + length - 1, 1, line,  length - 1)
+							makeContextReport(node, beginPosition + length - 1, 1, line, length - 1)
 					}
 
 					beginPosition += length
@@ -102,7 +102,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 			}
 
 			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int, line: String, index: Int) {
-				if(!isInQuote(line, index)){
+				if (!isInQuote(line, index)) {
 					context.report(
 						ISSUE,
 						node,
@@ -117,13 +117,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 	private fun isInQuote(line: String, index: Int): Boolean {
 		val chars = line.toCharArray()
 		var inside = false
-		for(i in chars.indices) {
+		for (i in chars.indices) {
 			val char = chars[i]
-			if(char.toString() == QUOTE_VALUE) {
+			if (char.toString() == QUOTE_VALUE) {
 				inside = !inside
 			}
 
-			if(i == index) {
+			if (i == index) {
 				return inside
 			}
 		}

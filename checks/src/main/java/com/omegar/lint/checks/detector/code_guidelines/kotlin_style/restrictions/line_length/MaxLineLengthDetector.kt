@@ -11,20 +11,20 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
-            briefDescription = "The line size does not match the coding convention",
-            explanation = """
+			id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
+			briefDescription = "The line size does not match the coding convention",
+			explanation = """
                   Line should has 130 symbols or less. Divide this line.
                   http://wiki.omega-r.club/dev-android-code#rec228180723
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                MaxLineLengthDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				MaxLineLengthDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private const val IMPORT_VAL = "import"
 		private const val PACKAGE_VAL = "package"
@@ -48,11 +48,11 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
 
 					if (length > MAX_LENGTH && !line.contains(IMPORT_VAL) && !line.contains(PACKAGE_VAL)) {
 						context.report(
-                            ISSUE,
-                            node,
-                            context.getRangeLocation(node.parent, beginPosition, length),
-                            ISSUE.getExplanation(TextFormat.TEXT)
-                        )
+							ISSUE,
+							node,
+							context.getRangeLocation(node.parent, beginPosition, length),
+							ISSUE.getExplanation(TextFormat.TEXT)
+						)
 					}
 
 					beginPosition += length

@@ -69,7 +69,9 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 									ISSUE,
 									node,
 									context.getRangeLocation(node.parent, beginPosition, length),
-									previousLine + "\n" + previousLine.contains(CLOSE_SCOPE_VAL) + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+									previousLine + "\n" + previousLine.contains(CLOSE_SCOPE_VAL) + "\n" + ISSUE.getExplanation(
+										TextFormat.TEXT
+									)
 								)
 							}
 						}

@@ -64,7 +64,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}

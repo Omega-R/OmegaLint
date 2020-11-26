@@ -31,7 +31,6 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 
 		private const val ELSE_LABEL = "-> {"
 		private const val ELSE_TEXT = "else -> {"
-
 		private const val DELTA = 3
 
 	}

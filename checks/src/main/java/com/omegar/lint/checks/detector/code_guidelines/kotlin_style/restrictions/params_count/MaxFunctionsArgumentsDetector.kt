@@ -6,10 +6,10 @@ import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
 class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_NOT_EXCEED_MAX_ARGUMENTS_COUNT_IN_FUNCTION",
             briefDescription = "Arguments count does not match the coding convention. Function body should not be empty.",
             explanation = """
@@ -25,26 +25,26 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val MAX_COUNT_OF_ARGUMENTS = 5
-    }
+		private const val MAX_COUNT_OF_ARGUMENTS = 5
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UMethod::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UMethod::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitMethod(node: UMethod) {
-                val params = node.uastParameters
-                if (params.size > MAX_COUNT_OF_ARGUMENTS) {
-                    context.report(
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitMethod(node: UMethod) {
+				val params = node.uastParameters
+				if (params.size > MAX_COUNT_OF_ARGUMENTS) {
+					context.report(
                         ISSUE,
                         node,
                         context.getNameLocation(node),
                         ISSUE.getExplanation(TextFormat.TEXT)
                     )
-                }
-            }
-        }
-    }
+				}
+			}
+		}
+	}
 }
