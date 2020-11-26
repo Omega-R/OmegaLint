@@ -2,6 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.simplificat
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxLineLengthDetector.Companion.MAX_LENGTH
 import org.jetbrains.uast.*
 
 class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScanner {
@@ -31,6 +32,8 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		private const val ELSE_LABEL = "-> {"
 		private const val ELSE_TEXT = "else -> {"
 
+		private const val DELTA = 3
+
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -42,7 +45,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
 				val renderText = node.asRenderString()
 
-				if (renderText.trim().split("\n").size != 3) {
+				if (renderText.trim().split("\n").size > 3) {
 					return
 				}
 
@@ -54,14 +57,29 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 					firstText = ELSE_TEXT
 				}
 
-				if (text.contains(firstText))
+				if (text.contains(firstText) && exceedMaxLineLength(text, firstText)) {
 					context.report(
 						ISSUE,
 						node,
 						context.getLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						text + " " + firstText
 					)
+				}
 			}
 		}
+	}
+
+	private fun exceedMaxLineLength(text: String, firstText: String): Boolean {
+		val lines = text.lines()
+		for (i in lines.indices) {
+			val line = lines[i]
+			if (line.contains(firstText)) {
+				if (i + 1 < lines.size) {
+					val newStringSize = line.length + lines[i + 1].length - DELTA
+					return newStringSize < MAX_LENGTH
+				}
+			}
+		}
+		return true
 	}
 }

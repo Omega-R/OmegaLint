@@ -5,10 +5,10 @@ import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.*
 
 class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
             id = "OMEGA_NAME_RESOURCE_LAYOUT_CORRECTLY",
             // Title -- shown in the IDE's preference dialog, as category headers in the
@@ -29,38 +29,33 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val SET_CONTENT_VIEW_VAL = "setContentView"
-        private const val UPPER_ACTIVITY = "Activity"
-        private const val LOWER_ACTIVITY = "activity"
+		private const val SET_CONTENT_VIEW_VAL = "setContentView"
+		private const val UPPER_ACTIVITY = "Activity"
+		private const val LOWER_ACTIVITY = "activity"
+		private const val LAYOUT_PREFIX_VAL = "R.layout."
 
-        private const val INFLATE_VAL = "inflate"
+		private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
+	}
 
-        private const val LAYOUT_PREFIX_VAL = "R.layout."
-        private const val UPPER_FRAGMENT = "Fragment"
-        private const val LOWER_FRAGMENT = "fragment"
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UCallExpression::class.java)
+	}
 
-        private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
-    }
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitCallExpression(node: UCallExpression) {
+				val file = node.getContainingUFile() ?: return
+				var className = file.classes.firstOrNull()?.name ?: return
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UCallExpression::class.java)
-    }
+				val name = node.methodName ?: return
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitCallExpression(node: UCallExpression) {
-                val file = node.getContainingUFile() ?: return
-                var className = file.classes.firstOrNull()?.name ?: return
+				var layoutName = node.valueArguments.firstOrNull()?.asRenderString() ?: return
+				layoutName = layoutName.replace(LAYOUT_PREFIX_VAL, "")
 
-                val name = node.methodName ?: return
-
-                var layoutName = node.valueArguments.firstOrNull()?.asRenderString() ?: return
-                layoutName = layoutName.replace(LAYOUT_PREFIX_VAL, "")
-
-                when (name) {
-                    /**
-                     * FOR ACTIVITY
-                     */
+				when (name) {
+					/**
+					 * FOR ACTIVITY
+					 */
                     SET_CONTENT_VIEW_VAL -> {
                         if (className.contains(UPPER_ACTIVITY)) {
                             className = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}"
@@ -74,36 +69,19 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
                                 )
                         }
                     }
+				}
 
-                    /**
-                     * FOR FRAGMENT
-                     */
-                    INFLATE_VAL -> {
-                        if (className.contains(UPPER_FRAGMENT)) {
-                            className = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}"
+			}
 
-                            if (className.camelToSnakeCase() != layoutName)
-                                context.report(
-                                    ISSUE,
-                                    node,
-                                    context.getNameLocation(node.valueArguments.first()),
-                                    ISSUE.getExplanation(TextFormat.TEXT)
-                                )
-                        }
-                    }
-                }
-
-            }
-
-            // String extensions
-            fun String.camelToSnakeCase(): String {
-                return CAMEL_REGEX.replace(this) {
-                    "_${it.value}"
-                }.toLowerCase()
-            }
-        }
+			// String extensions
+			fun String.camelToSnakeCase(): String {
+				return CAMEL_REGEX.replace(this) {
+					"_${it.value}"
+				}.toLowerCase()
+			}
+		}
 
 
-    }
+	}
 }
 

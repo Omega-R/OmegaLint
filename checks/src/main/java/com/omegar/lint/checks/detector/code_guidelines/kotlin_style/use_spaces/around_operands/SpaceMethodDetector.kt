@@ -56,7 +56,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					val length = line.length
 
 					REGEXPS.forEach { pair ->
-						if (line.contains(pair.value) && !line.contains(QUOTE_VALUE)) {
+						if (line.contains(pair.value)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
@@ -66,15 +66,15 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 										&& afterIndex <= 0
 										&& !line.contains(POINT_BEGIN_REGEX)
 										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1)
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1, line, beforeIndex)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
-									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1)
+									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1, line,  afterIndex)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2)
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2, line,  beforeIndex)
 								}
 							}
 						}
@@ -84,7 +84,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
 						val index = functionLine.indexOf(" (")
 						if (index > 0) {
-							makeContextReport(node, beginPosition + index, 2)
+							makeContextReport(node, beginPosition + index, 2, line, index)
 						}
 					}
 
@@ -93,7 +93,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
 						if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
-							makeContextReport(node, beginPosition + length - 1, 1)
+							makeContextReport(node, beginPosition + length - 1, 1, line,  length - 1)
 					}
 
 					beginPosition += length
@@ -101,14 +101,32 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				}
 			}
 
-			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int) {
-				context.report(
-					ISSUE,
-					node,
-					context.getRangeLocation(node.parent, beginPosition, length),
-					ISSUE.getExplanation(TextFormat.TEXT)
-				)
+			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int, line: String, index: Int) {
+				if(!isInQuote(line, index)){
+					context.report(
+						ISSUE,
+						node,
+						context.getRangeLocation(node.parent, beginPosition, length),
+						line + " " + beginPosition.toString() + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+					)
+				}
 			}
 		}
+	}
+
+	private fun isInQuote(line: String, index: Int): Boolean {
+		val chars = line.toCharArray()
+		var inside = false
+		for(i in chars.indices) {
+			val char = chars[i]
+			if(char.toString() == QUOTE_VALUE) {
+				inside = !inside
+			}
+
+			if(i == index) {
+				return inside
+			}
+		}
+		return false
 	}
 }
