@@ -36,11 +36,13 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 		private const val INFLATE_VAL = "inflate"
 		private const val UPPER_ACTIVITY = "Activity"
 		private const val UPPER_FRAGMENT = "Fragment"
+		private const val UPPER_DIALOG = "Dialog"
 		private const val LOWER_ACTIVITY = "activity"
-		private const val LOWER_FRAGMENT = "fragment"
+		private const val LOWER_FRAGMENT = "dialog"
+		private const val LOWER_DIALOG = "fragment"
 		private const val LAYOUT_PREFIX_VAL = "R.layout."
 
-		private val PART_NAME_REGEX = Regex("""($UPPER_ACTIVITY|$UPPER_FRAGMENT)""")
+		private val PART_NAME_REGEX = Regex("""($UPPER_ACTIVITY|$UPPER_FRAGMENT|$UPPER_DIALOG)""")
 		private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
 	}
 
@@ -75,14 +77,14 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 									ISSUE,
 									node,
 									context.getNameLocation(argument),
-									argument.asRenderString() + " " + LAYOUT_PREFIX_VAL + className.camelToSnakeCase()
+									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
 								)
 							}
 						}
 
 					}
 
-					name.contains(UPPER_FRAGMENT) || name == INFLATE_VAL -> {
+					(name.contains(UPPER_FRAGMENT) || name == INFLATE_VAL) && !name.contains(UPPER_DIALOG) -> {
 
 						val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".camelToSnakeCase()
 						arguments.forEach { argument ->
@@ -92,7 +94,24 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 									ISSUE,
 									node,
 									context.getNameLocation(argument),
-									argument.asRenderString() + " " + LAYOUT_PREFIX_VAL + className.camelToSnakeCase()
+									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+								)
+							}
+						}
+
+					}
+
+					name.contains(UPPER_DIALOG) || name == INFLATE_VAL -> {
+
+						val newClassName = "$LOWER_DIALOG${className.replace(UPPER_DIALOG, "")}".camelToSnakeCase()
+						arguments.forEach { argument ->
+							val argumentName = argument.asRenderString()
+							if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
+								context.report(
+									ISSUE,
+									node,
+									context.getNameLocation(argument),
+									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
 								)
 							}
 						}
