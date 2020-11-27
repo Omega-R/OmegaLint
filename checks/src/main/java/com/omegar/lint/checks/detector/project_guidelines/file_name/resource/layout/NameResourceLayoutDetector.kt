@@ -70,7 +70,7 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 			}
 
 			// String extensions
-			private fun String.camelToSnakeCase(): String {
+			private fun String.convertCamelToSnakeCase(): String {
 				return CAMEL_REGEX.replace(this) {
 					"_${it.value}"
 				}.toLowerCase()
@@ -87,18 +87,18 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 			private fun findLayout(name: String, className: String, arguments: List<UExpression>, node: UCallExpression) {
 				when {
 					name.contains(UPPER_ACTIVITY) -> {
-						val newClassName = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}".camelToSnakeCase()
+						val newClassName = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}".convertCamelToSnakeCase()
 						checkLayoutName(arguments, newClassName, node)
 					}
 
 					name.contains(UPPER_FRAGMENT) && !name.contains(UPPER_DIALOG) -> {
-						val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".camelToSnakeCase()
+						val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".convertCamelToSnakeCase()
 						checkLayoutName(arguments, newClassName, node)
 					}
 
 					name.contains(UPPER_DIALOG) -> {
 						val nameWithoutFragment = className.replace(UPPER_FRAGMENT, "")
-						val newClassName = "$LOWER_DIALOG${nameWithoutFragment.replace(UPPER_DIALOG, "")}".camelToSnakeCase()
+						val newClassName = "$LOWER_DIALOG${nameWithoutFragment.replace(UPPER_DIALOG, "")}".convertCamelToSnakeCase()
 						checkLayoutName(arguments, newClassName, node)
 					}
 				}

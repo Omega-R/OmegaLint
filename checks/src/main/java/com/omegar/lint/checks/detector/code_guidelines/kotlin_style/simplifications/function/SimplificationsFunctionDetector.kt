@@ -25,7 +25,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s]|[.])*\s*\}""")
+		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s]|[.]|[\d])*\s*\}""")
 		private const val MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION = 3
 	}
 
@@ -37,8 +37,8 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-				val linesCount = text.split("\n").size
-				if (text.contains(ONE_EXPRESSION_REGEX) && (linesCount <= MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION)) {
+				val linesCount = text.count { it == '\n' } + 1
+				if (linesCount <= MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION && text.contains(ONE_EXPRESSION_REGEX)) {
 					context.report(
 						ISSUE,
 						node,
