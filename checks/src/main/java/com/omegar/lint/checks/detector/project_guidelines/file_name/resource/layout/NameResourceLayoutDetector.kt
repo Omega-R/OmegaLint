@@ -2,23 +2,15 @@ package com.omegar.lint.checks.detector.project_guidelines.file_name.resource.la
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UCallExpression
-import org.jetbrains.uast.UElement
-import org.jetbrains.uast.getContainingUFile
-import org.jetbrains.uast.tryResolveNamed
+import org.jetbrains.uast.*
 
 class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-			// ID: used in @SuppressLint warnings etc
 			id = "OMEGA_NAME_RESOURCE_LAYOUT_CORRECTLY",
-			// Title -- shown in the IDE's preference dialog, as category headers in the
-			// Analysis results window, etc
 			briefDescription = "Layout files must start with the name of the Android component they are intended for.",
-			// Full explanation of the issue; you can use some markdown markup such as
-			// `monospace`, *italic*, and **bold**.
 			explanation = """
                   Wrong layout name.
                   http://wiki.omega-r.club/dev-android-code#rec226396979
@@ -34,16 +26,22 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 
 		private const val SET_CONTENT_VIEW_VAL = "setContentView"
 		private const val INFLATE_VAL = "inflate"
+		private const val ON_CREATE_VAL = "onCreate"
+		private const val ON_CREATE_VIEW_VAL = "onCreateView"
+
 		private const val UPPER_ACTIVITY = "Activity"
 		private const val UPPER_FRAGMENT = "Fragment"
 		private const val UPPER_DIALOG = "Dialog"
 		private const val LOWER_ACTIVITY = "activity"
-		private const val LOWER_FRAGMENT = "dialog"
-		private const val LOWER_DIALOG = "fragment"
+		private const val LOWER_FRAGMENT = "fragment"
+		private const val LOWER_DIALOG = "dialog"
 		private const val LAYOUT_PREFIX_VAL = "R.layout."
 
 		private val PART_NAME_REGEX = Regex("""($UPPER_ACTIVITY|$UPPER_FRAGMENT|$UPPER_DIALOG)""")
 		private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
+		private val FUNCTION_REGEX = Regex("""($SET_CONTENT_VIEW_VAL|$INFLATE_VAL)""")
+		private val FUNCTION_PARENT_REGEX = Regex("""($ON_CREATE_VAL|$ON_CREATE_VIEW_VAL|return)""")
+
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -55,7 +53,6 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
 			override fun visitCallExpression(node: UCallExpression) {
-
 				val name = node.tryResolveNamed()?.name ?: return
 				val arguments = node.valueArguments
 				val file = node.getContainingUFile() ?: return
@@ -65,66 +62,60 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 					return
 				}
 
+				if (name.matches(FUNCTION_REGEX)) {
+					checkSetLayoutFunction(node, className, arguments)
+				}
+
+				findLayout(name, className, arguments, node)
+			}
+
+			// String extensions
+			private fun String.camelToSnakeCase(): String {
+				return CAMEL_REGEX.replace(this) {
+					"_${it.value}"
+				}.toLowerCase()
+			}
+
+			private fun checkSetLayoutFunction(node: UCallExpression, className: String, arguments: List<UExpression>) {
+				val parentFirstLine = node.uastParent?.uastParent?.asRenderString()?.split("\n")?.firstOrNull()
+
+				if (parentFirstLine != null && parentFirstLine.contains(FUNCTION_PARENT_REGEX)) {
+					findLayout(className, className, arguments, node)
+				}
+			}
+
+			private fun findLayout(name: String, className: String, arguments: List<UExpression>, node: UCallExpression) {
 				when {
-					name.contains(UPPER_ACTIVITY) || name == SET_CONTENT_VIEW_VAL -> {
-
+					name.contains(UPPER_ACTIVITY) -> {
 						val newClassName = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}".camelToSnakeCase()
-						arguments.forEach { argument ->
-
-							val argumentName = argument.asRenderString()
-							if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
-								context.report(
-									ISSUE,
-									node,
-									context.getNameLocation(argument),
-									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-								)
-							}
-						}
-
+						checkLayoutName(arguments, newClassName, node)
 					}
 
-					(name.contains(UPPER_FRAGMENT) || name == INFLATE_VAL) && !name.contains(UPPER_DIALOG) -> {
-
+					name.contains(UPPER_FRAGMENT) && !name.contains(UPPER_DIALOG) -> {
 						val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".camelToSnakeCase()
-						arguments.forEach { argument ->
-							val argumentName = argument.asRenderString()
-							if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
-								context.report(
-									ISSUE,
-									node,
-									context.getNameLocation(argument),
-									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-								)
-							}
-						}
-
+						checkLayoutName(arguments, newClassName, node)
 					}
 
-					name.contains(UPPER_DIALOG) || name == INFLATE_VAL -> {
-
-						val newClassName = "$LOWER_DIALOG${className.replace(UPPER_DIALOG, "")}".camelToSnakeCase()
-						arguments.forEach { argument ->
-							val argumentName = argument.asRenderString()
-							if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
-								context.report(
-									ISSUE,
-									node,
-									context.getNameLocation(argument),
-									"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-								)
-							}
-						}
-
+					name.contains(UPPER_DIALOG) -> {
+						val nameWithoutFragment = className.replace(UPPER_FRAGMENT, "")
+						val newClassName = "$LOWER_DIALOG${nameWithoutFragment.replace(UPPER_DIALOG, "")}".camelToSnakeCase()
+						checkLayoutName(arguments, newClassName, node)
 					}
 				}
 			}
 
-			// String extensions
-			fun String.camelToSnakeCase(): String {
-				return CAMEL_REGEX.replace(this) {
-					"_${it.value}"
-				}.toLowerCase()
+			private fun checkLayoutName(arguments: List<UExpression>, newClassName: String, node: UCallExpression) {
+				arguments.forEach { argument ->
+					val argumentName = argument.asRenderString()
+					if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
+						context.report(
+							ISSUE,
+							node,
+							context.getNameLocation(argument),
+							"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+						)
+					}
+				}
 			}
 		}
 	}
