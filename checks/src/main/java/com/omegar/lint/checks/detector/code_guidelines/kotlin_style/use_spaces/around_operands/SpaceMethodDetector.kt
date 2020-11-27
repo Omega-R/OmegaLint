@@ -107,7 +107,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node,
 						context.getRangeLocation(node.parent, beginPosition, length),
-						line + " " + beginPosition.toString() + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
