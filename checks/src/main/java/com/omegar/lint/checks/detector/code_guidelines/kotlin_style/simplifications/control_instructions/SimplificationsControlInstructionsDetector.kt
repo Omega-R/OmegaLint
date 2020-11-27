@@ -2,8 +2,8 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.simplificat
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UExpression
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxLineLengthDetector.Companion.MAX_LENGTH
+import org.jetbrains.uast.*
 
 class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScanner {
 	companion object {
@@ -25,45 +25,60 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			)
 		)
 
-		private val WHEN_REGEX = Regex("""^switch""")
+		private val WHEN_REGEX = Regex("""^(switch|when)""")
 		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
 		private val END_BRANCH_OF_WHEN_REGEX = Regex("""^\s*\}""")
+		private val EMPTY_BRANCH_REGEX = Regex("""\{\s*\}""")
 
+		private const val ELSE_LABEL = "-> {"
+		private const val ELSE_TEXT = "else -> {"
+		private const val DELTA = 2
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UExpression::class.java)
+		return listOf(USwitchClauseExpression::class.java)
 	}
 
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
-			override fun visitExpression(node: UExpression) {
-				val text = node.asRenderString()
-				if (text.contains(WHEN_REGEX)) {
-					val body = text.split("\n")
-					var beginPosition = 0
+			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
+				val renderText = node.asRenderString()
 
-					for (i in body.indices) {
-						val line = body[i]
-						if (line.contains(BEGIN_BRANCH_OF_WHEN_REGEX)) {
-							if (i + 2 < body.size) {
-								val endBodyLine = body[i + 2]
-								if (endBodyLine.contains(END_BRANCH_OF_WHEN_REGEX)) {
-									context.report(
-										ISSUE,
-										node,
-										context.getRangeLocation(node, beginPosition - 1, line.trim().length),
-										ISSUE.getExplanation(TextFormat.TEXT)
-									)
-								}
-							}
-						}
-						beginPosition += line.length
-						beginPosition++
-					}
+				if (renderText.trim().split("\n").size > 3 || renderText.contains(EMPTY_BRANCH_REGEX)) {
+					return
+				}
 
+				val method = node.getContainingUMethod() ?: return
+				val text = method.text ?: return
+				var firstText = renderText.trim().split("\n").firstOrNull() ?: return
+
+				if (firstText == ELSE_LABEL) {
+					firstText = ELSE_TEXT
+				}
+
+				if (text.contains(firstText) && exceedMaxLineLength(text, firstText)) {
+					context.report(
+						ISSUE,
+						node,
+						context.getLocation(node),
+						text + " " + firstText
+					)
 				}
 			}
 		}
+	}
+
+	private fun exceedMaxLineLength(text: String, firstText: String): Boolean {
+		val lines = text.lines()
+		for (i in lines.indices) {
+			val line = lines[i]
+			if (line.contains(firstText)) {
+				if (i + 1 < lines.size) {
+					val newStringSize = line.length + lines[i + 1].trim().length - DELTA
+					return newStringSize < MAX_LENGTH
+				}
+			}
+		}
+		return true
 	}
 }

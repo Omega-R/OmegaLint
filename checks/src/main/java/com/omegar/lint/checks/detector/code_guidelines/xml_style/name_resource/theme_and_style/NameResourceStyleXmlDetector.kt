@@ -6,8 +6,8 @@ import org.w3c.dom.Element
 
 class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 
-    companion object {
-        val ISSUE = Issue.create(
+	companion object {
+		val ISSUE = Issue.create(
             id = "OMEGA_NAME_RESOURCE_STYLE_CORRECTLY",
             briefDescription = "Inheritance warning",
             explanation = """
@@ -22,39 +22,39 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
             )
         )
 
-        private const val ATTRIBUTE_NAME_VAL = "name"
-        private const val SUFFIX_STYLE = "Style"
-        private const val PARENT_VAL = "parent"
-        private val SUFFIX_STYLE_REGEX = Regex(""".*$SUFFIX_STYLE$""")
+		private const val ATTRIBUTE_NAME_VAL = "name"
+		private const val SUFFIX_STYLE = "Style"
+		private const val PARENT_VAL = "parent"
+		private const val REPORT_MESSAGE = "Delete Style from name\nhttp://wiki.omega-r.club/dev-android-code#rec228391441"
 
-        private const val REPORT_MESSAGE = "Delete Style from name\nhttp://wiki.omega-r.club/dev-android-code#rec228391441"
-    }
+		private val SUFFIX_STYLE_REGEX = Regex(""".*$SUFFIX_STYLE$""")
+	}
 
-    override fun appliesTo(folderType: ResourceFolderType): Boolean {
-        return folderType == ResourceFolderType.VALUES
-    }
+	override fun appliesTo(folderType: ResourceFolderType): Boolean {
+		return folderType == ResourceFolderType.VALUES
+	}
 
-    override fun getApplicableElements(): Collection<String>? {
-        return setOf("style")
-    }
+	override fun getApplicableElements(): Collection<String>? {
+		return setOf("style")
+	}
 
-    override fun visitElement(context: XmlContext, element: Element) {
-        val name = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
-        if (name.matches(SUFFIX_STYLE_REGEX)) {
-            context.report(
+	override fun visitElement(context: XmlContext, element: Element) {
+		val name = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
+		if (name.matches(SUFFIX_STYLE_REGEX)) {
+			context.report(
                 issue = ISSUE,
                 scope = element,
                 location = context.getNameLocation(element),
                 message = REPORT_MESSAGE,
                 quickfixData = createDeleteStyleContextFix(name)
             )
-        }
-        val parent = element.getAttribute(PARENT_VAL) ?: return
-        if (parent.isEmpty()) {
-            return
-        }
+		}
+		val parent = element.getAttribute(PARENT_VAL) ?: return
+		if (parent.isEmpty()) {
+			return
+		}
 
-        context.report(
+		context.report(
             issue = ISSUE,
             scope = element,
             location = context.getNameLocation(element),
@@ -62,18 +62,18 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
             quickfixData = createContextFix(name, parent)
         )
 
-    }
+	}
 
-    private fun createDeleteStyleContextFix(name: String): LintFix? {
-        return fix()
-            .replace().text(name).with(name.removeSuffix(SUFFIX_STYLE))
-            .build()
-    }
+	private fun createDeleteStyleContextFix(name: String): LintFix? {
+		return fix()
+			.replace().text(name).with(name.removeSuffix(SUFFIX_STYLE))
+			.build()
+	}
 
-    private fun createContextFix(name: String, parent: String): LintFix? {
-        return fix()
-            .replace().text("\"$name\" $PARENT_VAL=\"$parent\"").with("\"$parent.$name\"")
-            .build()
+	private fun createContextFix(name: String, parent: String): LintFix? {
+		return fix()
+			.replace().text("\"$name\" $PARENT_VAL=\"$parent\"").with("\"$parent.$name\"")
+			.build()
 
-    }
+	}
 }

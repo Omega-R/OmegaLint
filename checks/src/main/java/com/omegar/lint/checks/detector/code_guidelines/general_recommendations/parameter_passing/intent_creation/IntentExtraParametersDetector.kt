@@ -6,10 +6,10 @@ import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UElement
 
 class IntentExtraParametersDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
             id = "OMEGA_USE_EXTRA_PREFIX_FOR_INTENT_PARAMS",
             // Title -- shown in the IDE's preference dialog, as category headers in the
@@ -30,28 +30,28 @@ class IntentExtraParametersDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        val EXTRA_PREFIX_REGEX = Regex("""^EXTRA_""")
-        val PUT_EXTRA_METHOD_REGEX = Regex("""^putExtra$""")
-    }
+		val EXTRA_PREFIX_REGEX = Regex("""^EXTRA_""")
+		val PUT_EXTRA_METHOD_REGEX = Regex("""^putExtra$""")
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UCallExpression::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UCallExpression::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitCallExpression(node: UCallExpression) {
-                val name = node.methodName ?: return
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitCallExpression(node: UCallExpression) {
+				val name = node.methodName ?: return
 
-                 if(name.matches(PUT_EXTRA_METHOD_REGEX)) {
-                     val firstParam = node.valueArguments.firstOrNull() ?: return
-                     val extraParam = firstParam.asRenderString()
-                     if(!extraParam.contains(EXTRA_PREFIX_REGEX))  {
-                         context.report(ISSUE, node, context.getLocation(firstParam), ISSUE.getExplanation(TextFormat.TEXT))
-                     }
-                 }
-            }
-        }
-    }
+				if (name.matches(PUT_EXTRA_METHOD_REGEX)) {
+					val firstParam = node.valueArguments.firstOrNull() ?: return
+					val extraParam = firstParam.asRenderString()
+					if (!extraParam.contains(EXTRA_PREFIX_REGEX)) {
+						context.report(ISSUE, node, context.getLocation(firstParam), ISSUE.getExplanation(TextFormat.TEXT))
+					}
+				}
+			}
+		}
+	}
 }
 

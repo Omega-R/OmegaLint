@@ -7,10 +7,10 @@ import org.jetbrains.uast.UElement
 
 @Suppress("UnstableApiUsage")
 class MaxClassLengthDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_NOT_EXCEED_MAX_CLASS_LENGTH",
             briefDescription = "The file name does not match the coding convention",
             explanation = """
@@ -26,26 +26,26 @@ class MaxClassLengthDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val MAX_LINES_COUNT = 900
-    }
+		private const val MAX_LINES_COUNT = 900
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UClass::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UClass::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitClass(node: UClass) {
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitClass(node: UClass) {
 
-                val lines = node.asRenderString().split("\n")
+				val lines = node.asRenderString().split("\n")
 
-                /** Need to delete 2 strings, because body "{ }" */
-                val size = lines.size
+				/** Need to delete 2 strings, because body "{ }" */
+				val size = lines.size
 
-                if (size > MAX_LINES_COUNT) {
-                    context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
-                }
-            }
-        }
-    }
+				if (size > MAX_LINES_COUNT) {
+					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+				}
+			}
+		}
+	}
 }

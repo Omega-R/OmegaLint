@@ -9,6 +9,7 @@ import com.omegar.lint.checks.detector.code_guidelines.kotlin_rules.exception.Ex
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.annotation.AnnotationDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.elements_formating.lambda.LambdaDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.`class`.NameFileSufixDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbreviation.AbbreviationDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.field.CompanionObjectFieldsDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.file_class_interface.ComponentPositionDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.PositionArgumentDetector
@@ -29,10 +30,10 @@ import com.omegar.lint.checks.detector.project_guidelines.file_name.`class`.Name
 import com.omegar.lint.checks.detector.project_guidelines.file_name.resource.layout.NameResourceLayoutDetector
 
 class LintIssueRegistry : IssueRegistry() {
-    override val issues: List<Issue>
-        get() = listOf(
+	override val issues: List<Issue>
+		get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
-//            AbbreviationDetector.ISSUE, TODO  underline const values, need to fix
+            AbbreviationDetector.ISSUE,// TODO need testing
             PositionArgumentDetector.ISSUE,
             MaxFunctionsArgumentsDetector.ISSUE,
             ExceptionCatchDetector.ISSUE,
@@ -53,13 +54,13 @@ class LintIssueRegistry : IssueRegistry() {
             AttributesPositionXmlDetector.ISSUE,
 //            MaxClassInPackageDetector.ISSUE,  TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
 //            MaxPackageCountDetector.ISSUE,    TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
-            SimplificationsControlInstructionsDetector.ISSUE,
+            SimplificationsControlInstructionsDetector.ISSUE, // TODO need testing
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
             LambdaDetector.ISSUE,
             NameResourceLayoutDetector.ISSUE
         )
 
-    override val api: Int
-        get() = CURRENT_API
+	override val api: Int
+		get() = CURRENT_API
 }

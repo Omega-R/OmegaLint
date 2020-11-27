@@ -26,56 +26,65 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val END_FUNCTION_DECLARATION_REGEX = Regex("""\s*\{$""")
-		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>)\s\{$""")
+		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>|\?)\s\{$""")
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
 		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
+		private val QUESTION_MARK_POINT_BEGIN_REGEX = Regex("""^\s*\?\.""")
 
 		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
+		private const val OPEN_SCOPE_VALUE = "("
+		private const val QUOTE_VALUE = "\""
+
+		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
+		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
 		return listOf(UClass::class.java)
 	}
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
-			private val regexps = arrayOf(".", "::", "?.").map { it to Regex("""\s*$it\s""") }.toMap()
 
 			override fun visitClass(node: UClass) {
-				val text = node.parent.text ?: return
+				val text = node.parent?.text ?: return
 				val lines = text.lines()
 				var beginPosition = 0
 				lines.forEach { line ->
 					val length = line.length
 
-					regexps.forEach { pair ->
+					REGEXPS.forEach { pair ->
 						if (line.contains(pair.value)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
 
 							when {
-								beforeIndex > 0 && afterIndex <= 0 && !line.contains(POINT_BEGIN_REGEX) -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1)
+								beforeIndex > 0
+										&& afterIndex <= 0
+										&& !line.contains(POINT_BEGIN_REGEX)
+										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1, line, beforeIndex)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
-									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1)
+									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1, line, afterIndex)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2)
+									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2, line, beforeIndex)
 								}
 							}
 						}
 					}
 
 					if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
-						val index = line.indexOf(" (")
+						val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
+						val index = functionLine.indexOf(" (")
 						if (index > 0) {
-							makeContextReport(node, beginPosition + index, 2)
+							makeContextReport(node, beginPosition + index, 2, line, index)
 						}
 					}
 
@@ -83,7 +92,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 						&& line.contains(END_FUNCTION_DECLARATION_REGEX)
 						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 					) {
-						makeContextReport(node, beginPosition + length - 1, 1)
+						if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
+							makeContextReport(node, beginPosition + length - 1, 1, line, length - 1)
 					}
 
 					beginPosition += length
@@ -91,14 +101,32 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				}
 			}
 
-			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int) {
-				context.report(
-					ISSUE,
-					node,
-					context.getRangeLocation(node.parent, beginPosition, length),
-					ISSUE.getExplanation(TextFormat.TEXT)
-				)
+			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int, line: String, index: Int) {
+				if (!isInQuote(line, index)) {
+					context.report(
+						ISSUE,
+						node,
+						context.getRangeLocation(node.parent, beginPosition, length),
+						ISSUE.getExplanation(TextFormat.TEXT)
+					)
+				}
 			}
 		}
+	}
+
+	private fun isInQuote(line: String, index: Int): Boolean {
+		val chars = line.toCharArray()
+		var inside = false
+		for (i in chars.indices) {
+			val char = chars[i]
+			if (char.toString() == QUOTE_VALUE) {
+				inside = !inside
+			}
+
+			if (i == index) {
+				return inside
+			}
+		}
+		return false
 	}
 }

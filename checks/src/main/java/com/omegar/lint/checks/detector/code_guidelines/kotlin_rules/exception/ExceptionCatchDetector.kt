@@ -12,20 +12,20 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 		@JvmField
 		val ISSUE: Issue = Issue.create(
 
-            id = "OMEGA_NOT_IGNORE_EXCEPTIONS",
-            briefDescription = "Catch body is empty, it not match the coding convention",
-            explanation = """
+			id = "OMEGA_NOT_IGNORE_EXCEPTIONS",
+			briefDescription = "Catch body is empty, it not match the coding convention",
+			explanation = """
                    Catch body is empty. Add exception handling.
                    http://wiki.omega-r.club/dev-android-code#rec226449864
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                ExceptionCatchDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				ExceptionCatchDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
 
@@ -47,22 +47,22 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 				val string = body.asRenderString()
 				if (string.matches(EMPTY_BODY_REGEX)) {
 					context.report(
-                        ISSUE,
-                        body,
-                        context.getNameLocation(body),
-                        ISSUE.getExplanation(TextFormat.TEXT)
-                    )
+						ISSUE,
+						body,
+						context.getNameLocation(body),
+						ISSUE.getExplanation(TextFormat.TEXT)
+					)
 				}
 				val parameters = node.parameters
 				parameters.forEach {
 					if (it.type.canonicalText == GENERALIZED_EXCEPTION_VAL) {
 						if (!string.contains(THROW_VAL)) {
 							context.report(
-                                ISSUE,
-                                body,
-                                context.getNameLocation(it),
-                                GENERALIZED_EXCEPTION_MESSAGE
-                            )
+								ISSUE,
+								body,
+								context.getNameLocation(it),
+								GENERALIZED_EXCEPTION_MESSAGE
+							)
 						}
 					}
 				}

@@ -11,25 +11,25 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            // ID: used in @SuppressLint warnings etc
-            id = "OMEGA_USE_KEY_PREFIX_FOR_FRAGMENT_IN_ARGUMENTS_BUNDLE_PARAMS",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
-            briefDescription = "Use KEY prefix for Fragment in  Arguments Bundle param.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
-            explanation = """
+			// ID: used in @SuppressLint warnings etc
+			id = "OMEGA_USE_KEY_PREFIX_FOR_FRAGMENT_IN_ARGUMENTS_BUNDLE_PARAMS",
+			// Title -- shown in the IDE's preference dialog, as category headers in the
+			// Analysis results window, etc
+			briefDescription = "Use KEY prefix for Fragment in  Arguments Bundle param.",
+			// Full explanation of the issue; you can use some markdown markup such as
+			// `monospace`, *italic*, and **bold**.
+			explanation = """
                   Use EXTRA prefix for intent arguments
                   http://wiki.omega-r.club/dev-android-code#rec228392168
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                ArgumentsBundleKeyPrefixDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				ArgumentsBundleKeyPrefixDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		val KEY_PREFIX_REGEX = Regex("""^KEY_""")
 		val PUT_PARCELABLE_METHOD_REGEX = Regex("""^putParcelable$""")
@@ -51,7 +51,12 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 						val firstParam = node.valueArguments.firstOrNull() ?: return
 						val extraParam = firstParam.asRenderString()
 						if (!extraParam.contains(ArgumentsBundleKeyPrefixDetector.Companion.KEY_PREFIX_REGEX)) {
-							context.report(ArgumentsBundleKeyPrefixDetector.Companion.ISSUE, node, context.getLocation(firstParam), ArgumentsBundleKeyPrefixDetector.Companion.ISSUE.getExplanation(TextFormat.TEXT))
+							context.report(
+								ArgumentsBundleKeyPrefixDetector.Companion.ISSUE,
+								node,
+								context.getLocation(firstParam),
+								ArgumentsBundleKeyPrefixDetector.Companion.ISSUE.getExplanation(TextFormat.TEXT)
+							)
 						}
 					}
 				}

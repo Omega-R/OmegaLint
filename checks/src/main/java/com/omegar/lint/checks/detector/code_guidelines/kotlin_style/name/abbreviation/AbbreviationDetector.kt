@@ -2,10 +2,8 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbrev
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UClass
+import org.jetbrains.uast.UDeclaration
 import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UField
-import org.jetbrains.uast.UMethod
 
 @Suppress("UnstableApiUsage")
 class AbbreviationDetector : Detector(), Detector.UastScanner {
@@ -28,108 +26,76 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
-		private val COMPANION_OBJECT_NAME_REGEX = Regex("""^Companion""")
+		private const val OPEN_SCOPE_LABEL = "("
+		private const val EQUAL_LABEL = "="
+		private const val ANNOTATION_LABEL = "@"
+
+		//exclusion
+		private const val MILLISECONDS_LABEL = "MSec"
+		private const val TODO_LABEL = "TODO"
+
+		val exclusionsList = listOf(
+			MILLISECONDS_LABEL,
+			TODO_LABEL
+		)
+
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
 		return listOf(
-			UClass::class.java
+			UDeclaration::class.java
 		)
 	}
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
+			override fun visitDeclaration(node: UDeclaration) {
+				val lines = node.text?.lines() ?: return
 
-			override fun visitClass(node: UClass) {
-				val companion = node.innerClasses.firstOrNull() ?: return
-				node.methods.forEach { method ->
-					if (method.name.contains(ABBREVIATION_REGEX)) {
-						context.report(
-							ISSUE,
-							method,
-							context.getNameLocation(method),
-							method.name + " " + method.parent.text
-						)
-					}
-				}
+				var checkText = getNameString(lines) ?: return
 
-				node.fields.forEach { field ->
-					if (field.name.contains(ABBREVIATION_REGEX)) {
-						context.report(
-							ISSUE,
-							field,
-							context.getNameLocation(field),
-							field.name + " " + field.parent.text
-						)
-					}
-				}
-/*				val name = node.name ?: return
-				val text = node.text ?: return*/
-/*
-				val methods = node.methods
-				methods.forEach { method ->
-					if (method.name.contains(ABBREVIATION_REGEX) && !isComponentMethod(method)) {
-						context.report(
-							ISSUE,
-							node,
-							context.getNameLocation(method),
-							method.name
-						)
-					}
-				}
+				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
+				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
 
-				val fields = node.fields
-				fields.forEach { field ->
-					if (field.name.contains(ABBREVIATION_REGEX) && !isComponentField(field)) {
-						context.report(
-							ISSUE,
-							node,
-							context.getNameLocation(field),
-							field.name
-						)
-					}
-				}*/
+				checkText = deleteExclusions(checkText)
+
+				if (checkText.contains(ABBREVIATION_REGEX) && !node.isStatic) {
+					context.report(
+						ISSUE,
+						node as UElement,
+						context.getNameLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT)
+					)
+				}
 			}
 
-			/*	private fun getCompanionObject(node: UClass): UClass? {
-					val companionObjectClass = node.innerClasses.firstOrNull() ?: return null
-					val name = companionObjectClass.name ?: return null
-					return if (name.contains(COMPANION_OBJECT_NAME_REGEX)) {
-						companionObjectClass
-					} else {
-						null
-					}
+			private fun deleteAfterSymbol(checkText: String, symbol: String): String {
+				var text = checkText
+				if (text.indexOf(symbol) > 0) {
+					text = checkText.substring(0, checkText.indexOf(symbol))
 				}
-
-				private fun isComponentMethod(currentMethod: UMethod): Boolean {
-					val methods = companion?.methods ?: return false
-
-					methods.forEach {
-						context.report(
-							ISSUE,
-							currentMethod,
-							context.getNameLocation(currentMethod),
-							it.name
-						)
-					}
-
-					return false
-				}
-
-				private fun isComponentField(currentField: UField): Boolean {
-					val fields = companion?.fields ?: return false
-
-					fields.forEach {
-						context.report(
-							ISSUE,
-							currentField,
-							context.getNameLocation(currentField),
-							it.name
-						)
-					}
-
-					return false
-				}*/
+				return text
+			}
 		}
+
 	}
+
+	private fun getNameString(lines: List<String>): String? {
+		lines.forEach { line ->
+			if (!line.contains(ANNOTATION_LABEL)) {
+				return line
+			}
+		}
+		return null
+	}
+
+	private fun deleteExclusions(checkText: String): String {
+		var resultText = checkText
+		exclusionsList.forEach {
+			resultText = resultText.replace(it, " ")
+		}
+		return resultText
+	}
+
+
 }

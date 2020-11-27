@@ -12,7 +12,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-			id = "OMEGA_NOT_EXCEED_MAX_LINE_LENGTH",
+			id = "OMEGA_USE_MULTI_LINE_LAMBDA_IN_ONE_LINE",
 			briefDescription = "When declaring parameter names in a multi-line lambda, put the names on the first line, followed by an arrow and a new line:",
 			explanation = """
                   When declaring parameter names in a multi-line lambda, put the names on the first line, followed by an arrow and a new line:
@@ -28,9 +28,10 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 		)
 
 		private const val LAMBDA_VAL = "->"
-		private const val CLOSE_SCOPE_VAL = "{"
-		private const val SWITCH_VAL = "switch"
-		private val EMPTY_ARROW_REGEX = Regex("""\s*->""")
+		private const val CLOSE_SCOPE_VAL = "}"
+		private const val OPEN_SCOPE_VAL = "{"
+		private val EMPTY_ARROW_REGEX = Regex("""^\s*->""")
+		private val SWITCH_VAL = Regex("""(switch|when)""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -40,7 +41,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler? {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
-				val text = node.parent.text
+				val text = node.parent?.text ?: return
 				val lines = text.lines()
 				var beginPosition = 0
 
@@ -54,20 +55,23 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 								ISSUE,
 								node,
 								context.getRangeLocation(node.parent, beginPosition, length),
-								ISSUE.getExplanation(TextFormat.TEXT)
+								line + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
 							)
 						} else if (i - 1 >= 0) {
 							val previousLine = lines[i - 1]
-							if (previousLine.contains(CLOSE_SCOPE_VAL)
+							if (previousLine.contains(OPEN_SCOPE_VAL)
 								&& !line.contains(CLOSE_SCOPE_VAL)
-								&& !line.contains(SWITCH_VAL)
+								&& !previousLine.contains(CLOSE_SCOPE_VAL)
+								&& !previousLine.contains(SWITCH_VAL)
 								&& previousLine.length + line.trim().length < MAX_LENGTH
 							) {
 								context.report(
 									ISSUE,
 									node,
 									context.getRangeLocation(node.parent, beginPosition, length),
-									ISSUE.getExplanation(TextFormat.TEXT)
+									previousLine + "\n" + previousLine.contains(CLOSE_SCOPE_VAL) + "\n" + ISSUE.getExplanation(
+										TextFormat.TEXT
+									)
 								)
 							}
 						}

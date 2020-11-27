@@ -7,10 +7,10 @@ import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 
 class MaxMethodCountDetector : Detector(), Detector.UastScanner {
-    companion object {
-        /** Issue describing the problem and pointing to the detector implementation */
-        @JvmField
-        val ISSUE: Issue = Issue.create(
+	companion object {
+		/** Issue describing the problem and pointing to the detector implementation */
+		@JvmField
+		val ISSUE: Issue = Issue.create(
             id = "OMEGA_NOT_EXCEED_MAX_METHODS_COUNT",
             briefDescription = "Class methods count does not match the coding convention",
             explanation = """
@@ -26,22 +26,22 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private const val MAX_METHOD_COUNT = 30
-    }
+		private const val MAX_METHOD_COUNT = 30
+	}
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UClass::class.java)
-    }
+	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
+		return listOf(UClass::class.java)
+	}
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
-        return object : UElementHandler() {
-            override fun visitClass(node: UClass) {
-                val methods = node.methods
-                if (methods.size > MAX_METHOD_COUNT) {
-                    context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
-                }
-            }
-        }
-    }
+	override fun createUastHandler(context: JavaContext): UElementHandler? {
+		return object : UElementHandler() {
+			override fun visitClass(node: UClass) {
+				val methods = node.methods
+				if (methods.size > MAX_METHOD_COUNT) {
+					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+				}
+			}
+		}
+	}
 }
 
