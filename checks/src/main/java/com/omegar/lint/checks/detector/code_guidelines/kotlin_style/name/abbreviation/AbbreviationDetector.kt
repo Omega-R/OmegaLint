@@ -32,11 +32,15 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
+		private const val UELEMENT_LABEL = "UElement"
 		private const val TODO_LABEL = "TODO"
+		private const val CLASS_LABEL = "class"
+		private const val ENUM_LABEL = "enum class"
 
 		val exclusionsList = listOf(
 			MILLISECONDS_LABEL,
-			TODO_LABEL
+			TODO_LABEL,
+			UELEMENT_LABEL
 		)
 
 	}
@@ -50,6 +54,12 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
+				val parent = node.parent ?: return
+				val some = parent.text.lines()
+				val nameLine = some.firstOrNull { it.contains(CLASS_LABEL) }
+				if (nameLine != null && nameLine.contains(ENUM_LABEL)) {
+					return
+				}
 				val lines = node.text?.lines() ?: return
 
 				var checkText = getNameString(lines) ?: return
@@ -64,7 +74,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
@@ -96,6 +106,4 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		}
 		return resultText
 	}
-
-
 }

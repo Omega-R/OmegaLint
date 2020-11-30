@@ -8,20 +8,20 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 
 	companion object {
 		val ISSUE = Issue.create(
-            id = "OMEGA_NAME_VARIABLES_CORRECTLY",
-            briefDescription = "Detects wrongs name of view's identifier",
-            explanation = """
+			id = "OMEGA_NAME_VARIABLES_CORRECTLY",
+			briefDescription = "Detects wrongs name of view's identifier",
+			explanation = """
                     Name of identifier should begin with prefix, which depends of view name.
                     http://wiki.omega-r.club/dev-android-code#rec228390320
                     """,
-            category = Category.CORRECTNESS,
-            priority = 6,
-            severity = Severity.INFORMATIONAL,
-            implementation = Implementation(
-                NameIdentifierXmlDetector::class.java,
-                Scope.RESOURCE_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 6,
+			severity = Severity.INFORMATIONAL,
+			implementation = Implementation(
+				NameIdentifierXmlDetector::class.java,
+				Scope.RESOURCE_FILE_SCOPE
+			)
+		)
 
 		const val REPORT_MESSAGE = "Wrong prefix of identifier name. Should begin with: "
 
@@ -66,83 +66,57 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 		val attributeValue = attribute.nodeValue ?: return
 		if (attribute.name == "android:id") {
 			when (attribute.ownerElement.tagName) {
-                TEXT_VIEW_ELEMENT -> {
-                    if (!attributeValue.contains(TEXT_VIEW_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $TEXT_VIEW_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				TEXT_VIEW_ELEMENT -> {
+					if (!attributeValue.contains(TEXT_VIEW_PREFIX)) {
+						makeContextReport(context, attribute, TEXT_VIEW_PREFIX)
+					}
+				}
 
-                IMAGE_VIEW_ELEMENT -> {
-                    if (!attributeValue.contains(IMAGE_VIEW_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $IMAGE_VIEW_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				IMAGE_VIEW_ELEMENT -> {
+					if (!attributeValue.contains(IMAGE_VIEW_PREFIX)) {
+						makeContextReport(context, attribute, IMAGE_VIEW_PREFIX)
+					}
+				}
 
-                BUTTON_ELEMENT -> {
-                    if (!attributeValue.contains(BUTTON_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				BUTTON_ELEMENT -> {
+					if (!attributeValue.contains(BUTTON_PREFIX)) {
+						makeContextReport(context, attribute, BUTTON_PREFIX)
+					}
+				}
 
-                EDIT_TEXT_ELEMENT -> {
-                    if (!attributeValue.contains(EDIT_TEXT_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $EDIT_TEXT_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				EDIT_TEXT_ELEMENT -> {
+					if (!attributeValue.contains(EDIT_TEXT_PREFIX)) {
+						makeContextReport(context, attribute, EDIT_TEXT_PREFIX)
+					}
+				}
 
-                LAYOUT_ELEMENT, TABLE_LAYOUT_ELEMENT, LINEAR_LAYOUT_ELEMENT -> {
-                    if (!attributeValue.contains(LAYOUT_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $LAYOUT_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				LAYOUT_ELEMENT, TABLE_LAYOUT_ELEMENT, LINEAR_LAYOUT_ELEMENT -> {
+					if (!attributeValue.contains(LAYOUT_PREFIX)) {
+						makeContextReport(context, attribute, LAYOUT_PREFIX)
+					}
+				}
 
-                FLOATING_ACTION_BUTTON_ELEMENT -> {
-                    if (!attributeValue.contains(FLOATING_ACTION_BUTTON_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $FLOATING_ACTION_BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				FLOATING_ACTION_BUTTON_ELEMENT -> {
+					if (!attributeValue.contains(FLOATING_ACTION_BUTTON_PREFIX)) {
+						makeContextReport(context, attribute, FLOATING_ACTION_BUTTON_PREFIX)
+					}
+				}
 
-                IMAGE_BUTTON_ELEMENT -> {
-                    if (!attributeValue.contains(IMAGE_BUTTON_PREFIX)) {
-                        context.report(
-                            issue = ISSUE,
-                            scope = attribute,
-                            location = context.getValueLocation(attribute),
-                            message = "$REPORT_MESSAGE $IMAGE_BUTTON_PREFIX\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                        )
-                    }
-                }
+				IMAGE_BUTTON_ELEMENT -> {
+					if (!attributeValue.contains(IMAGE_BUTTON_PREFIX)) {
+						makeContextReport(context, attribute, IMAGE_BUTTON_PREFIX)
+					}
+				}
 			}
 		}
+	}
+
+	private fun makeContextReport(context: XmlContext, attribute: Attr, message: String) {
+		context.report(
+			issue = ISSUE,
+			scope = attribute,
+			location = context.getValueLocation(attribute),
+			message = "$REPORT_MESSAGE $message\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+		)
 	}
 }

@@ -63,59 +63,71 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 				}
 
 				if (name.matches(FUNCTION_REGEX)) {
-					checkSetLayoutFunction(node, className, arguments)
+					checkSetLayoutFunction(context, node, className, arguments)
 				}
 
-				findLayout(name, className, arguments, node)
+				findLayout(name, className, arguments, node, context)
+			}
+		}
+	}
+
+	// String extensions
+	private fun String.convertCamelToSnakeCase(): String {
+		return CAMEL_REGEX.replace(this) {
+			"_${it.value}"
+		}.toLowerCase()
+	}
+
+	private fun checkSetLayoutFunction(
+		context: JavaContext,
+		node: UCallExpression,
+		className: String,
+		arguments: List<UExpression>
+
+	) {
+		val parentFirstLine = node.uastParent?.uastParent?.asRenderString()?.split("\n")?.firstOrNull()
+
+		if (parentFirstLine != null && parentFirstLine.contains(FUNCTION_PARENT_REGEX)) {
+			findLayout(className, className, arguments, node, context)
+		}
+	}
+
+	private fun findLayout(
+		name: String,
+		className: String,
+		arguments: List<UExpression>,
+		node: UCallExpression,
+		context: JavaContext
+	) {
+		when {
+			name.contains(UPPER_ACTIVITY) -> {
+				val newClassName = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}".convertCamelToSnakeCase()
+				checkLayoutName(arguments, newClassName, node, context)
 			}
 
-			// String extensions
-			private fun String.convertCamelToSnakeCase(): String {
-				return CAMEL_REGEX.replace(this) {
-					"_${it.value}"
-				}.toLowerCase()
+			name.contains(UPPER_FRAGMENT) && !name.contains(UPPER_DIALOG) -> {
+				val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".convertCamelToSnakeCase()
+				checkLayoutName(arguments, newClassName, node, context)
 			}
 
-			private fun checkSetLayoutFunction(node: UCallExpression, className: String, arguments: List<UExpression>) {
-				val parentFirstLine = node.uastParent?.uastParent?.asRenderString()?.split("\n")?.firstOrNull()
-
-				if (parentFirstLine != null && parentFirstLine.contains(FUNCTION_PARENT_REGEX)) {
-					findLayout(className, className, arguments, node)
-				}
+			name.contains(UPPER_DIALOG) -> {
+				val nameWithoutFragment = className.replace(UPPER_FRAGMENT, "")
+				val newClassName = "$LOWER_DIALOG${nameWithoutFragment.replace(UPPER_DIALOG, "")}".convertCamelToSnakeCase()
+				checkLayoutName(arguments, newClassName, node, context)
 			}
+		}
+	}
 
-			private fun findLayout(name: String, className: String, arguments: List<UExpression>, node: UCallExpression) {
-				when {
-					name.contains(UPPER_ACTIVITY) -> {
-						val newClassName = "$LOWER_ACTIVITY${className.replace(UPPER_ACTIVITY, "")}".convertCamelToSnakeCase()
-						checkLayoutName(arguments, newClassName, node)
-					}
-
-					name.contains(UPPER_FRAGMENT) && !name.contains(UPPER_DIALOG) -> {
-						val newClassName = "$LOWER_FRAGMENT${className.replace(UPPER_FRAGMENT, "")}".convertCamelToSnakeCase()
-						checkLayoutName(arguments, newClassName, node)
-					}
-
-					name.contains(UPPER_DIALOG) -> {
-						val nameWithoutFragment = className.replace(UPPER_FRAGMENT, "")
-						val newClassName = "$LOWER_DIALOG${nameWithoutFragment.replace(UPPER_DIALOG, "")}".convertCamelToSnakeCase()
-						checkLayoutName(arguments, newClassName, node)
-					}
-				}
-			}
-
-			private fun checkLayoutName(arguments: List<UExpression>, newClassName: String, node: UCallExpression) {
-				arguments.forEach { argument ->
-					val argumentName = argument.asRenderString()
-					if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
-						context.report(
-							ISSUE,
-							node,
-							context.getNameLocation(argument),
-							"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-						)
-					}
-				}
+	private fun checkLayoutName(arguments: List<UExpression>, newClassName: String, node: UCallExpression, context: JavaContext) {
+		arguments.forEach { argument ->
+			val argumentName = argument.asRenderString()
+			if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
+				context.report(
+					ISSUE,
+					node,
+					context.getNameLocation(argument),
+					"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+				)
 			}
 		}
 	}

@@ -2,7 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restriction
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UClass
+import com.intellij.util.containers.ContainerUtil.findAll
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
@@ -28,12 +28,14 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private const val WHEN_VAL = "switch"
+		private val WHEN_VAL = Regex("""(switch|when)""")
 		private const val CLASS_VAL = "class"
 		private const val MAX_FUNCTION_LINES_COUNT = 30
 		private const val MAX_FUNCTION_LINES_COUNT_WITH_WHEN = 40
+		private const val ANNOTATION_SYMBOL = "@"
 		private const val DELTA = 2
 		private val COMMENT_REGEX = Regex("""(/\*|//)""")
+		private val COMMENTS_INSIDE_REGEX = Regex("""(//.*\n|/\*(.|\n)*\*/|/(.|\n)*/)""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -44,17 +46,19 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-				if (isClass(text.lines().firstOrNull())) {
+
+				val textWithoutComments = deleteComments(text)
+
+				if (isClass(textWithoutComments.lines())) {
 					return
 				}
 				val body = node.uastBody ?: return
 				var currentMax = MAX_FUNCTION_LINES_COUNT
 
-				if (text.contains(WHEN_VAL)) {
+				if (textWithoutComments.contains(WHEN_VAL)) {
 					currentMax = MAX_FUNCTION_LINES_COUNT_WITH_WHEN
 				}
-				val lines = getLines(text.lines())
-
+				val lines = getLines(textWithoutComments.lines())
 
 				/** Need to delete 2 strings, because body has "{ }" */
 				val size = lines.size - DELTA
@@ -71,21 +75,32 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
+	private fun deleteComments(text: String): String {
+		val commentsList = COMMENTS_INSIDE_REGEX.findAll(text)
+		var resultText = ""
+		commentsList.forEach {
+			resultText = text.replace(it.value, "")
+		}
+		return resultText
+	}
+
+
 	private fun getLines(lines: List<String>): List<String> {
-		var resultLines = mutableListOf<String>()
+		val resultLines = mutableListOf<String>()
 		lines.forEach {
-			if (!it.trim().isNullOrEmpty()) {
+			if (it.trim().isNotEmpty()) {
 				resultLines.add(it)
 			}
 		}
 		return resultLines
 	}
 
-	private fun isClass(firstString: String?): Boolean {
-		if (firstString == null) {
-			return false
+	private fun isClass(lines: List<String>): Boolean {
+		var firstLine = lines.firstOrNull() ?: return false
+		if (firstLine.contains(ANNOTATION_SYMBOL)) {
+			firstLine = lines[1]
 		}
-		if (firstString.contains(CLASS_VAL) || firstString.contains(COMMENT_REGEX)) {
+		if (firstLine.contains(CLASS_VAL) || firstLine.contains(COMMENT_REGEX)) {
 			return true
 		}
 		return false

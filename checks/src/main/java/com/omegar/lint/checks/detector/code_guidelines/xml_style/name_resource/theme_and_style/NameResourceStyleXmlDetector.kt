@@ -8,19 +8,19 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 
 	companion object {
 		val ISSUE = Issue.create(
-            id = "OMEGA_NAME_RESOURCE_STYLE_CORRECTLY",
-            briefDescription = "Inheritance warning",
-            explanation = """
+			id = "OMEGA_NAME_RESOURCE_STYLE_CORRECTLY",
+			briefDescription = "Inheritance warning",
+			explanation = """
                 It is desirable to carry out inheritance through the name.
                 http://wiki.omega-r.club/dev-android-code#rec228391441
                 """,
-            category = Category.CORRECTNESS,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                NameResourceStyleXmlDetector::class.java,
-                Scope.RESOURCE_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				NameResourceStyleXmlDetector::class.java,
+				Scope.RESOURCE_FILE_SCOPE
+			)
+		)
 
 		private const val ATTRIBUTE_NAME_VAL = "name"
 		private const val SUFFIX_STYLE = "Style"
@@ -42,12 +42,12 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 		val name = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
 		if (name.matches(SUFFIX_STYLE_REGEX)) {
 			context.report(
-                issue = ISSUE,
-                scope = element,
-                location = context.getNameLocation(element),
-                message = REPORT_MESSAGE,
-                quickfixData = createDeleteStyleContextFix(name)
-            )
+				issue = ISSUE,
+				scope = element,
+				location = context.getNameLocation(element),
+				message = REPORT_MESSAGE,
+				quickfixData = createDeleteStyleContextFix(name)
+			)
 		}
 		val parent = element.getAttribute(PARENT_VAL) ?: return
 		if (parent.isEmpty()) {
@@ -55,12 +55,12 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 		}
 
 		context.report(
-            issue = ISSUE,
-            scope = element,
-            location = context.getNameLocation(element),
-            message = ISSUE.getExplanation(TextFormat.TEXT),
-            quickfixData = createContextFix(name, parent)
-        )
+			issue = ISSUE,
+			scope = element,
+			location = context.getNameLocation(element),
+			message = ISSUE.getExplanation(TextFormat.TEXT),
+			quickfixData = createContextFix(name, parent)
+		)
 
 	}
 

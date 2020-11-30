@@ -10,20 +10,20 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_SINGLE_LINE_ANNOTATION",
-            briefDescription = "If there are multiple annotations for a class / field / method, place each annotation on a new line",
-            explanation = """
+			"OMEGA_SINGLE_LINE_ANNOTATION",
+			"If there are multiple annotations for a class / field / method, place each annotation on a new line",
+			"""
                   If there are multiple annotations for a class / field / method, place each annotation on a new line.
                   http://wiki.omega-r.club/dev-android-code#rec228389852
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.INFORMATIONAL,
-            implementation = Implementation(
-                AnnotationDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			Category.CORRECTNESS,
+			7,
+			Severity.INFORMATIONAL,
+			Implementation(
+				AnnotationDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*@""")
 	}
@@ -44,11 +44,11 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 
 					if (line.contains(ONE_EXPRESSION_REGEX)) {
 						context.report(
-                            ISSUE,
-                            node,
-                            context.getRangeLocation(node.parent, beginPosition, length),
-                            ISSUE.getExplanation(TextFormat.TEXT)
-                        )
+							ISSUE,
+							node,
+							context.getRangeLocation(node.parent, beginPosition, length),
+							ISSUE.getExplanation(TextFormat.TEXT)
+						)
 					}
 
 					beginPosition += line.length

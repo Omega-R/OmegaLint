@@ -28,7 +28,7 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
 
         private const val PACKAGE_VAL = "package"
 
-        private const val MAX_CLASSES_IN_PACKAGE_COUNT = 5
+        private const val MAX_CLASSES_IN_PACKAGE_COUNT = 30
 
         private var classesMap = mutableMapOf<String, ArrayList<String>>()
     }
