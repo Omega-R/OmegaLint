@@ -15,9 +15,11 @@ import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.file_c
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.PositionArgumentDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_length.MaxClassLengthDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_methods_count.MaxMethodCountDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.classes_in_package_count.MaxClassInPackageDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.emptiness.EmptyBodyFunctionDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.function_length.MaxFunctionLengthDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.line_length.MaxLineLengthDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.packages_count.MaxPackageCountDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.params_count.MaxFunctionsArgumentsDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.simplifications.control_instructions.SimplificationsControlInstructionsDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.simplifications.function.SimplificationsFunctionDetector
@@ -52,8 +54,8 @@ class LintIssueRegistry : IssueRegistry() {
             SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
             AttributesPositionXmlDetector.ISSUE,
-//            MaxClassInPackageDetector.ISSUE,  TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
-//            MaxPackageCountDetector.ISSUE,    TODO this working only for classes which user has visited after rebuild, need to fix, and count all classes
+            MaxClassInPackageDetector.ISSUE,// TODO need testing
+            MaxPackageCountDetector.ISSUE,  // TODO need testing
             SimplificationsControlInstructionsDetector.ISSUE, // TODO need testing
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
