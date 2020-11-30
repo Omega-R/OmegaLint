@@ -2,6 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restriction
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import com.intellij.util.containers.ContainerUtil.findAll
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
@@ -34,7 +35,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		private const val ANNOTATION_SYMBOL = "@"
 		private const val DELTA = 2
 		private val COMMENT_REGEX = Regex("""(/\*|//)""")
-		private val COMMENTS_INSIDE_REGEX = Regex("""(/\*|//)""")
+		private val COMMENTS_INSIDE_REGEX = Regex("""(//.*\n|/\*(.|\n)*\*/|/(.|\n)*/)""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -45,16 +46,19 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
-				if (isClass(text.lines())) {
+
+				val textWithoutComments = deleteComments(text)
+
+				if (isClass(textWithoutComments.lines())) {
 					return
 				}
 				val body = node.uastBody ?: return
 				var currentMax = MAX_FUNCTION_LINES_COUNT
 
-				if (text.contains(WHEN_VAL)) {
+				if (textWithoutComments.contains(WHEN_VAL)) {
 					currentMax = MAX_FUNCTION_LINES_COUNT_WITH_WHEN
 				}
-				val lines = getLines(text.lines())
+				val lines = getLines(textWithoutComments.lines())
 
 				/** Need to delete 2 strings, because body has "{ }" */
 				val size = lines.size - DELTA
@@ -64,15 +68,25 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node,
 						context.getLocation(body),
-						"FUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+						"$textWithoutComments\nFUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}"
 					)
 				}
 			}
 		}
 	}
 
+	private fun deleteComments(text: String): String {
+		val commentsList = COMMENTS_INSIDE_REGEX.findAll(text)
+		var resultText = ""
+		commentsList.forEach {
+			resultText = text.replace(it.value, "")
+		}
+		return resultText
+	}
+
+
 	private fun getLines(lines: List<String>): List<String> {
-		var resultLines = mutableListOf<String>()
+		val resultLines = mutableListOf<String>()
 		lines.forEach {
 			if (!it.trim().isNullOrEmpty()) {
 				resultLines.add(it)
