@@ -68,7 +68,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node,
 						context.getLocation(body),
-						"$textWithoutComments\nFUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+						"FUN SIZE: $size\n${ISSUE.getExplanation(TextFormat.TEXT)}"
 					)
 				}
 			}
@@ -88,7 +88,7 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 	private fun getLines(lines: List<String>): List<String> {
 		val resultLines = mutableListOf<String>()
 		lines.forEach {
-			if (!it.trim().isNullOrEmpty()) {
+			if (it.trim().isNotEmpty()) {
 				resultLines.add(it)
 			}
 		}

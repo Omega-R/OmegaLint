@@ -63,7 +63,7 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 				}
 
 				if (name.matches(FUNCTION_REGEX)) {
-					checkSetLayoutFunction(node, className, arguments, context)
+					checkSetLayoutFunction(context, node, className, arguments)
 				}
 
 				findLayout(name, className, arguments, node, context)
@@ -79,10 +79,11 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 	}
 
 	private fun checkSetLayoutFunction(
+		context: JavaContext,
 		node: UCallExpression,
 		className: String,
-		arguments: List<UExpression>,
-		context: JavaContext
+		arguments: List<UExpression>
+
 	) {
 		val parentFirstLine = node.uastParent?.uastParent?.asRenderString()?.split("\n")?.firstOrNull()
 

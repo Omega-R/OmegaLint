@@ -66,51 +66,64 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 										&& afterIndex <= 0
 										&& !line.contains(POINT_BEGIN_REGEX)
 										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 1, line, beforeIndex)
+									makeContextReport(
+										Params(context, node, beginPosition + beforeIndex, pair.key.length + 1, line, beforeIndex)
+									)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
-									makeContextReport(node, beginPosition + afterIndex, pair.key.length + 1, line, afterIndex)
+									makeContextReport(
+										Params(context, node, beginPosition + afterIndex, pair.key.length + 1, line, afterIndex)
+									)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
-									makeContextReport(node, beginPosition + beforeIndex, pair.key.length + 2, line, beforeIndex)
+									makeContextReport(
+										Params(context, node, beginPosition + beforeIndex, pair.key.length + 2, line, beforeIndex)
+									)
 								}
 							}
 						}
 					}
 
-					if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
-						val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
-						val index = functionLine.indexOf(" (")
-						if (index > 0) {
-							makeContextReport(node, beginPosition + index, 2, line, index)
-						}
-					}
-
-					if (!line.contains(RIGHT_END_FUNCTION_DECLARATION_REGEX)
-						&& line.contains(END_FUNCTION_DECLARATION_REGEX)
-						&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
-					) {
-						if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
-							makeContextReport(node, beginPosition + length - 1, 1, line, length - 1)
-					}
+					checkSpaceForScopes(context, line, node, beginPosition)
 
 					beginPosition += length
 					beginPosition++ // for adding new string pair.key
 				}
 			}
 
-			private fun makeContextReport(node: UClass, beginPosition: Int, length: Int, line: String, index: Int) {
-				if (!isInQuote(line, index)) {
-					context.report(
-						ISSUE,
-						node,
-						context.getRangeLocation(node.parent, beginPosition, length),
-						ISSUE.getExplanation(TextFormat.TEXT)
-					)
-				}
+
+		}
+	}
+
+	private fun checkSpaceForScopes(context: JavaContext, line: String, node: UClass, beginPosition: Int) {
+		val length = line.length
+		if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
+			val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
+			val index = functionLine.indexOf(" (")
+			if (index > 0) {
+				makeContextReport(Params(context, node, beginPosition + index, 2, line, index))
 			}
+		}
+
+		if (!line.contains(RIGHT_END_FUNCTION_DECLARATION_REGEX)
+			&& line.contains(END_FUNCTION_DECLARATION_REGEX)
+			&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
+		) {
+			if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
+				makeContextReport(Params(context, node, beginPosition + length - 1, 1, line, length - 1))
+		}
+	}
+
+	private fun makeContextReport(params: Params) {
+		if (!isInQuote(params.line, params.index)) {
+			params.context.report(
+				ISSUE,
+				params.node,
+				params.context.getRangeLocation(params.node.parent, params.beginPosition, params.length),
+				ISSUE.getExplanation(TextFormat.TEXT)
+			)
 		}
 	}
 
@@ -129,4 +142,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		}
 		return false
 	}
+
+	class Params(
+		val context: JavaContext,
+		val node: UClass,
+		val beginPosition: Int,
+		val length: Int,
+		val line: String,
+		val index: Int
+	)
 }

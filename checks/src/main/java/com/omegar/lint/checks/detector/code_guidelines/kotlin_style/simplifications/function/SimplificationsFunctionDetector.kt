@@ -10,16 +10,16 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-			id = "OMEGA_CAN_USE_EXPRESSION_FUNCTION",
-			briefDescription = "When a function contains only one expression, it can be represented as an \"expression function\".",
-			explanation = """
+			"OMEGA_CAN_USE_EXPRESSION_FUNCTION",
+			"When a function contains only one expression, it can be represented as an \"expression function\".",
+			"""
                   You can change it to "expression function"
                   http://wiki.omega-r.club/dev-android-code#rec228389255
                     """,
-			category = Category.CORRECTNESS,
-			priority = 7,
-			severity = Severity.INFORMATIONAL,
-			implementation = Implementation(
+			Category.CORRECTNESS,
+			7,
+			Severity.INFORMATIONAL,
+			Implementation(
 				SimplificationsFunctionDetector::class.java,
 				Scope.JAVA_FILE_SCOPE
 			)
