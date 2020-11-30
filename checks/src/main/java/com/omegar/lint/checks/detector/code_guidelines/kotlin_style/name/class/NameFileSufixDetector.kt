@@ -11,20 +11,20 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_USE_PARENT_NAME_AS_SUFFIX_FOR_CHILD",
-            briefDescription = "The file name does not match the coding convention",
-            explanation = """
+			id = "OMEGA_USE_PARENT_NAME_AS_SUFFIX_FOR_CHILD",
+			briefDescription = "The file name does not match the coding convention",
+			explanation = """
                   Class name should has parent name in sufix. Rename this file.
                   http://wiki.omega-r.club/dev-android-code#rec226456384
                     """,
-            category = Category.CORRECTNESS,
-            priority = 6,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                NameFileSufixDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 6,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				NameFileSufixDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private const val ACTIVITY_VALUE = "Activity"
 		private val ACTIVITY_VALUE_REGEX = Regex(".*${ACTIVITY_VALUE}$")
@@ -68,47 +68,46 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 					when {
 						part.matches(ACTIVITY_VALUE_REGEX) ->
 							if (!name.matches(ACTIVITY_VALUE_REGEX)) {
-								makeContextReport(value = ACTIVITY_VALUE, node)
+								makeContextReport(context, ACTIVITY_VALUE, node)
 							}
 
 						part.matches(FRAGMENT_VALUE_REGEX) ->
 							if (!name.matches(FRAGMENT_VALUE_REGEX)) {
-								makeContextReport(value = FRAGMENT_VALUE, node)
+								makeContextReport(context, FRAGMENT_VALUE, node)
 							}
 
 						part.matches(VIEW_VALUE_REGEX) ->
 							if (!name.matches(VIEW_VALUE_REGEX)) {
-								makeContextReport(value = VIEW_VALUE, node)
+								makeContextReport(context, VIEW_VALUE, node)
 							}
 
 						part.matches(SERVICE_VALUE_REGEX) ->
 							if (!name.matches(SERVICE_VALUE_REGEX)) {
-								makeContextReport(value = SERVICE_VALUE, node)
+								makeContextReport(context, SERVICE_VALUE, node)
 							}
 
 						part.matches(PRESENTER_VALUE_REGEX) ->
 							if (!name.matches(PRESENTER_VALUE_REGEX)) {
-								makeContextReport(value = PRESENTER_VALUE, node)
+								makeContextReport(context, PRESENTER_VALUE, node)
 							}
 
 						part.matches(PROVIDER_VALUE_REGEX) ->
 							if (!name.matches(PROVIDER_VALUE_REGEX)) {
-								makeContextReport(value = PROVIDER_VALUE, node)
+								makeContextReport(context, PROVIDER_VALUE, node)
 							}
-
 					}
 				}
 
 			}
-
-			private fun makeContextReport(value: String, node: UClass) {
-				return context.report(
-                    ISSUE,
-                    node,
-                    context.getNameLocation(node),
-                    "$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-                )
-			}
 		}
+	}
+
+	private fun makeContextReport(context: JavaContext, value: String, node: UClass) {
+		return context.report(
+			ISSUE,
+			node,
+			context.getNameLocation(node),
+			"$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+		)
 	}
 }

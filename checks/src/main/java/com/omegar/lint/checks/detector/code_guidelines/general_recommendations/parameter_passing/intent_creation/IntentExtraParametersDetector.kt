@@ -12,11 +12,7 @@ class IntentExtraParametersDetector : Detector(), Detector.UastScanner {
 		val ISSUE: Issue = Issue.create(
             // ID: used in @SuppressLint warnings etc
             id = "OMEGA_USE_EXTRA_PREFIX_FOR_INTENT_PARAMS",
-            // Title -- shown in the IDE's preference dialog, as category headers in the
-            // Analysis results window, etc
             briefDescription = "Use EXTRA prefix for intent arguments.",
-            // Full explanation of the issue; you can use some markdown markup such as
-            // `monospace`, *italic*, and **bold**.
             explanation = """
                   Use EXTRA prefix for intent arguments
                   http://wiki.omega-r.club/dev-android-code#rec228392168
