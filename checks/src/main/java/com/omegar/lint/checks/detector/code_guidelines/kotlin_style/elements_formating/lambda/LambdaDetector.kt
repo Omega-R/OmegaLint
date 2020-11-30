@@ -33,7 +33,6 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 		private const val CLOSE_SCOPE_VAL = "}"
 		private const val OPEN_SCOPE_VAL = "{"
 		private const val QUOTE_VAL = "\""
-		private const val FOR_VAL = "for"
 		private val EMPTY_ARROW_REGEX = Regex("""^\s*->""")
 		private val SWITCH_VAL = Regex("""(switch|when)""")
 	}
@@ -80,8 +79,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 				&& !previousLine.contains(CLOSE_SCOPE_VAL)
 				&& !previousLine.contains(SWITCH_VAL)
 				&& previousLine.length + params.line.trim().length < MAX_LENGTH
-				&& !params.line.contains(CLOSE_SCOPE_VAL)
-				&& !params.line.contains(FOR_VAL)
+				&& !params.line.contains(OPEN_SCOPE_VAL)
 			) {
 				params.context.report(
 					ISSUE,
