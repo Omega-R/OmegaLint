@@ -61,7 +61,7 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 						ISSUE,
 						node,
 						context.getLocation(node),
-						text + " " + firstText
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
