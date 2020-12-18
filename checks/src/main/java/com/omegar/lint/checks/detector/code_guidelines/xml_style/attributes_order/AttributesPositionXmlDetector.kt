@@ -83,9 +83,7 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		 */
 	}
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		return folderType == ResourceFolderType.LAYOUT
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.LAYOUT
 
 	override fun visitDocument(context: XmlContext, document: Document) {
 		val text = document.textContent ?: return

@@ -31,11 +31,9 @@ class IntentExtraParametersDetector : Detector(), Detector.UastScanner {
 		val PUT_EXTRA_METHOD_REGEX = Regex("""^putExtra$""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UCallExpression::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UCallExpression::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitCallExpression(node: UCallExpression) {
 				val name = node.methodName ?: return

@@ -45,11 +45,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
-		return listOf(
-			UDeclaration::class.java
-		)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UDeclaration::class.java)
 
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {

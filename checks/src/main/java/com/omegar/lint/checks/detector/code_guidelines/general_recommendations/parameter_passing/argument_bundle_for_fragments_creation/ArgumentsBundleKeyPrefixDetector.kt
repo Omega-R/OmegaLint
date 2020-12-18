@@ -37,11 +37,9 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 		val FRAGMENT_REGEX = Regex("""Fragment$""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UCallExpression::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UCallExpression::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitCallExpression(node: UCallExpression) {
 				val file = node.getContainingUFile() ?: return

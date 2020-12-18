@@ -30,11 +30,9 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 		private val UPPER_CHAR_REGEX = Regex("""([A-Z]|\d)""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				/**

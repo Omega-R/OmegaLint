@@ -38,11 +38,10 @@ class MaxFunctionLengthDetector : Detector(), Detector.UastScanner {
 		private val COMMENTS_INSIDE_REGEX = Regex("""(//.*\n|/\*(.|\n)*\*/|/(.|\n)*/)""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UMethod::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UMethod::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return

@@ -36,11 +36,9 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 					"http://wiki.omega-r.club/dev-android-code#rec226454364"
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UCatchClause::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UCatchClause::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitCatchClause(node: UCatchClause) {
 				val body = node.body
@@ -73,7 +71,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
-	private fun createEmptyBodyFix(bodyString: String) : LintFix {
+	private fun createEmptyBodyFix(bodyString: String): LintFix {
 		return LintFix.create()
 			.replace()
 			.text("}")

@@ -45,13 +45,9 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 		private const val ATTRIBUTE_NAME_VAL = "name"//Attribute
 	}
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		return folderType == ResourceFolderType.VALUES
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.VALUES
 
-	override fun getApplicableElements(): Collection<String>? {
-		return setOf("string")
-	}
+	override fun getApplicableElements(): Collection<String> = setOf("string")
 
 	override fun visitElement(context: XmlContext, element: Element) {
 		if (!element.hasChildNodes()) {
@@ -80,7 +76,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 		)
 	}
 
-	private fun createFix(stringText: String) : LintFix {
+	private fun createFix(stringText: String): LintFix {
 		val groupFix = fix().group()
 		PREFIXES_LIST.forEach {
 			groupFix.add(

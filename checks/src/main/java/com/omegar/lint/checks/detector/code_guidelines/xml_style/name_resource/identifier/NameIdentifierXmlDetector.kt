@@ -47,13 +47,9 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 	}
 
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		return folderType == ResourceFolderType.LAYOUT
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.LAYOUT
 
-	override fun getApplicableAttributes(): Collection<String>? {
-		return XmlScannerConstants.ALL
-	}
+	override fun getApplicableAttributes(): Collection<String>? = XmlScannerConstants.ALL
 
 	override fun visitAttribute(context: XmlContext, attribute: Attr) {
 		attribute.ownerElement ?: return

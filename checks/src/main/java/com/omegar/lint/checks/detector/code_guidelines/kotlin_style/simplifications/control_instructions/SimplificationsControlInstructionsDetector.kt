@@ -35,11 +35,9 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		private const val DELTA = 2
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(USwitchClauseExpression::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(USwitchClauseExpression::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
 				val renderText = node.asRenderString()

@@ -31,19 +31,15 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 		private const val VAL_LABEL = "val"
 		private const val COMPANION_NAME_LABEL = "Companion"
 
-
 		private val UPPER_REGEX = Regex("""^([A-Z]*_*)*$""")
-
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
-
 				val innerClass = node.innerClasses.firstOrNull() ?: return
 				val name = innerClass.name ?: return
 
