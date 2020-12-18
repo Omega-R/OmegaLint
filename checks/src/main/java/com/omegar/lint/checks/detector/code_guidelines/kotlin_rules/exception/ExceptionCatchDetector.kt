@@ -45,12 +45,14 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 			override fun visitCatchClause(node: UCatchClause) {
 				val body = node.body
 				val string = body.asRenderString()
+
 				if (string.matches(EMPTY_BODY_REGEX)) {
 					context.report(
 						ISSUE,
 						body,
 						context.getNameLocation(body),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createEmptyBodyFix(string)
 					)
 				}
 				val parameters = node.parameters
@@ -60,14 +62,23 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 							context.report(
 								ISSUE,
 								body,
-								context.getNameLocation(it),
-								GENERALIZED_EXCEPTION_MESSAGE
+								context.getLocation(it as UElement),
+								GENERALIZED_EXCEPTION_MESSAGE,
+								createEmptyBodyFix(string)
 							)
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private fun createEmptyBodyFix(bodyString: String) : LintFix {
+		return LintFix.create()
+			.replace()
+			.text("}")
+			.with("	throw //something\n		}")
+			.build()
 	}
 
 }

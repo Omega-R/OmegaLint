@@ -28,7 +28,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
         )
 
         private val EMPTY_BODY_REGEX = Regex("""\{\s*}""")
-        private val EMPTY_BRANCH_REGEX = Regex("""\{\s*break\s*\}""")
+        private val EMPTY_BRANCH_REGEX = Regex("""(\{\s*break\s*\})|(\{\s*})""")
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement?>>? {

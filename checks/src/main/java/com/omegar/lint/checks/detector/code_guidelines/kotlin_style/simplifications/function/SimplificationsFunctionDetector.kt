@@ -26,6 +26,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s]|[.]|[\d])*\s*\}""")
+		private val RETURN_REGEX = Regex("""\s*return""")
 		private const val MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION = 3
 	}
 
@@ -42,11 +43,27 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 					context.report(
 						ISSUE,
 						node,
-						context.getNameLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						context.getLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createFix(text)
 					)
 				}
 			}
 		}
+	}
+
+	private fun createFix(text: String): LintFix {
+		val newText = text
+			.replace("{", "=")
+			.replace(RETURN_REGEX, "")
+			.replace("\n", "")
+			.replace("}", "")
+
+		return fix()
+			.replace()
+			.text(text)
+			.with(newText)
+			.build()
+
 	}
 }

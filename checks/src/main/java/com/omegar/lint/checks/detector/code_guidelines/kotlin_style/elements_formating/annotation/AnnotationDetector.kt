@@ -25,7 +25,7 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*@""")
+		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s]|[_])*@""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -47,7 +47,8 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 							ISSUE,
 							node,
 							context.getRangeLocation(node.parent, beginPosition, length),
-							ISSUE.getExplanation(TextFormat.TEXT)
+							ISSUE.getExplanation(TextFormat.TEXT),
+							createFix(line)
 						)
 					}
 
@@ -57,5 +58,21 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 				}
 			}
 		}
+	}
+
+	private fun createFix(line: String): LintFix {
+		var newLine = ""
+		val charArray = line.toCharArray()
+		charArray.forEach {
+			if (it == '@') {
+				newLine += "\n"
+			}
+			newLine += it
+		}
+		return fix()
+			.replace()
+			.text(line)
+			.with(newLine)
+			.build()
 	}
 }

@@ -27,6 +27,7 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val WRONG_NAME_REGEX = Regex("[A-Z][A-Z]")
+		private val UPPER_CHAR_REGEX = Regex("""([A-Z]|\d)""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
@@ -42,9 +43,43 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 				val name = node.name ?: return
 
 				if (name.contains(WRONG_NAME_REGEX)) {
-					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+					context.report(
+						ISSUE,
+						node,
+						context.getNameLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createLintFix(name)
+					)
 				}
 			}
 		}
 	}
+
+	private fun createLintFix(oldName: String): LintFix {
+		return LintFix.create()
+			.replace()
+			.text(oldName)
+			.with(getNewName(oldName))
+			.build()
+	}
+
+
+	private fun getNewName(oldName: String): String {
+		var resultName = ""
+		var previousChar = ' '
+		var nextChar = ' '
+		val charArray = oldName.toCharArray()
+		for (i in charArray.indices) {
+			val currentChar = charArray[i]
+			resultName += if (currentChar.isUpperCase() && previousChar.isUpperCase()) {
+				currentChar.toLowerCase()
+			} else {
+				currentChar
+			}
+			previousChar = currentChar
+		}
+
+		return resultName
+	}
+
 }

@@ -31,6 +31,7 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
+		const val KEY_PREFIX_LABEL = "KEY"
 		val KEY_PREFIX_REGEX = Regex("""^KEY_""")
 		val PUT_PARCELABLE_METHOD_REGEX = Regex("""^putParcelable$""")
 		val FRAGMENT_REGEX = Regex("""Fragment$""")
@@ -46,22 +47,31 @@ class ArgumentsBundleKeyPrefixDetector : Detector(), Detector.UastScanner {
 				val file = node.getContainingUFile() ?: return
 				val className = file.classes.firstOrNull()?.name ?: return
 				val name = node.methodName ?: return
-				if (className.contains(ArgumentsBundleKeyPrefixDetector.Companion.FRAGMENT_REGEX)) {
-					if (name.matches(ArgumentsBundleKeyPrefixDetector.Companion.PUT_PARCELABLE_METHOD_REGEX)) {
+				if (className.contains(FRAGMENT_REGEX)) {
+					if (name.matches(PUT_PARCELABLE_METHOD_REGEX)) {
 						val firstParam = node.valueArguments.firstOrNull() ?: return
 						val extraParam = firstParam.asRenderString()
-						if (!extraParam.contains(ArgumentsBundleKeyPrefixDetector.Companion.KEY_PREFIX_REGEX)) {
+						if (!extraParam.contains(KEY_PREFIX_REGEX)) {
 							context.report(
-								ArgumentsBundleKeyPrefixDetector.Companion.ISSUE,
+								ISSUE,
 								node,
 								context.getLocation(firstParam),
-								ArgumentsBundleKeyPrefixDetector.Companion.ISSUE.getExplanation(TextFormat.TEXT)
+								ISSUE.getExplanation(TextFormat.TEXT),
+								createFix(extraParam)
 							)
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private fun createFix(extraParam: String): LintFix {
+		return fix()
+			.replace()
+			.text(extraParam)
+			.autoFix()
+			.build()
 	}
 }
 
