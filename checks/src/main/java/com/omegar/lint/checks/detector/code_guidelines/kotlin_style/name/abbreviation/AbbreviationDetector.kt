@@ -70,8 +70,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT),
-						createLintFix(checkText)
+						node.text + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
@@ -102,30 +101,5 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 			resultText = resultText.replace(it, " ")
 		}
 		return resultText
-	}
-
-	private fun createLintFix(oldName: String): LintFix {
-		return LintFix.create()
-			.replace()
-			.text(oldName)
-			.with(getNewName(oldName))
-			.build()
-	}
-
-	private fun getNewName(oldName: String): String {
-		var resultName = ""
-		var previousChar = ' '
-		val charArray = oldName.toCharArray()
-		for (i in charArray.indices) {
-			val currentChar = charArray[i]
-			resultName += if (currentChar.isUpperCase() && previousChar.isUpperCase()) {
-				currentChar.toLowerCase()
-			} else {
-				currentChar
-			}
-			previousChar = currentChar
-		}
-
-		return resultName
 	}
 }
