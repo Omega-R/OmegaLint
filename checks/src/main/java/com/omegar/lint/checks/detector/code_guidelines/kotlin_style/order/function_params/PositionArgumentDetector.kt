@@ -2,6 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.funct
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 import org.jetbrains.uast.UParameter
@@ -33,6 +34,7 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
 
 		private const val CALLBACK_NAME = "callback"
 		private const val CALLBACK_REPORT_MESSAGE = "Callback argument should be the last."
+		private const val FUNCTION_CALL_PART = "this$"
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UParameter::class.java)
@@ -42,8 +44,15 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
 			override fun visitParameter(node: UParameter) {
 				val parent = node.uastParent as? UMethod ?: return
 				val params = parent.uastParameters
+				var indexOfFirstElement = 0 // for case SomeClass.someFun(context: Context)
 
-				if (params[0] != node && ((node.name == CONTEXT_CORRECTLY_NAME) || (node.name == CONTEXT_ABBREVIATION))) {
+				params.forEach {
+					if(it.name.contains(FUNCTION_CALL_PART)) {
+						indexOfFirstElement++
+					}
+				}
+
+				if (params[indexOfFirstElement] != node && ((node.name == CONTEXT_CORRECTLY_NAME) || (node.name == CONTEXT_ABBREVIATION))) {
 					context.report(
 						ISSUE,
 						node as UElement,
