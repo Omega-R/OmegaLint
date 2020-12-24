@@ -89,7 +89,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	private fun getNameString(lines: List<String>): String? {
 		lines.forEach { line ->
 			if (!line.contains(ANNOTATION_LABEL)) {
-				return line
+				return line.split("=")[0]
 			}
 		}
 		return null
