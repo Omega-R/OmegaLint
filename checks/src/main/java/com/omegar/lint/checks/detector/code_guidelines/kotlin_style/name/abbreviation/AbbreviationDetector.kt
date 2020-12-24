@@ -26,9 +26,9 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
+		private val ANNOTATION_REGEX = Regex("""^@""")
 		private const val OPEN_SCOPE_LABEL = "("
 		private const val EQUAL_LABEL = "="
-		private const val ANNOTATION_LABEL = "@"
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
@@ -51,8 +51,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
 				val parent = node.parent ?: return
-				val some = parent.text.lines()
-				val nameLine = some.firstOrNull { it.contains(CLASS_LABEL) }
+				val fileLines = parent.text.lines()
+				val nameLine = fileLines.firstOrNull { it.contains(CLASS_LABEL) }
 				if (nameLine != null && nameLine.contains(ENUM_LABEL)) {
 					return
 				}
@@ -88,8 +88,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 	private fun getNameString(lines: List<String>): String? {
 		lines.forEach { line ->
-			if (!line.contains(ANNOTATION_LABEL)) {
-				return line.split("=")[0]
+			if (!line.contains(ANNOTATION_REGEX)) {
+				return line
 			}
 		}
 		return null
