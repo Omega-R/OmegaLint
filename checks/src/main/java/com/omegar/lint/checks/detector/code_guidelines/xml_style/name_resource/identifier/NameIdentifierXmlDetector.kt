@@ -111,12 +111,12 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 		)
 	}
 
-	private fun createFix(attributeValue: String, message: String): LintFix {
+	private fun createFix(attributeValue: String, correctPrefix: String): LintFix {
 		val oldText = attributeValue.replace("@+id/", "")
 		return fix()
 			.replace()
 			.text(attributeValue)
-			.with("${message}_$oldText")
+			.with("${correctPrefix}_$oldText")
 			.build()
 	}
 }

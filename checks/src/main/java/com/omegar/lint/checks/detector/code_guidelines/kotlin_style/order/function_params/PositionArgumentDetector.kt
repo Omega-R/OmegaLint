@@ -28,7 +28,6 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private const val CONTEXT_ABBREVIATION = "ctx"
 		private const val CONTEXT_CORRECTLY_NAME = "context"
 		private const val CONTEXT_REPORT_MESSAGE = "Context argument should be the first"
 
@@ -47,29 +46,28 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
 				var indexOfFirstElement = 0 // for case SomeClass.someFun(context: Context)
 
 				params.forEach {
-					if(it.name.contains(FUNCTION_CALL_PART)) {
+					if (it.name.contains(FUNCTION_CALL_PART)) {
 						indexOfFirstElement++
 					}
 				}
 
-				if (params[indexOfFirstElement] != node && ((node.name == CONTEXT_CORRECTLY_NAME) || (node.name == CONTEXT_ABBREVIATION))) {
-					context.report(
-						ISSUE,
-						node as UElement,
-						context.getNameLocation(node),
-						"$CONTEXT_REPORT_MESSAGE\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-					)
+				if (params[indexOfFirstElement] != node && (node.name == CONTEXT_CORRECTLY_NAME)) {
+					contextReport(context, node, CONTEXT_REPORT_MESSAGE)
 				}
 
 				if ((params[params.size - 1] != node) && (node.name == CALLBACK_NAME)) {
-					context.report(
-						ISSUE,
-						node as UElement,
-						context.getNameLocation(node),
-						"$CALLBACK_REPORT_MESSAGE\n${ISSUE.getExplanation(TextFormat.TEXT)}"
-					)
+					contextReport(context, node, CALLBACK_REPORT_MESSAGE)
 				}
 			}
 		}
+	}
+
+	private fun contextReport(context: JavaContext, node: UParameter, message: String) {
+		context.report(
+			ISSUE,
+			node as UElement,
+			context.getNameLocation(node),
+			"$message\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+		)
 	}
 }

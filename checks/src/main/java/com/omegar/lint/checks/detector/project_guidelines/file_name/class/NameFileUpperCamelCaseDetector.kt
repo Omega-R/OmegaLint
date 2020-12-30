@@ -27,7 +27,6 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val WRONG_NAME_REGEX = Regex("[A-Z][A-Z]")
-		private val UPPER_CHAR_REGEX = Regex("""([A-Z]|\d)""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
@@ -63,18 +62,18 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 
 
 	private fun getNewName(oldName: String): String {
-		var resultName = ""
-		var previousChar = ' '
-		var nextChar = ' '
+		lateinit var resultName: String
 		val charArray = oldName.toCharArray()
-		for (i in charArray.indices) {
+
+		for (i in 1 until oldName.length) {
 			val currentChar = charArray[i]
+			val previousChar = charArray[i-1]
+
 			resultName += if (currentChar.isUpperCase() && previousChar.isUpperCase()) {
 				currentChar.toLowerCase()
 			} else {
 				currentChar
 			}
-			previousChar = currentChar
 		}
 
 		return resultName

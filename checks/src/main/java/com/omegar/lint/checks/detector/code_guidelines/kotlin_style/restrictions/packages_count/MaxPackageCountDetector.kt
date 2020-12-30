@@ -51,7 +51,6 @@ class MaxPackageCountDetector : Detector(), Detector.UastScanner {
 							val nextPackagesList = packageMap[currentPackage]
 							val nextPackage = packagesList[i + 1]
 							if (nextPackagesList != null) {
-
 								if (!nextPackagesList.contains(nextPackage)) {
 									nextPackagesList.add(nextPackage)
 									packageMap.replace(currentPackage, nextPackagesList)

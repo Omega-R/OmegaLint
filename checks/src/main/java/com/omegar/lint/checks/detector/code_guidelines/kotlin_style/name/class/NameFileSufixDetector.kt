@@ -96,7 +96,6 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 							}
 					}
 				}
-
 			}
 		}
 	}

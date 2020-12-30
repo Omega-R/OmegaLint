@@ -24,25 +24,18 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 		)
 
 		private const val APP_NAME = "app_name"
-		private const val ERROR_PREFIX = "error"
-		private const val MESSAGE_PREFIX = "message"
-		private const val TITLE_PREFIX = "title"
-		private const val LABEL_PREFIX = "label"
-		private const val BUTTON_PREFIX = "button"
-		private const val ACTION_PREFIX = "action"
-		private const val HINT_PREFIX = "hint"
 
-		private val PREFIXES_LIST = listOf(
-			ERROR_PREFIX,
-			MESSAGE_PREFIX,
-			TITLE_PREFIX,
-			LABEL_PREFIX,
-			BUTTON_PREFIX,
-			ACTION_PREFIX,
-			HINT_PREFIX
+		private val CORRECT_PREFIXES_LIST = listOf(
+			"error",
+			"message",
+			"title",
+			"label",
+			"button",
+			"action",
+			"hint"
 		)
 
-		private const val ATTRIBUTE_NAME_VAL = "name"//Attribute
+		private const val ATTRIBUTE_NAME_VAL = "name" //Attribute
 	}
 
 	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.VALUES
@@ -61,12 +54,10 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
 		val stringText = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
 
-		if ((stringText == APP_NAME) ||
-			PREFIXES_LIST.firstOrNull() { stringText.contains(it) } != null
-
-		) {
+		if ((stringText == APP_NAME) || CORRECT_PREFIXES_LIST.firstOrNull() { stringText.contains(it) } != null) {
 			return
 		}
+
 		context.report(
 			ISSUE,
 			element,
@@ -78,7 +69,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
 	private fun createFix(stringText: String): LintFix {
 		val groupFix = fix().group()
-		PREFIXES_LIST.forEach {
+		CORRECT_PREFIXES_LIST.forEach {
 			groupFix.add(
 				fix().replace().text(stringText).with("${it}_$stringText").build()
 			)

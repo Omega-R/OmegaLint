@@ -25,9 +25,6 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			)
 		)
 
-		private val WHEN_REGEX = Regex("""^(switch|when)""")
-		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
-		private val END_BRANCH_OF_WHEN_REGEX = Regex("""^\s*\}""")
 		private val EMPTY_BRANCH_REGEX = Regex("""\{\s*\}""")
 
 		private const val ELSE_LABEL = "-> {"

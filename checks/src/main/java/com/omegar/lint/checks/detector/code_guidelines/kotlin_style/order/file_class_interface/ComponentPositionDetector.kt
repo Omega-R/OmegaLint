@@ -122,13 +122,13 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 						currentRank = checkOrder(currentParams, VAL_PARAMS)
 						currentRank = checkOrder(currentParams, VAR_PARAMS)
 
-						// 3) Constructor */
+						/** 3) Constructor */
 						currentRank = checkOrder(currentParams, CONSTRUCTOR_PARAMS)
 
-						// 4 Function
+						/** 4 Function */
 						currentRank = checkOrder(currentParams, FUNCTION_PARAMS)
 
-						// 5 Enum
+						/** 5 Enum */
 						currentRank = checkOrder(currentParams, ENUM_PARAMS)
 
 						/** 6) Interface */

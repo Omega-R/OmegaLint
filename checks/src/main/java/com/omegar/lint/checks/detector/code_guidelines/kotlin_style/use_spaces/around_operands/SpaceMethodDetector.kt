@@ -113,14 +113,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					beginPosition++ // for adding new string pair.key
 				}
 			}
-
-
 		}
-	}
-
-	private fun deleteComments(text: String): String {
-
-		return ""
 	}
 
 	private fun checkSpaceForScopes(

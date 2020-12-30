@@ -17,7 +17,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 			explanation = """
                    Catch body is empty. Add exception handling.
                    http://wiki.omega-r.club/dev-android-code#rec226449864
-                    """,
+                   """,
 			category = Category.CORRECTNESS,
 			priority = 7,
 			severity = Severity.WARNING,
@@ -31,9 +31,10 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 
 		private const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
 		private const val THROW_VAL = "throw"
-		private const val GENERALIZED_EXCEPTION_MESSAGE =
-			"Catch generalized exception. Should throw specific exception in catch body \n" +
-					"http://wiki.omega-r.club/dev-android-code#rec226454364"
+		private const val GENERALIZED_EXCEPTION_MESSAGE = """Catch generalized exception.
+			 Should throw specific exception in catch body. 
+			http://wiki.omega-r.club/dev-android-code#rec226454364
+			"""
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UCatchClause::class.java)

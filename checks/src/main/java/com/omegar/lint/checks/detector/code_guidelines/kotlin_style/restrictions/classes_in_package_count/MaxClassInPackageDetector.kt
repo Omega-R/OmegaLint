@@ -39,7 +39,7 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
             override fun visitClass(node: UClass) {
                 val file = node.uastParent ?: return
                 val name = node.name ?: return
-                val lines = file.asRenderString().split("\n")
+                val lines = file.asRenderString().lines()
                 val packageString = lines.firstOrNull { it.contains(PACKAGE_VAL) } ?: return
 
                 if (packageString.isNotEmpty()) {
