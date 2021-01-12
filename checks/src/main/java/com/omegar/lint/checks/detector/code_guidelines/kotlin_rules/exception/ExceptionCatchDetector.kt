@@ -51,7 +51,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 						body,
 						context.getNameLocation(body),
 						ISSUE.getExplanation(TextFormat.TEXT),
-						createEmptyBodyFix(string)
+						createEmptyBodyFix()
 					)
 				}
 				val parameters = node.parameters
@@ -63,7 +63,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 								body,
 								context.getLocation(it as UElement),
 								GENERALIZED_EXCEPTION_MESSAGE,
-								createEmptyBodyFix(string)
+								createEmptyBodyFix()
 							)
 						}
 					}
@@ -72,7 +72,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
-	private fun createEmptyBodyFix(bodyString: String): LintFix {
+	private fun createEmptyBodyFix(): LintFix {
 		return LintFix.create()
 			.replace()
 			.text("}")

@@ -34,9 +34,6 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
-				/**
-				 * UpperCamelCase check
-				 */
 				val name = node.name ?: return
 
 				if (name.contains(WRONG_NAME_REGEX)) {
@@ -62,12 +59,12 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 
 
 	private fun getNewName(oldName: String): String {
-		lateinit var resultName: String
+		var resultName = ""
 		val charArray = oldName.toCharArray()
 
 		for (i in 1 until oldName.length) {
 			val currentChar = charArray[i]
-			val previousChar = charArray[i-1]
+			val previousChar = charArray[i - 1]
 
 			resultName += if (currentChar.isUpperCase() && previousChar.isUpperCase()) {
 				currentChar.toLowerCase()
