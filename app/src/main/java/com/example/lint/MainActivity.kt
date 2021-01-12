@@ -1,35 +1,37 @@
 package com.example.lint
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val SSS = 2
+        const val SS_S_SFDAS = 2
+
+        val some = 2
+
+        private const val EXTRA_PHOTO = "photo"
+
+        fun createIntent(context: Context, photo: String): Intent {
+            return Intent(context, MainActivity ::class.java).putExtra(EXTRA_PHOTO, photo)
+        }
+        fun someFunction() {}
+
+        fun createLauncher() = { someFunction() }
     }
 
+    val SSs = 2
 
+    fun spme() {
+        String?.toString()
 
-    fun spme () {
-        String ?.toString()
-    }
-
-
-    fun createLauncher() {
-        createActivityLauncher()
-    }
-
-
-    private fun createActivityLauncher(): String {
-        return "createLauncher()"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -38,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         val cTX: Context = this
         String
             .toString()
-        String::class.java
 
 
         val list = listOf<String>()
@@ -48,56 +49,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTabName(position: Int): String {
-        return when (position) {
-            0 ->  getString(R.string.app_name)
-            else -> getString(R.string.app_name)
-        }
+    private fun SSsome ( ) {
+        MainActivity .createIntent(this, "")
     }
-
-
-
-    private fun SSsome(): Int {
-        val s = 2
-        val list = listOf("")
-        list.forEach { line ->
-            val some = line
-        }
-
-        val s3 = 1
-        return when (s) {
-            s3 -> { 0 }
-
-            0, 2 -> {
-                val some = 2
-                1
-            }
-            else ->  2
-        }
-
-    }
-
-
 
     class SomeClass() {
         val soURL = 2
     }
 
 
-    fun emptyFun() {
+    fun emptyFun(): Int {
         try {
             val s = 2
         } catch (e: Exception) {
             throw e
         }
-    }
 
-    object Auth : Screen()
 
-    open class Screen() {}
+        return  when(1) {
+            1 -> 2
+            else -> 0
+        }
 
-    fun some(): String {
-        return "S"
     }
 
     protected val s2: String = ""

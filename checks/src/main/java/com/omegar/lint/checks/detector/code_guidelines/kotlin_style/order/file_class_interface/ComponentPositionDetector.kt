@@ -100,11 +100,9 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 	 * https://github.com/JetBrains/intellij-community/blob/master/uast/uast-java/src/org/jetbrains/uast/java/declarations/JavaUClass.kt
 	 */
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				val name = node.name ?: return
@@ -124,13 +122,13 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 						currentRank = checkOrder(currentParams, VAL_PARAMS)
 						currentRank = checkOrder(currentParams, VAR_PARAMS)
 
-						// 3) Constructor */
+						/** 3) Constructor */
 						currentRank = checkOrder(currentParams, CONSTRUCTOR_PARAMS)
 
-						// 4 Function
+						/** 4 Function */
 						currentRank = checkOrder(currentParams, FUNCTION_PARAMS)
 
-						// 5 Enum
+						/** 5 Enum */
 						currentRank = checkOrder(currentParams, ENUM_PARAMS)
 
 						/** 6) Interface */

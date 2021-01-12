@@ -48,11 +48,10 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 		private const val REPORT_MESSAGE_BEGIN = "Class name should end with"
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				/**
@@ -97,7 +96,6 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 							}
 					}
 				}
-
 			}
 		}
 	}
@@ -107,7 +105,17 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 			ISSUE,
 			node,
 			context.getNameLocation(node),
-			"$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+			"$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}",
+			createContextReport(node.name, value)
 		)
+	}
+
+	private fun createContextReport(part: String?, value: String): LintFix {
+		return fix()
+			.replace()
+			.text(part)
+			.with(part + value)
+			.build()
+
 	}
 }

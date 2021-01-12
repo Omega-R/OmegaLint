@@ -25,15 +25,14 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s]|[.]|[\d])*\s*\}""")
+		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*.*""")
+		private val RETURN_REGEX = Regex("""\s*return""")
 		private const val MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION = 3
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UMethod::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UMethod::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				val text = node.text ?: return
@@ -42,11 +41,28 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 					context.report(
 						ISSUE,
 						node,
-						context.getNameLocation(node),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						context.getLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createFix(text)
 					)
 				}
 			}
 		}
+	}
+
+	private fun createFix(text: String): LintFix {
+		val newText = text
+			.replace("{", "=")
+			.replace(RETURN_REGEX, "")
+			.replace("\n", "")
+			.replace("}", "")
+			.replace(Regex("""\s*$"""), "")
+
+		return fix()
+			.replace()
+			.text(text)
+			.with(newText)
+			.build()
+
 	}
 }

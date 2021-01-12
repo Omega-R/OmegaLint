@@ -32,11 +32,10 @@ class MaxLineLengthDetector : Detector(), Detector.UastScanner {
 		internal const val MAX_LENGTH = 130
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				val text = node.parent?.text ?: return

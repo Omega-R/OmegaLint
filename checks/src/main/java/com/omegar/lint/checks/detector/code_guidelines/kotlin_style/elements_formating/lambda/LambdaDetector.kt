@@ -37,11 +37,9 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 		private val SWITCH_VAL = Regex("""(switch|when)""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				val text = node.parent?.text ?: return
@@ -71,7 +69,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 				ISSUE,
 				params.node,
 				params.context.getRangeLocation(params.node.parent, params.beginPosition, length),
-				params.line + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+				ISSUE.getExplanation(TextFormat.TEXT)
 			)
 		} else if (params.index - 1 >= 0) {
 			val previousLine = params.lines[params.index - 1]
@@ -85,9 +83,7 @@ class LambdaDetector : Detector(), Detector.UastScanner {
 					ISSUE,
 					params.node,
 					params.context.getRangeLocation(params.node.parent, params.beginPosition, length),
-					previousLine + "\n" + previousLine.contains(CLOSE_SCOPE_VAL) + "\n" + ISSUE.getExplanation(
-						TextFormat.TEXT
-					)
+					ISSUE.getExplanation(TextFormat.TEXT)
 				)
 			}
 		}

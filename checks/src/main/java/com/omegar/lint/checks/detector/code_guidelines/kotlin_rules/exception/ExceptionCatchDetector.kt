@@ -17,7 +17,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 			explanation = """
                    Catch body is empty. Add exception handling.
                    http://wiki.omega-r.club/dev-android-code#rec226449864
-                    """,
+                   """,
 			category = Category.CORRECTNESS,
 			priority = 7,
 			severity = Severity.WARNING,
@@ -31,26 +31,27 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 
 		private const val GENERALIZED_EXCEPTION_VAL = "java.lang.Exception"
 		private const val THROW_VAL = "throw"
-		private const val GENERALIZED_EXCEPTION_MESSAGE =
-			"Catch generalized exception. Should throw specific exception in catch body \n" +
-					"http://wiki.omega-r.club/dev-android-code#rec226454364"
+		private const val GENERALIZED_EXCEPTION_MESSAGE = """Catch generalized exception.
+			 Should throw specific exception in catch body. 
+			http://wiki.omega-r.club/dev-android-code#rec226454364
+			"""
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UCatchClause::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UCatchClause::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitCatchClause(node: UCatchClause) {
 				val body = node.body
 				val string = body.asRenderString()
+
 				if (string.matches(EMPTY_BODY_REGEX)) {
 					context.report(
 						ISSUE,
 						body,
 						context.getNameLocation(body),
-						ISSUE.getExplanation(TextFormat.TEXT)
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createEmptyBodyFix()
 					)
 				}
 				val parameters = node.parameters
@@ -60,14 +61,23 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 							context.report(
 								ISSUE,
 								body,
-								context.getNameLocation(it),
-								GENERALIZED_EXCEPTION_MESSAGE
+								context.getLocation(it as UElement),
+								GENERALIZED_EXCEPTION_MESSAGE,
+								createEmptyBodyFix()
 							)
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private fun createEmptyBodyFix(): LintFix {
+		return LintFix.create()
+			.replace()
+			.text("}")
+			.with("	throw //something\n		}")
+			.build()
 	}
 
 }

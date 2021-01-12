@@ -28,11 +28,9 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
 		private const val MAX_COUNT_OF_ARGUMENTS = 5
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UMethod::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UMethod::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
 				if (node.isConstructor) {

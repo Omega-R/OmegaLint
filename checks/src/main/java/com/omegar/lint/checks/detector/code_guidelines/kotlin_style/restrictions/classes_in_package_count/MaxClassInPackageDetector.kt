@@ -27,22 +27,19 @@ class MaxClassInPackageDetector : Detector(), Detector.UastScanner {
         )
 
         private const val PACKAGE_VAL = "package"
-
         private const val MAX_CLASSES_IN_PACKAGE_COUNT = 30
-
         private var classesMap = mutableMapOf<String, ArrayList<String>>()
     }
 
-    override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-        return listOf(UClass::class.java)
-    }
+    override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-    override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+    override fun createUastHandler(context: JavaContext): UElementHandler {
         return object : UElementHandler() {
             override fun visitClass(node: UClass) {
                 val file = node.uastParent ?: return
                 val name = node.name ?: return
-                val lines = file.asRenderString().split("\n")
+                val lines = file.asRenderString().lines()
                 val packageString = lines.firstOrNull { it.contains(PACKAGE_VAL) } ?: return
 
                 if (packageString.isNotEmpty()) {

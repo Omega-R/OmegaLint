@@ -26,9 +26,10 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
+		private val ANNOTATION_REGEX = Regex("""^@""")
 		private const val OPEN_SCOPE_LABEL = "("
 		private const val EQUAL_LABEL = "="
-		private const val ANNOTATION_LABEL = "@"
+		private const val SPACE_LABEL = " "
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
@@ -45,21 +46,19 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
-		return listOf(
-			UDeclaration::class.java
-		)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UDeclaration::class.java)
 
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitDeclaration(node: UDeclaration) {
 				val parent = node.parent ?: return
-				val some = parent.text.lines()
-				val nameLine = some.firstOrNull { it.contains(CLASS_LABEL) }
+				val fileLines = parent.text.lines()
+				val nameLine = fileLines.firstOrNull { it.contains(CLASS_LABEL) }
+
 				if (nameLine != null && nameLine.contains(ENUM_LABEL)) {
 					return
 				}
+
 				val lines = node.text?.lines() ?: return
 
 				var checkText = getNameString(lines) ?: return
@@ -78,21 +77,21 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 					)
 				}
 			}
-
-			private fun deleteAfterSymbol(checkText: String, symbol: String): String {
-				var text = checkText
-				if (text.indexOf(symbol) > 0) {
-					text = checkText.substring(0, checkText.indexOf(symbol))
-				}
-				return text
-			}
 		}
 
 	}
 
+	private fun deleteAfterSymbol(checkText: String, symbol: String): String {
+		var text = checkText
+		if (text.indexOf(symbol) > 0) {
+			text = checkText.substring(0, checkText.indexOf(symbol))
+		}
+		return text
+	}
+
 	private fun getNameString(lines: List<String>): String? {
 		lines.forEach { line ->
-			if (!line.contains(ANNOTATION_LABEL)) {
+			if (!line.contains(ANNOTATION_REGEX)) {
 				return line
 			}
 		}
@@ -102,7 +101,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	private fun deleteExclusions(checkText: String): String {
 		var resultText = checkText
 		exclusionsList.forEach {
-			resultText = resultText.replace(it, " ")
+			resultText = resultText.replace(it, SPACE_LABEL)
 		}
 		return resultText
 	}

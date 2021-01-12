@@ -4,6 +4,7 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
+import java.lang.StringBuilder
 
 class AnnotationDetector : Detector(), Detector.UastScanner {
 	companion object {
@@ -25,14 +26,13 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*([a-z]|[A-Z]|["]|[']|[(]|[)]|[=]|[\s])*@""")
+		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*.*@""")
+		private val FIRST_ANNOTATION_REGEX = Regex("""^\s*@""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				val text = node.parent?.text ?: return
@@ -47,7 +47,8 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 							ISSUE,
 							node,
 							context.getRangeLocation(node.parent, beginPosition, length),
-							ISSUE.getExplanation(TextFormat.TEXT)
+							ISSUE.getExplanation(TextFormat.TEXT),
+							createFix(line)
 						)
 					}
 
@@ -57,5 +58,17 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 				}
 			}
 		}
+	}
+
+	private fun createFix(line: String): LintFix {
+		val newLine = """@${line
+			.replace(FIRST_ANNOTATION_REGEX, "")
+			.replace("@", "\n@")}"""
+
+		return fix()
+			.replace()
+			.text(line)
+			.with(newLine)
+			.build()
 	}
 }

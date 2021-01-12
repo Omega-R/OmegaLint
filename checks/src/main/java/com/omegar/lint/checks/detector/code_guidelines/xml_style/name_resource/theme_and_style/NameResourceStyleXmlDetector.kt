@@ -30,13 +30,9 @@ class NameResourceStyleXmlDetector : ResourceXmlDetector() {
 		private val SUFFIX_STYLE_REGEX = Regex(""".*$SUFFIX_STYLE$""")
 	}
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		return folderType == ResourceFolderType.VALUES
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.VALUES
 
-	override fun getApplicableElements(): Collection<String>? {
-		return setOf("style")
-	}
+	override fun getApplicableElements(): Collection<String> = setOf("style")
 
 	override fun visitElement(context: XmlContext, element: Element) {
 		val name = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return

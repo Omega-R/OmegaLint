@@ -26,7 +26,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val END_FUNCTION_DECLARATION_REGEX = Regex("""\s*\{$""")
-		private val RIGHT_END_FUNCTION_DECLARATION_REGEX = Regex("""([a-z]|[A-Z]|"|'|\)|=|>|\?)\s\{$""")
+		private val RIGHT_END_FUNCTION_DECLARATION_REGEX =
+			Regex("""([a-z]|[A-Z]|"|'|\)|=|>|\?)\s\{$""")
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
 		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
@@ -37,13 +38,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		private const val OPEN_SCOPE_VALUE = "("
 		private const val QUOTE_VALUE = "\""
 
+
 		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
 		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
+		private val COMMENTS_REGEX = Regex("""([//]|[/\*])""")
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>> {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
@@ -54,9 +55,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				var beginPosition = 0
 				lines.forEach { line ->
 					val length = line.length
-
 					REGEXPS.forEach { pair ->
-						if (line.contains(pair.value)) {
+						if (line.contains(pair.value) && !line.contains(COMMENTS_REGEX)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
@@ -67,19 +67,40 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 										&& !line.contains(POINT_BEGIN_REGEX)
 										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
 									makeContextReport(
-										Params(context, node, beginPosition + beforeIndex, pair.key.length + 1, line, beforeIndex)
+										Params(
+											context,
+											node,
+											beginPosition + beforeIndex,
+											pair.key.length + 1,
+											line,
+											beforeIndex
+										)
 									)
 								}
 
 								afterIndex > 0 && beforeIndex <= 0 -> {
 									makeContextReport(
-										Params(context, node, beginPosition + afterIndex, pair.key.length + 1, line, afterIndex)
+										Params(
+											context,
+											node,
+											beginPosition + afterIndex,
+											pair.key.length + 1,
+											line,
+											afterIndex
+										)
 									)
 								}
 
 								afterIndex > 0 && beforeIndex > 0 -> {
 									makeContextReport(
-										Params(context, node, beginPosition + beforeIndex, pair.key.length + 2, line, beforeIndex)
+										Params(
+											context,
+											node,
+											beginPosition + beforeIndex,
+											pair.key.length + 2,
+											line,
+											beforeIndex
+										)
 									)
 								}
 							}
@@ -92,12 +113,15 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					beginPosition++ // for adding new string pair.key
 				}
 			}
-
-
 		}
 	}
 
-	private fun checkSpaceForScopes(context: JavaContext, line: String, node: UClass, beginPosition: Int) {
+	private fun checkSpaceForScopes(
+		context: JavaContext,
+		line: String,
+		node: UClass,
+		beginPosition: Int
+	) {
 		val length = line.length
 		if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
 			val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
@@ -112,7 +136,16 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 			&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 		) {
 			if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
-				makeContextReport(Params(context, node, beginPosition + length - 1, 1, line, length - 1))
+				makeContextReport(
+					Params(
+						context,
+						node,
+						beginPosition + length - 1,
+						1,
+						line,
+						length - 1
+					)
+				)
 		}
 	}
 
@@ -121,7 +154,11 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 			params.context.report(
 				ISSUE,
 				params.node,
-				params.context.getRangeLocation(params.node.parent, params.beginPosition, params.length),
+				params.context.getRangeLocation(
+					params.node.parent,
+					params.beginPosition,
+					params.length
+				),
 				ISSUE.getExplanation(TextFormat.TEXT)
 			)
 		}

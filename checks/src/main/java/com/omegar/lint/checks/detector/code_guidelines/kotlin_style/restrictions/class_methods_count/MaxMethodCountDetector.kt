@@ -11,29 +11,28 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
 		val ISSUE: Issue = Issue.create(
-            id = "OMEGA_NOT_EXCEED_MAX_METHODS_COUNT",
-            briefDescription = "Class methods count does not match the coding convention",
-            explanation = """
+			id = "OMEGA_NOT_EXCEED_MAX_METHODS_COUNT",
+			briefDescription = "Class methods count does not match the coding convention",
+			explanation = """
                   Class should has 30 methods or less.
                   http://wiki.omega-r.club/dev-android-code#rec228195879
                     """,
-            category = Category.CORRECTNESS,
-            priority = 7,
-            severity = Severity.WARNING,
-            implementation = Implementation(
-                MaxMethodCountDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
+			category = Category.CORRECTNESS,
+			priority = 7,
+			severity = Severity.WARNING,
+			implementation = Implementation(
+				MaxMethodCountDetector::class.java,
+				Scope.JAVA_FILE_SCOPE
+			)
+		)
 
 		private const val MAX_METHOD_COUNT = 30
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(UClass::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
 				val methods = node.methods

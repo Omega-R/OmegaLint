@@ -83,9 +83,7 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		 */
 	}
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		return folderType == ResourceFolderType.LAYOUT
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.LAYOUT
 
 	override fun visitDocument(context: XmlContext, document: Document) {
 		val text = document.textContent ?: return
@@ -108,24 +106,28 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 
 						attribute.contains(VIEW_ID_VAL) -> {
 							currentRank =
-								checkOrder(context, document, beginPosition, ID_MESSAGE, attribute, currentRank, ID_RANK)
+								checkOrder(Params(context, document, beginPosition, ID_MESSAGE, attribute, currentRank, ID_RANK))
 						}
 
 						attribute.contains(STYLE_PREFIX_REGEX) -> {
 							currentRank =
-								checkOrder(context, document, beginPosition, STYLE_MESSAGE, attribute, currentRank, STYLE_RANK)
+								checkOrder(
+									Params(context, document, beginPosition, STYLE_MESSAGE, attribute, currentRank, STYLE_RANK)
+								)
 						}
 
 						attribute.contains(LAYOUT_HEIGHT_VAL) || attribute.contains(LAYOUT_WIDTH_VAL) -> {
 							currentRank =
 								checkOrder(
-									context,
-									document,
-									beginPosition,
-									LAYOUT_H_W_MESSAGE,
-									attribute,
-									currentRank,
-									LAYOUT_H_W_RANK
+									Params(
+										context,
+										document,
+										beginPosition,
+										LAYOUT_H_W_MESSAGE,
+										attribute,
+										currentRank,
+										LAYOUT_H_W_RANK
+									)
 								)
 						}
 
@@ -194,21 +196,13 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		}
 	}
 
-	private fun checkOrder(
-		context: XmlContext,
-		document: Document,
-		beginPosition: Int,
-		message: String,
-		attribute: String,
-		currentRank: Int,
-		viewRank: Int
-	): Int {
-		if (currentRank <= viewRank) {
-			return viewRank
+	private fun checkOrder(params: Params): Int {
+		if (params.currentRank <= params.viewRank) {
+			return params.viewRank
 		}
 
-		makeContextReport(context, document, beginPosition, message, attribute)
-		return currentRank
+		makeContextReport(params.context, params.document, params.beginPosition, params.message, params.attribute)
+		return params.currentRank
 	}
 
 	private fun makeContextReport(
@@ -242,4 +236,14 @@ class AttributesPositionXmlDetector : ResourceXmlDetector() {
 		}
 		return false
 	}
+
+	class Params(
+		val context: XmlContext,
+		val document: Document,
+		val beginPosition: Int,
+		val message: String,
+		val attribute: String,
+		val currentRank: Int,
+		val viewRank: Int
+	)
 }

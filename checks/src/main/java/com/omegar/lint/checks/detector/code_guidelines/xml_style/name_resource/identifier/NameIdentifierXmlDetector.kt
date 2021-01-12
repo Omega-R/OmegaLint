@@ -47,19 +47,9 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 	}
 
 
-	override fun appliesTo(folderType: ResourceFolderType): Boolean {
-		// Return true if we want to analyze resource files in the specified resource
-		// folder type. In this case we only need to analyze layout resource files.
-		return folderType == ResourceFolderType.LAYOUT
-	}
+	override fun appliesTo(folderType: ResourceFolderType): Boolean = folderType == ResourceFolderType.LAYOUT
 
-	override fun getApplicableAttributes(): Collection<String>? {
-		// Return the set of attribute names we want to analyze. The `visitAttribute` method
-		// below will be called each time lint sees one of these attributes in a
-		// layout XML resource file. In this case, we want to analyze every attribute
-		// in every layout XML resource file.
-		return XmlScannerConstants.ALL
-	}
+	override fun getApplicableAttributes(): Collection<String>? = XmlScannerConstants.ALL
 
 	override fun visitAttribute(context: XmlContext, attribute: Attr) {
 		attribute.ownerElement ?: return
@@ -116,7 +106,17 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 			issue = ISSUE,
 			scope = attribute,
 			location = context.getValueLocation(attribute),
-			message = "$REPORT_MESSAGE $message\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+			message = "$REPORT_MESSAGE $message\n${ISSUE.getExplanation(TextFormat.TEXT)}",
+			quickfixData = createFix(attribute.nodeValue, message)
 		)
+	}
+
+	private fun createFix(attributeValue: String, correctPrefix: String): LintFix {
+		val oldText = attributeValue.replace("@+id/", "")
+		return fix()
+			.replace()
+			.text(attributeValue)
+			.with("${correctPrefix}_$oldText")
+			.build()
 	}
 }

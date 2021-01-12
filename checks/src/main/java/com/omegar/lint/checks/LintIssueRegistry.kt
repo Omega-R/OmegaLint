@@ -35,7 +35,7 @@ class LintIssueRegistry : IssueRegistry() {
 	override val issues: List<Issue>
 		get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
-            AbbreviationDetector.ISSUE,// TODO need testing
+            AbbreviationDetector.ISSUE, // TODO need testing
             PositionArgumentDetector.ISSUE,
             MaxFunctionsArgumentsDetector.ISSUE,
             ExceptionCatchDetector.ISSUE,
@@ -54,8 +54,8 @@ class LintIssueRegistry : IssueRegistry() {
             SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
             AttributesPositionXmlDetector.ISSUE,
-            MaxClassInPackageDetector.ISSUE,// TODO need testing
-            MaxPackageCountDetector.ISSUE,  // TODO need testing
+            MaxClassInPackageDetector.ISSUE, // TODO need testing
+            MaxPackageCountDetector.ISSUE,   // TODO need testing
             SimplificationsControlInstructionsDetector.ISSUE, // TODO need testing
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,

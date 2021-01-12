@@ -25,9 +25,6 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 			)
 		)
 
-		private val WHEN_REGEX = Regex("""^(switch|when)""")
-		private val BEGIN_BRANCH_OF_WHEN_REGEX = Regex("""->\s*\{""")
-		private val END_BRANCH_OF_WHEN_REGEX = Regex("""^\s*\}""")
 		private val EMPTY_BRANCH_REGEX = Regex("""\{\s*\}""")
 
 		private const val ELSE_LABEL = "-> {"
@@ -35,11 +32,9 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		private const val DELTA = 2
 	}
 
-	override fun getApplicableUastTypes(): List<Class<out UElement?>>? {
-		return listOf(USwitchClauseExpression::class.java)
-	}
+	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(USwitchClauseExpression::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler? {
+	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitSwitchClauseExpression(node: USwitchClauseExpression) {
 				val renderText = node.asRenderString()
@@ -50,35 +45,29 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 
 				val method = node.getContainingUMethod() ?: return
 				val text = method.text ?: return
-				var firstText = renderText.trim().split("\n").firstOrNull() ?: return
+				var firstText = renderText.trim().lines().firstOrNull() ?: return
 
 				if (firstText == ELSE_LABEL) {
 					firstText = ELSE_TEXT
 				}
 
-				if (text.contains(firstText) && exceedMaxLineLength(text, firstText)) {
+				if (text.contains(firstText) && exceedMaxLineLength(renderText)) {
 					context.report(
 						ISSUE,
 						node,
 						context.getLocation(node),
-						text + " " + firstText
+						ISSUE.getExplanation(TextFormat.TEXT)
 					)
 				}
 			}
 		}
 	}
 
-	private fun exceedMaxLineLength(text: String, firstText: String): Boolean {
+	private fun exceedMaxLineLength(text: String): Boolean {
 		val lines = text.lines()
-		for (i in lines.indices) {
-			val line = lines[i]
-			if (line.contains(firstText)) {
-				if (i + 1 < lines.size) {
-					val newStringSize = line.length + lines[i + 1].trim().length - DELTA
-					return newStringSize < MAX_LENGTH
-				}
-			}
+		if(lines.size > 1) {
+			return lines[0].length + lines[1].trim().length - DELTA < MAX_LENGTH
 		}
-		return true
+		return false
 	}
 }
