@@ -4,6 +4,7 @@ import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
+import java.lang.StringBuilder
 
 class AnnotationDetector : Detector(), Detector.UastScanner {
 	companion object {
@@ -26,6 +27,7 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 		)
 
 		private val ONE_EXPRESSION_REGEX = Regex("""\s*@\s*.*@""")
+		private val FIRST_ANNOTATION_REGEX = Regex("""^\s*@""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
@@ -59,14 +61,10 @@ class AnnotationDetector : Detector(), Detector.UastScanner {
 	}
 
 	private fun createFix(line: String): LintFix {
-		var newLine = ""
-		val charArray = line.toCharArray()
-		charArray.forEach {
-			if (it == '@') {
-				newLine += "\n"
-			}
-			newLine += it
-		}
+		val newLine = """@${line
+			.replace(FIRST_ANNOTATION_REGEX, "")
+			.replace("@", "\n@")}"""
+
 		return fix()
 			.replace()
 			.text(line)

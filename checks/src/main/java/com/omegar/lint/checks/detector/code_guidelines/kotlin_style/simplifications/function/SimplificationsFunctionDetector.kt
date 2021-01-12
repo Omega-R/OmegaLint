@@ -25,7 +25,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*.*\}""")
+		private val ONE_EXPRESSION_REGEX = Regex("""\{\s*return\s*.*""")
 		private val RETURN_REGEX = Regex("""\s*return""")
 		private const val MAX_LINE_COUNT_IN_EXPRESSION_FUNCTION = 3
 	}
@@ -56,6 +56,7 @@ class SimplificationsFunctionDetector : Detector(), Detector.UastScanner {
 			.replace(RETURN_REGEX, "")
 			.replace("\n", "")
 			.replace("}", "")
+			.replace(Regex("""\s*$"""), "")
 
 		return fix()
 			.replace()
