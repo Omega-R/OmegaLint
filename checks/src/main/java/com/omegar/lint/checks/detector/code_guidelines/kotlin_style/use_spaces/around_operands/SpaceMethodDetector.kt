@@ -5,7 +5,7 @@ import com.android.tools.lint.detector.api.*
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 
-class SpaceMethodDetector : Detector(), Detector.UastScanner {
+open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
@@ -30,17 +30,17 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 			Regex("""([a-z]|[A-Z]|"|'|\)|=|>|\?)\s\{$""")
 
 		private val RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX = Regex("""([a-z]|[A-Z]|\d)\s*\(""")
-		private val POINT_BEGIN_REGEX = Regex("""^\s*\.""")
-		private val QUESTION_MARK_POINT_BEGIN_REGEX = Regex("""^\s*\?\.""")
 
-		private const val DELETE_SPACES_MESSAGE = "Remove extra spaces."
 		private const val FUNCTION_VALUE = "fun"
 		private const val OPEN_SCOPE_VALUE = "("
 		private const val QUOTE_VALUE = "\""
 
+		private val OPEN_BRACE_REGEX = Regex("""\s*\{""")
+		private val OPEN_SCOPE_REGEX = Regex("""\s*\(""")
 
-		private val CHAR_ARRAY = arrayOf(".", "::", "?.")
-		private val REGEXPS = CHAR_ARRAY.map { it to Regex("""\s*$it\s""") }.toMap()
+		private val KEY_SYMBOLS_ARRAY = arrayOf(".", "::", "?.")
+		private val REGEXPS = KEY_SYMBOLS_ARRAY.map { it to Regex("""\s*$it\s*""") }.toMap()
+
 		private val COMMENTS_REGEX = Regex("""([//]|[/\*])""")
 	}
 
@@ -55,51 +55,39 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				var beginPosition = 0
 				lines.forEach { line ->
 					val length = line.length
+
 					REGEXPS.forEach { pair ->
 						if (line.contains(pair.value) && !line.contains(COMMENTS_REGEX)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
+							val match = pair.value.find(line)
 
-							when {
-								beforeIndex > 0
-										&& afterIndex <= 0
-										&& !line.contains(POINT_BEGIN_REGEX)
-										&& !line.contains(QUESTION_MARK_POINT_BEGIN_REGEX) -> {
-									makeContextReport(
-										Params(
-											context,
-											node,
-											beginPosition + beforeIndex,
-											pair.key.length + 1,
-											line,
-											beforeIndex
-										)
+							if (match != null  && (beforeIndex > 0 || afterIndex > 0)) {
+
+								val index = if(beforeIndex > 0) {beforeIndex} else {afterIndex}
+
+								makeContextReport(
+									Params(
+										context,
+										node,
+										beginPosition + 1,
+										line.length - 1,
+										line,
+										0,
+										"${pair.key} $beforeIndex $afterIndex ${match.value} \n $line \n $index"
 									)
-								}
+								)
 
-								afterIndex > 0 && beforeIndex <= 0 -> {
+								if (index > 0) {
 									makeContextReport(
 										Params(
 											context,
 											node,
-											beginPosition + afterIndex,
-											pair.key.length + 1,
+											beginPosition + index,
+											match.value.length,
 											line,
-											afterIndex
-										)
-									)
-								}
-
-								afterIndex > 0 && beforeIndex > 0 -> {
-									makeContextReport(
-										Params(
-											context,
-											node,
-											beginPosition + beforeIndex,
-											pair.key.length + 2,
-											line,
-											beforeIndex
+											index
 										)
 									)
 								}
@@ -116,6 +104,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
+
 	private fun checkSpaceForScopes(
 		context: JavaContext,
 		line: String,
@@ -125,9 +114,13 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		val length = line.length
 		if (line.contains(RIGHT_FUNCTIONS_OPEN_SCOPE_REGEX) && line.contains(FUNCTION_VALUE)) {
 			val functionLine = line.substring(0, line.indexOf(OPEN_SCOPE_VALUE) + 1)
-			val index = functionLine.indexOf(" (")
-			if (index > 0) {
-				makeContextReport(Params(context, node, beginPosition + index, 2, line, index))
+			val spaceIndex = functionLine.indexOf(" $OPEN_SCOPE_VALUE")
+			if (spaceIndex > 0) {
+				val match = OPEN_SCOPE_REGEX.find(line)
+				if (match != null) {
+					val index = spaceIndex - match.value.length + 2
+					makeContextReport(Params(context, node, beginPosition + index, match.value.length, line, index))
+				}
 			}
 		}
 
@@ -135,22 +128,17 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 			&& line.contains(END_FUNCTION_DECLARATION_REGEX)
 			&& !line.matches(END_FUNCTION_DECLARATION_REGEX)
 		) {
-			if (line[line.indexOf("{") - 1].toString() != OPEN_SCOPE_VALUE)
-				makeContextReport(
-					Params(
-						context,
-						node,
-						beginPosition + length - 1,
-						1,
-						line,
-						length - 1
-					)
-				)
+			val match = OPEN_BRACE_REGEX.find(line)
+			if (match != null) {
+				val index = length - match.value.length
+				makeContextReport(Params(context, node, beginPosition + index, match.value.length, line, index, " "))
+			}
 		}
 	}
 
 	private fun makeContextReport(params: Params) {
 		if (!isInQuote(params.line, params.index)) {
+
 			params.context.report(
 				ISSUE,
 				params.node,
@@ -159,7 +147,8 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					params.beginPosition,
 					params.length
 				),
-				ISSUE.getExplanation(TextFormat.TEXT)
+				params.toReplaceString/*ISSUE.getExplanation(TextFormat.TEXT)*/,
+				createLintFix(params.line, params.index, params.length, params.toReplaceString)
 			)
 		}
 	}
@@ -177,7 +166,17 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				return inside
 			}
 		}
+
 		return false
+	}
+
+	private fun createLintFix(line: String, index: Int, length: Int, toReplaceString: String): LintFix {
+		val substringWithSpace = line.substring(index, index + length)
+		return LintFix.create()
+			.replace()
+			.text(substringWithSpace)
+			.with(substringWithSpace.trim() + toReplaceString)
+			.build()
 	}
 
 	class Params(
@@ -186,6 +185,7 @@ class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		val beginPosition: Int,
 		val length: Int,
 		val line: String,
-		val index: Int
+		val index: Int,
+		val toReplaceString: String = ""
 	)
 }
