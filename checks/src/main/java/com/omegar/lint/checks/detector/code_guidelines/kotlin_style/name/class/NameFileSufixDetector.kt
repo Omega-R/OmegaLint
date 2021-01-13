@@ -106,11 +106,11 @@ class NameFileSufixDetector : Detector(), Detector.UastScanner {
 			node,
 			context.getNameLocation(node),
 			"$REPORT_MESSAGE_BEGIN $value.\n${ISSUE.getExplanation(TextFormat.TEXT)}",
-			createContextReport(node.name, value)
+			createLintFix(node.name, value)
 		)
 	}
 
-	private fun createContextReport(part: String?, value: String): LintFix {
+	private fun createLintFix(part: String?, value: String): LintFix {
 		return fix()
 			.replace()
 			.text(part)
