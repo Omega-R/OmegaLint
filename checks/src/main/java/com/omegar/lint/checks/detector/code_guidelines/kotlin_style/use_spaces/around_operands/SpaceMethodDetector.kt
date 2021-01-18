@@ -39,9 +39,9 @@ open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		private val OPEN_SCOPE_REGEX = Regex("""\s*\(""")
 
 		private val KEY_SYMBOLS_MAP = mapOf(
-			"." to Regex("""\s*\.\s*"""),
-			"::" to Regex("""\s*::\s*"""),
-			"?." to Regex("""\s*\?\.\s*""")
+			"." to Regex("""(\s+\.\s*|\s*\.\s+)"""),
+			"::" to Regex("""(\s+::\s*|\s*::\s+)"""),
+			"?." to Regex("""(\s+\?\.\s*|\s*\?\.\s+)""")
 		)
 
 		private val KEY_BEGIN_SYMBOLS_MAP = mapOf(
