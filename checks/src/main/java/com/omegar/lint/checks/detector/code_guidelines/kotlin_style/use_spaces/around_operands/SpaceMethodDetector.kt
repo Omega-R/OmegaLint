@@ -38,8 +38,17 @@ open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		private val OPEN_BRACE_REGEX = Regex("""\s*\{""")
 		private val OPEN_SCOPE_REGEX = Regex("""\s*\(""")
 
-		private val KEY_SYMBOLS_ARRAY = arrayOf(".", "::", "?.")
-		private val REGEXPS = KEY_SYMBOLS_ARRAY.map { it to Regex("""\s*$it\s*""") }.toMap()
+		private val KEY_SYMBOLS_MAP = mapOf(
+			"." to Regex("""\s*\.\s*"""),
+			"::" to Regex("""\s*::\s*"""),
+			"?." to Regex("""\s*\?\.\s*""")
+		)
+
+		private val KEY_BEGIN_SYMBOLS_MAP = mapOf(
+			"." to Regex("""^\s*\."""),
+			"::" to Regex("""^\s*::"""),
+			"?." to Regex("""^\s*\?\.""")
+		)
 
 		private val COMMENTS_REGEX = Regex("""([//]|[/\*])""")
 	}
@@ -56,36 +65,32 @@ open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 				lines.forEach { line ->
 					val length = line.length
 
-					REGEXPS.forEach { pair ->
+					KEY_SYMBOLS_MAP.forEach { pair ->
 						if (line.contains(pair.value) && !line.contains(COMMENTS_REGEX)) {
 
 							val beforeIndex = line.indexOf(" ${pair.key}")
 							val afterIndex = line.indexOf("${pair.key} ")
 							val match = pair.value.find(line)
 
-							if (match != null  && (beforeIndex > 0 || afterIndex > 0)) {
-
-								val index = if(beforeIndex > 0) {beforeIndex} else {afterIndex}
-
-								makeContextReport(
-									Params(
-										context,
-										node,
-										beginPosition + 1,
-										line.length - 1,
-										line,
-										0,
-										"${pair.key} $beforeIndex $afterIndex ${match.value} \n $line \n $index"
-									)
-								)
-
-								if (index > 0) {
+							if (match != null && (beforeIndex > 0 || afterIndex > 0)) {
+								var index = line.indexOf(match.value)
+								if (index >= 0 && !(pair.key == "." && line[line.indexOf(pair.key) - 1] == '?')) {
+									val selectedText = if (checkIsSymbolFirst(line, pair.key)) {
+										index = if (beforeIndex > 0) {
+											beforeIndex - 1
+										} else {
+											afterIndex
+										}
+										match.value.substring(match.value.indexOf(pair.key) - 1, match.value.length - 1)
+									} else {
+										match.value
+									}
 									makeContextReport(
 										Params(
 											context,
 											node,
 											beginPosition + index,
-											match.value.length,
+											selectedText.length,
 											line,
 											index
 										)
@@ -104,6 +109,10 @@ open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
+	private fun checkIsSymbolFirst(line: String, key: String): Boolean {
+		val beginSymbolRegex = KEY_BEGIN_SYMBOLS_MAP[key] ?: return false
+		return line.contains(beginSymbolRegex)
+	}
 
 	private fun checkSpaceForScopes(
 		context: JavaContext,
@@ -147,7 +156,7 @@ open class SpaceMethodDetector : Detector(), Detector.UastScanner {
 					params.beginPosition,
 					params.length
 				),
-				params.toReplaceString/*ISSUE.getExplanation(TextFormat.TEXT)*/,
+				ISSUE.getExplanation(TextFormat.TEXT),
 				createLintFix(params.line, params.index, params.length, params.toReplaceString)
 			)
 		}

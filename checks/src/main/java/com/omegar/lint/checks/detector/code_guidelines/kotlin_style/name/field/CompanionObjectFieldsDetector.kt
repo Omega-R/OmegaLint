@@ -53,12 +53,14 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 					val text = declaration.text ?: return
 					val lines = text.lines()
 					lines.forEach { line ->
-						if (isIncorrectConstantName(line)) {
+						val identifierName = getName(line)
+						if (identifierName.isNotEmpty() && !identifierName.matches(UPPER_REGEX)) {
 							context.report(
 								ISSUE,
 								node,
 								context.getNameLocation(declaration),
-								"$line\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+								"$line\n${ISSUE.getExplanation(TextFormat.TEXT)}",
+								createLintFix(identifierName)
 							)
 						}
 					}
@@ -67,20 +69,27 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 		}
 	}
 
-	private fun isIncorrectConstantName(line: String): Boolean {
+	private fun getName(line: String): String {
 		if (!line.contains(CONST_VAL_LABEL)) {
-			return false
+			return ""
 		}
 		val substrings = line.split(" ")
 
 		val valIndex = substrings.indexOf(VAL_LABEL)
 		if (valIndex == substrings.size - 1 || valIndex <= 0) {
-			return false
+			return ""
 		}
 
-		val identifierName = substrings[valIndex + 1]
+		return substrings[valIndex + 1]
+	}
 
-		return !identifierName.matches(UPPER_REGEX)
+	private fun createLintFix(name: String): LintFix {
+		return LintFix.create()
+			.replace()
+			.text(name)
+			.with(name.toUpperCase())
+			.build()
 	}
 }
+
 
