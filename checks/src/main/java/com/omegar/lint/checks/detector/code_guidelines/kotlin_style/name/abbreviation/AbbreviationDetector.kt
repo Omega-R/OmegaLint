@@ -28,6 +28,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
 		private val ANNOTATION_REGEX = Regex("""^@""")
 		private const val OPEN_SCOPE_LABEL = "("
+		private const val OPEN_TAG_LABEL = "<"
 		private const val EQUAL_LABEL = "="
 		private const val SPACE_LABEL = " "
 
@@ -65,6 +66,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
 				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
+				checkText = deleteAfterSymbol(checkText, OPEN_TAG_LABEL)
 
 				checkText = deleteExclusions(checkText)
 
