@@ -25,6 +25,8 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
+		// lint can't understand data class constructors because it understand them as fun with name "copy"
+		private const val DATA_CLASS_FUNCTION_VALUE = "public final fun copy"
 		private const val MAX_COUNT_OF_ARGUMENTS = 5
 	}
 
@@ -33,7 +35,7 @@ class MaxFunctionsArgumentsDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitMethod(node: UMethod) {
-				if (node.isConstructor) {
+				if (node.isConstructor || node.asRenderString().contains(DATA_CLASS_FUNCTION_VALUE)) {
 					return
 				}
 

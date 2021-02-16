@@ -26,10 +26,18 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 		)
 
 		private val EMPTY_BRANCH_REGEX = Regex("""\{\s*\}""")
+		private val END_SPACE_REGEX = Regex("""\s*$""")
+		private val MORE_THAN_ONE_SPACE_REGEX = Regex("""\s+""")
 
 		private const val ELSE_LABEL = "-> {"
 		private const val ELSE_TEXT = "else -> {"
 		private const val DELTA = 2
+		private const val OPEN_SCOPE_SYMBOL = "{"
+		private const val CLOSE_SCOPE_SYMBOL = "}"
+		private const val EQUALS_SYMBOL = "="
+		private const val NEW_LINE_SYMBOL = "\n"
+		private const val SPACE_SYMBOL = " "
+
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(USwitchClauseExpression::class.java)
@@ -65,9 +73,27 @@ class SimplificationsControlInstructionsDetector : Detector(), Detector.UastScan
 
 	private fun exceedMaxLineLength(text: String): Boolean {
 		val lines = text.lines()
-		if(lines.size > 1) {
+		if (lines.size > 1) {
 			return lines[0].length + lines[1].trim().length - DELTA < MAX_LENGTH
 		}
 		return false
 	}
+
+	private fun createFix(text: String): LintFix? {
+		return fix()
+			.replace()
+			.text(text)
+			.with(getSimpleString(text))
+			.build()
+	}
+
+	private fun getSimpleString(text: String): String {
+		return text
+			.replace(OPEN_SCOPE_SYMBOL, EQUALS_SYMBOL)
+			.replace(NEW_LINE_SYMBOL, "")
+			.replace(CLOSE_SCOPE_SYMBOL, "")
+			.replace(END_SPACE_REGEX, "")
+			.replace(MORE_THAN_ONE_SPACE_REGEX, SPACE_SYMBOL)
+	}
+
 }

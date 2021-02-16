@@ -2,6 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.xml_style.name_resource.
 
 import com.android.resources.ResourceFolderType
 import com.android.tools.lint.detector.api.*
+import com.omegar.lint.checks.detector.project_guidelines.file_name.resource.layout.NameResourceLayoutDetector
 import org.w3c.dom.Attr
 
 class NameIdentifierXmlDetector : ResourceXmlDetector() {
@@ -23,7 +24,8 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 			)
 		)
 
-		const val REPORT_MESSAGE = "Wrong prefix of identifier name. Should begin with: "
+		private val CAMEL_REGEX = Regex("(?<=[a-zA-Z])[A-Z]")
+		private const val REPORT_MESSAGE = "Wrong prefix of identifier name. Should begin with: "
 
 		//elements
 		private const val TEXT_VIEW_ELEMENT = "TextView"
@@ -44,6 +46,7 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 		private const val LAYOUT_PREFIX = "@+id/layout"
 		private const val FLOATING_ACTION_BUTTON_PREFIX = "@+id/fab"
 		private const val IMAGE_BUTTON_PREFIX = "@+id/button"
+		private const val IDENTIFIER_PREFIX = "@+id/"
 	}
 
 
@@ -97,8 +100,23 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 						makeContextReport(context, attribute, IMAGE_BUTTON_PREFIX)
 					}
 				}
+
+				else -> {
+					val tagName = IDENTIFIER_PREFIX + attribute.ownerElement.tagName.split(".").last().replace("View", "")
+					val prefix = tagName.convertCamelToSnakeCase()
+					if (!attributeValue.contains(prefix)) {
+						makeContextReport(context, attribute, prefix)
+					}
+				}
 			}
 		}
+	}
+
+	// String extensions
+	private fun String.convertCamelToSnakeCase(): String {
+		return CAMEL_REGEX.replace(this) {
+			it.value
+		}.toLowerCase()
 	}
 
 	private fun makeContextReport(context: XmlContext, attribute: Attr, message: String) {
@@ -112,11 +130,11 @@ class NameIdentifierXmlDetector : ResourceXmlDetector() {
 	}
 
 	private fun createFix(attributeValue: String, correctPrefix: String): LintFix {
-		val oldText = attributeValue.replace("@+id/", "")
+		val attributeValueWithoutPrefix = attributeValue.replace(IDENTIFIER_PREFIX, "")
 		return fix()
 			.replace()
 			.text(attributeValue)
-			.with("${correctPrefix}_$oldText")
+			.with("${correctPrefix}_$attributeValueWithoutPrefix")
 			.build()
 	}
 }
