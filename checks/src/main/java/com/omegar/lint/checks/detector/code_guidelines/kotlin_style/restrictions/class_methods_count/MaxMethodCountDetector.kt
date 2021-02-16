@@ -48,4 +48,3 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 		}
 	}
 }
-
