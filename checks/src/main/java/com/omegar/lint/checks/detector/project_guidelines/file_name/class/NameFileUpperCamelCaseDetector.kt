@@ -73,7 +73,7 @@ class NameFileUpperCamelCaseDetector : Detector(), Detector.UastScanner {
 			}
 		}
 
-		return resultName
+		return "${charArray[0]}$resultName"
 	}
 
 }

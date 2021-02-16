@@ -113,26 +113,26 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 					var currentRank = 0
 					sortedDeclarationList.forEach { declaration ->
 						val text = declaration.text ?: return
-						val currentParams = CurrentParams(context, text, currentRank, node, declaration)
+						val currentParams = CurrentParams(context, text, node, declaration)
 
 						/** 1) it's can find companion object*/
-						currentRank = checkOrder(currentParams, COMPANION_OBJECT_PARAMS)
+						currentRank = checkOrder(currentParams, COMPANION_OBJECT_PARAMS, currentRank)
 
 						/** 2) Variables*/
-						currentRank = checkOrder(currentParams, VAL_PARAMS)
-						currentRank = checkOrder(currentParams, VAR_PARAMS)
+						currentRank = checkOrder(currentParams, VAL_PARAMS, currentRank)
+						currentRank = checkOrder(currentParams, VAR_PARAMS, currentRank)
 
 						/** 3) Constructor */
-						currentRank = checkOrder(currentParams, CONSTRUCTOR_PARAMS)
+						currentRank = checkOrder(currentParams, CONSTRUCTOR_PARAMS, currentRank)
 
 						/** 4 Function */
-						currentRank = checkOrder(currentParams, FUNCTION_PARAMS)
+						currentRank = checkOrder(currentParams, FUNCTION_PARAMS, currentRank)
 
 						/** 5 Enum */
-						currentRank = checkOrder(currentParams, ENUM_PARAMS)
+						currentRank = checkOrder(currentParams, ENUM_PARAMS, currentRank)
 
 						/** 6) Interface */
-						currentRank = checkOrder(currentParams, INTERFACE_PARAMS)
+						currentRank = checkOrder(currentParams, INTERFACE_PARAMS, currentRank)
 
 						/** 7) Class */
 						val classRegex = CLASS_REGEX_LIST.firstOrNull { text.contains(it) }
@@ -169,16 +169,16 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 		return list.distinctBy { it.text }
 	}
 
-	private fun checkOrder(currentParams: CurrentParams, staticParams: StaticParams): Int {
+	private fun checkOrder(currentParams: CurrentParams, staticParams: StaticParams, currentRank: Int): Int {
 		val isVariable = staticParams.regexList.firstOrNull { currentParams.text.contains(it) }
 		if (isVariable != null) {
-			if (currentParams.currentRank <= staticParams.rank) {
+			if (currentRank <= staticParams.rank) {
 				return staticParams.rank
 			} else {
 				makeContextReport(currentParams.context, currentParams.node, currentParams.declaration, staticParams.message)
 			}
 		}
-		return currentParams.currentRank
+		return currentRank
 	}
 
 	private fun makeContextReport(context: JavaContext, node: UClass, declaration: UDeclaration, message: String) {
@@ -186,7 +186,7 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 			ISSUE,
 			node,
 			context.getNameLocation(declaration),
-			"$message ${ISSUE.getExplanation(TextFormat.TEXT)}"
+			"$message. ${ISSUE.getExplanation(TextFormat.TEXT)}"
 		)
 	}
 
@@ -199,7 +199,6 @@ class ComponentPositionDetector : Detector(), Detector.UastScanner {
 	private class CurrentParams(
 		val context: JavaContext,
 		val text: String,
-		val currentRank: Int,
 		val node: UClass,
 		val declaration: UDeclaration
 	)

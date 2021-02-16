@@ -35,32 +35,32 @@ class LintIssueRegistry : IssueRegistry() {
 	override val issues: List<Issue>
 		get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
-            AbbreviationDetector.ISSUE, // TODO need testing
-            PositionArgumentDetector.ISSUE,
-            MaxFunctionsArgumentsDetector.ISSUE,
+            AbbreviationDetector.ISSUE, // TODO need rewriting & lint quick fix
+            PositionArgumentDetector.ISSUE, // TODO add lint quick fix
+            MaxFunctionsArgumentsDetector.ISSUE, // TODO ??lint quick fix??
             ExceptionCatchDetector.ISSUE,
-            ComponentPositionDetector.ISSUE,
+            ComponentPositionDetector.ISSUE, //TODO add lint quick fix for
             NameIdentifierXmlDetector.ISSUE,
             NameResourceStringXmlDetector.ISSUE,
-            NameResourceStyleXmlDetector.ISSUE,
-            MaxMethodCountDetector.ISSUE,
-            EmptyBodyFunctionDetector.ISSUE,
+            NameResourceStyleXmlDetector.ISSUE, //TODO change lint quick fix for
+            MaxMethodCountDetector.ISSUE, // TODO ??lint quick fix??
+            EmptyBodyFunctionDetector.ISSUE, //TODO add lint quick fix for
             CompanionObjectFieldsDetector.ISSUE,
-            MaxFunctionLengthDetector.ISSUE,
-            MaxClassLengthDetector.ISSUE,
+            MaxFunctionLengthDetector.ISSUE, // TODO ??lint quick fix??
+            MaxClassLengthDetector.ISSUE, // TODO ??lint quick fix??
             SimplificationsFunctionDetector.ISSUE,
-            MaxLineLengthDetector.ISSUE,
+            MaxLineLengthDetector.ISSUE, // TODO ??lint quick fix??
             AnnotationDetector.ISSUE,
             SpaceMethodDetector.ISSUE,
             NameFileSufixDetector.ISSUE,
             AttributesPositionXmlDetector.ISSUE,
-            MaxClassInPackageDetector.ISSUE, // TODO need testing
-            MaxPackageCountDetector.ISSUE,   // TODO need testing
-            SimplificationsControlInstructionsDetector.ISSUE, // TODO need testing
+            MaxClassInPackageDetector.ISSUE, // TODO ??lint quick fix??
+            MaxPackageCountDetector.ISSUE,   // TODO ??lint quick fix??
+            SimplificationsControlInstructionsDetector.ISSUE, //TODO add lint quick fix for
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
-            LambdaDetector.ISSUE,
-            NameResourceLayoutDetector.ISSUE
+            LambdaDetector.ISSUE, //TODO add lint quick fix for
+            NameResourceLayoutDetector.ISSUE //TODO add lint quick fix for
         )
 
 	override val api: Int

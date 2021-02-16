@@ -28,12 +28,13 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
 		private val ANNOTATION_REGEX = Regex("""^@""")
 		private const val OPEN_SCOPE_LABEL = "("
+		private const val OPEN_TAG_LABEL = "<"
 		private const val EQUAL_LABEL = "="
 		private const val SPACE_LABEL = " "
 
 		//exclusion
 		private const val MILLISECONDS_LABEL = "MSec"
-		private const val UELEMENT_LABEL = "UElement"
+		private const val U_ELEMENT_LABEL = "UElement"
 		private const val TODO_LABEL = "TODO"
 		private const val CLASS_LABEL = "class"
 		private const val ENUM_LABEL = "enum class"
@@ -41,7 +42,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		val exclusionsList = listOf(
 			MILLISECONDS_LABEL,
 			TODO_LABEL,
-			UELEMENT_LABEL
+			U_ELEMENT_LABEL
 		)
 
 	}
@@ -65,6 +66,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
 				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
 				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
+				checkText = deleteAfterSymbol(checkText, OPEN_TAG_LABEL)
 
 				checkText = deleteExclusions(checkText)
 
@@ -73,7 +75,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 						ISSUE,
 						node as UElement,
 						context.getNameLocation(node),
-						checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT)
+						checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT),
+						createLintFix(checkText)
 					)
 				}
 			}
@@ -104,5 +107,32 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 			resultText = resultText.replace(it, SPACE_LABEL)
 		}
 		return resultText
+	}
+
+	private fun createLintFix(oldName: String): LintFix {
+		return LintFix.create()
+			.replace()
+			.text(oldName)
+			.with(getNewName(oldName))
+			.build()
+	}
+
+
+	private fun getNewName(oldName: String): String {
+		var resultName = ""
+		val charArray = oldName.toCharArray()
+
+		for (i in 1 until oldName.length) {
+			val currentChar = charArray[i]
+			val previousChar = charArray[i - 1]
+
+			resultName += if (currentChar.isUpperCase() && previousChar.isUpperCase()) {
+				currentChar.toLowerCase()
+			} else {
+				currentChar
+			}
+		}
+
+		return resultName
 	}
 }

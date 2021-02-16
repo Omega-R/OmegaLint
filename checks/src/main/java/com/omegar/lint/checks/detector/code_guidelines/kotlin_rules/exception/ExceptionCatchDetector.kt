@@ -61,7 +61,7 @@ class ExceptionCatchDetector : Detector(), Detector.UastScanner {
 							context.report(
 								ISSUE,
 								body,
-								context.getLocation(it as UElement),
+								context.getLocation(body),
 								GENERALIZED_EXCEPTION_MESSAGE,
 								createEmptyBodyFix()
 							)

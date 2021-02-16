@@ -45,7 +45,7 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
 				val text = node.text ?: return
 
 				if (text.contains(EMPTY_BODY_REGEX) && (body.asRenderString().matches(EMPTY_BODY_REGEX))) {
-					context.report(ISSUE, node, context.getLocation(body), ISSUE.getExplanation(TextFormat.TEXT))
+					context.report(ISSUE, node, context.getLocation(body), text, createFix(text))
 				}
 			}
 
@@ -53,10 +53,26 @@ class EmptyBodyFunctionDetector : Detector(), Detector.UastScanner {
 				val renderText = node.asRenderString()
 
 				if (renderText.contains(EMPTY_BRANCH_REGEX)) {
-					context.report(ISSUE, node, context.getLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+					context.report(
+						ISSUE,
+						node,
+						context.getLocation(node),
+						ISSUE.getExplanation(TextFormat.TEXT),
+						createFix(renderText)
+					)
 				}
 			}
 		}
 
+	}
+
+	private fun createFix(body: String): LintFix? {
+		val indexOfScope = body.indexOf("{")
+//		val newBody = "${body.removeRange(indexOfScope, body.length)}\n//nothing\n}}"
+		return LintFix.create()
+			.replace()
+			.text(body)
+			.with("newBody")
+			.build()
 	}
 }

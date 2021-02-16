@@ -5,6 +5,7 @@ import com.android.tools.lint.detector.api.*
 
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
+import org.jetbrains.uast.UMethod
 
 class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 	companion object {
@@ -31,16 +32,19 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-
 	override fun createUastHandler(context: JavaContext): UElementHandler {
 		return object : UElementHandler() {
 			override fun visitClass(node: UClass) {
-				val methods = node.methods
-				if (methods.size > MAX_METHOD_COUNT) {
+				val resultMethods = mutableListOf<UMethod>()
+				node.methods.forEach {
+					if (!it.isVarArgs && !it.isConstructor) {
+						resultMethods.add(it)
+					}
+				}
+				if (resultMethods.size > MAX_METHOD_COUNT) {
 					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
 				}
 			}
 		}
 	}
 }
-
