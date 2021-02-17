@@ -37,9 +37,9 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 			override fun visitClass(node: UClass) {
 				val resultMethods = mutableListOf<UMethod>()
 				node.methods.forEach {
-					if (!it.isVarArgs && !it.isConstructor) {
+//					if (!it.isVarArgs && !it.isConstructor) {
 						resultMethods.add(it)
-					}
+//					}
 				}
 				if (resultMethods.size > MAX_METHOD_COUNT) {
 					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))

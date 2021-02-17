@@ -12,6 +12,9 @@
         style="@style/Theme.AppCompat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="38dp"
         android:text="Hello World!"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,6 +30,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="27dp"
         android:layout_marginBottom="27dp"
+
         android:fontFamily="@string/font_family_regular"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="-1sp"

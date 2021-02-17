@@ -3,4 +3,6 @@
     <string name="some_style">Lint</string>
     <string name="font_family_regular">s</string>
     <string name="something">something</string>
+    <string name="mask_one">mask</string>
+    <string name="format_one">format</string>
 </resources>

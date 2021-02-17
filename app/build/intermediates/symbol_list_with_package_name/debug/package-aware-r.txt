@@ -1773,6 +1773,7 @@ id line3
 id linear
 id listMode
 id list_item
+id main_layout
 id masked
 id message
 id middle
@@ -1916,6 +1917,8 @@ id textSpacerNoTitle
 id textStart
 id text_input_end_icon
 id text_input_start_icon
+id text_save
+id text_soem
 id textinput_counter
 id textinput_error
 id textinput_helper_text
@@ -1923,6 +1926,7 @@ id textinput_placeholder
 id textinput_prefix_text
 id textinput_suffix_text
 id time
+id time_picker_some
 id title
 id titleDividerNoCustom
 id title_template
@@ -2027,6 +2031,7 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
+layout fragment_chat_list
 layout mtrl_alert_dialog
 layout mtrl_alert_dialog_actions
 layout mtrl_alert_dialog_title
@@ -2121,9 +2126,12 @@ string error_icon_content_description
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string font_family_regular
+string format_one
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string item_view_role_description
+string mask_one
 string material_slider_range_end
 string material_slider_range_start
 string mtrl_badge_numberless_content_description
@@ -2167,6 +2175,8 @@ string path_password_eye_mask_strike_through
 string path_password_eye_mask_visible
 string path_password_strike_through
 string search_menu_title
+string some_style
+string something
 string status_bar_notification_info_overflow
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
@@ -2406,6 +2416,7 @@ style MaterialAlertDialog_MaterialComponents_Title_Panel
 style MaterialAlertDialog_MaterialComponents_Title_Panel_CenterStacked
 style MaterialAlertDialog_MaterialComponents_Title_Text
 style MaterialAlertDialog_MaterialComponents_Title_Text_CenterStacked
+style PlacesSelectorDialog
 style Platform_AppCompat
 style Platform_AppCompat_Light
 style Platform_MaterialComponents
@@ -2590,6 +2601,7 @@ style Theme_MaterialComponents_DayNight_BottomSheetDialog
 style Theme_MaterialComponents_DayNight_Bridge
 style Theme_MaterialComponents_DayNight_DarkActionBar
 style Theme_MaterialComponents_DayNight_DarkActionBar_Bridge
+style Theme_MaterialComponents_DayNight_DarkActionBar_Lint
 style Theme_MaterialComponents_DayNight_Dialog
 style Theme_MaterialComponents_DayNight_Dialog_Alert
 style Theme_MaterialComponents_DayNight_Dialog_Alert_Bridge
