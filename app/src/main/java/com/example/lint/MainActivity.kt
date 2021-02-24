@@ -1,137 +1,109 @@
 package com.example.lint
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 
 
 class MainActivity : AppCompatActivity() {
 
-	private val someaaa = "photo11111111111111111111111111111111111111111111111111111111111"
+    companion object {
 
-	companion object {
+        const val SS_S_SFDAS = 2
 
-		const val ASAS = 2 * 1
+        val some1 = 2
 
-		val some = 2
+        private const val EX2TRA_PHO2TO24 = "photo"
 
-		private val FREQUENCIES = listOf(50, 60)
+        fun createIntent(context: Context, photo: String): Intent {
+            return Intent(context, MainActivity :: class.java).putExtra(EX2TRA_PHO2TO24, photo)
+        }
+        fun someFunction() {}
 
-		private const val EXTRA_PHOTO =
-			"photo1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        fun createLauncher() = { someFunction() }
+    }
 
-		fun ppp() {
-			String.toString()?.toString()
-		}
+    val s1 = 2
 
-	}
+    fun spme2() {
+        String?.toString()
 
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
 
-	fun someFunction() {
-
-	}
-
-	fun some(): Int = 1
-
-	val s = 2
-
-	fun createIntent(context: Context, photo: String): Intent = Intent()
-
-	fun spme() {
-		String.toString()
-		val tag = emptyList<String>()
-		tag.forEach {
-			Log.d("some", it)
-		}
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
 
-	}
-
-	override fun onCreate(savedInstanceState: Bundle?) {
-
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
+        val cTXbb1: Context = this
+        String
+            .toString()
 
 
-		val cTX: Context = this
+        val list = listOf<String>()
 
-		var croppingBlock: (() -> Int)? = null
+        list.forEach { line ->
+            val s = line
+        }
+    }
 
-		try {
+    private fun SSsome ( ) {
+        MainActivity .createIntent(this, "")
+    }
 
-		} catch (e: Exception) {
-			val some = 2
-		}
-
-		val list = listOf<String>()
-
-		list.forEach { line ->
-			val s = line
-		}
-	}
-
-	private fun asome() {
-		createIntent(this, "")
-		emptyURL({ val s = 2 }, { val s = 2 })
-	}
-
-	private fun emptyURL(function: () -> Unit, function2: () -> Unit) {
-		//nothing
-	}
-
-	@SuppressLint("OMEGA_ABBREVIATION_AS_WORD")
-	val soURL = 2
-
-	class SomeClass() {
-
-	}
+    class SomeClass() {
+        val soURL = 2
+    }
 
 
-	fun em(): Int {
-		try {
-			val s = 2
-		} catch (e: Exception) {
-			throw e
-		}
-
-		return when (1) {
-			1 -> 2
-			else -> 0
-		}
-
-	}
-
-	protected val s2: String = ""
+    fun emptyFun(): Int {
+        try {
+            val s = 2
+        } catch (e: Exception) {
+            throw e
+        }
 
 
-	fun agset() {
-		val s = 2
-		s.toString()
-		//nothing
-	}
+        return  when(1) {
+            1 -> 2
+            else -> 0
+        }
 
-	fun aAa() {
-		//nothing
-	}
+    }
 
-	data class GeneralSettings(
-		var doorStatus: Int = 1,
-		var keepDoorOpen: Boolean = false,
-		var keepDoorOpenSip: Boolean = false,
-		var doorOpenDuration: Int = 5,
-		var callDuration: Int = 5,
-		var talkDuration: Int = 5,
-		var conciergeApartment: Int = 100,
-		val conciergeApartment1: Int = 100,
-		var conciergeApartment2: Int = 100,
-		val conciergeApartment3: Int = 100,
-		var conciergeApartment5: Int = 100
-	)
+    protected val s2: String = ""
 
-	class BasePresenter<VIEW: RecyclerView>
+
+    fun Get() {
+        val s = 2
+        s.toString()
+        //nothing
+    }
+
+    fun aAA() {
+
+    }
+    data class GeneralSettings(
+        var doorStatus: Int = 5,
+        var keepDoorOpen: Boolean = false,
+        var keepDoorOpenSip: Boolean = false,
+        var doorOpenDuration: Int = 5,
+        var callDuration: Int = 5,
+        var talkDuration: Int = 5,
+        var conciergeApartment: Int = 100,
+        var relayStatus: Int = 5,
+        var relayStatus1: Int = 5,
+        var relayStatus2: Int = 5,
+        var relayStatus3: Int = 5,
+        var relayStatus4: Int = 5,
+        var relayStatus55: Int = 5,
+        var relayStatus555: Int = 5,
+        var relayStatus53: Int = 5,
+        var relayStatus54: Int = 5,
+        var relayStatus5: Int = 5,
+    )
+
+
 }
