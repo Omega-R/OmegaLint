@@ -31,7 +31,7 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 		private const val VAL_LABEL = "val"
 		private const val COMPANION_NAME_LABEL = "Companion"
 
-		private val UPPER_REGEX = Regex("""^([A-Z]*_*)*$""")
+		private val UPPER_REGEX = Regex("""^([A-Z][1-9]*_*)*$""")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
