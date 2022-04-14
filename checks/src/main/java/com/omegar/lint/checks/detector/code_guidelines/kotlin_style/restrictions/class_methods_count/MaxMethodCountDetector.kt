@@ -2,11 +2,11 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restriction
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 
+@Suppress("UnstableApiUsage")
 class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
@@ -27,23 +27,25 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
+		private const val DATA_CLASS_FUNCTION_VALUE = "public final fun copy"
 		private const val MAX_METHOD_COUNT = 30
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler {
-		return object : UElementHandler() {
-			override fun visitClass(node: UClass) {
-				val resultMethods = mutableListOf<UMethod>()
-				node.methods.forEach {
-					if (!it.isVarArgs && !it.isConstructor) {
-						resultMethods.add(it)
-					}
+	override fun createUastHandler(context: JavaContext) = object : UElementHandler() {
+		override fun visitClass(node: UClass) {
+			val resultMethods = mutableListOf<UMethod>()
+			node.methods.forEach {
+				if (it.asRenderString().contains(DATA_CLASS_FUNCTION_VALUE)) {
+					return@visitClass
 				}
-				if (resultMethods.size > MAX_METHOD_COUNT) {
-					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+				if (!it.isVarArgs && !it.isConstructor) {
+					resultMethods.add(it)
 				}
+			}
+			if (resultMethods.size > MAX_METHOD_COUNT) {
+				context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
 			}
 		}
 	}
