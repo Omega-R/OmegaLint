@@ -5,7 +5,9 @@ import com.android.tools.lint.detector.api.*
 
 import org.jetbrains.uast.UClass
 import org.jetbrains.uast.UElement
+import java.util.Locale
 
+@Suppress("UnstableApiUsage")
 class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
@@ -14,8 +16,8 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 			id = "OMEGA_NAME_CONSTANTS_SCREAMING_SNAKE_CASE",
 			briefDescription = "The line size does not match the coding convention",
 			explanation = """
-                  The immutable fields in the Companion Object and compile-time constants are named in the 
-                  SCREAMING_SNAKE_CASE style.
+                  The immutable fields in the Companion Object and compile-time constants 
+				  should be named in the SCREAMING_SNAKE_CASE style.
                   http://wiki.omega-r.club/dev-android-code#rec226457239
                     """,
 			category = Category.CORRECTNESS,
@@ -31,38 +33,36 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 		private const val VAL_LABEL = "val"
 		private const val COMPANION_NAME_LABEL = "Companion"
 
-		private val UPPER_REGEX = Regex("""^([A-Z]*_*)*$""")
+		private val UPPER_REGEX = Regex("^([A-Z0-9]*_*)*$")
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
 
-	override fun createUastHandler(context: JavaContext): UElementHandler {
-		return object : UElementHandler() {
-			override fun visitClass(node: UClass) {
-				val innerClass = node.innerClasses.firstOrNull() ?: return
-				val name = innerClass.name ?: return
+	override fun createUastHandler(context: JavaContext) = object : UElementHandler() {
+		override fun visitClass(node: UClass) {
+			val innerClass = node.innerClasses.firstOrNull() ?: return
+			val name = innerClass.name ?: return
 
-				if (name != COMPANION_NAME_LABEL) {
-					return
-				}
+			if (name != COMPANION_NAME_LABEL) {
+				return
+			}
 
-				val declarations = innerClass.uastDeclarations.distinctBy { it.text }
+			val declarations = innerClass.uastDeclarations.distinctBy { it.text }
 
-				declarations.forEach { declaration ->
-					val text = declaration.text ?: return
-					val lines = text.lines()
-					lines.forEach { line ->
-						val identifierName = getName(line)
-						if (identifierName.isNotEmpty() && !identifierName.matches(UPPER_REGEX)) {
-							context.report(
-								ISSUE,
-								node,
-								context.getNameLocation(declaration),
-								"$line\n${ISSUE.getExplanation(TextFormat.TEXT)}",
-								createLintFix(identifierName)
-							)
-						}
+			declarations.forEach { declaration ->
+				val text = declaration.text ?: return
+				val lines = text.lines()
+				lines.forEach { line ->
+					val identifierName = getName(line)
+					if (identifierName.isNotEmpty() && !identifierName.matches(UPPER_REGEX)) {
+						context.report(
+							ISSUE,
+							node,
+							context.getNameLocation(declaration),
+							"$line\n${ISSUE.getExplanation(TextFormat.TEXT)}",
+							createLintFix(identifierName)
+						)
 					}
 				}
 			}
@@ -87,7 +87,7 @@ class CompanionObjectFieldsDetector : Detector(), Detector.UastScanner {
 		return LintFix.create()
 			.replace()
 			.text(name)
-			.with(name.toUpperCase())
+			.with(name.toUpperCase(Locale.ROOT))
 			.build()
 	}
 }
