@@ -5,6 +5,7 @@ import com.android.tools.lint.detector.api.*
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 
+@Suppress("UnstableApiUsage")
 class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
 	companion object {
@@ -32,7 +33,8 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 			"label",
 			"button",
 			"action",
-			"hint"
+			"hint",
+			"format"
 		)
 
 		private const val ATTRIBUTE_NAME_VAL = "name" //Attribute
@@ -54,7 +56,7 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 
 		val stringText = element.getAttribute(ATTRIBUTE_NAME_VAL) ?: return
 
-		if ((stringText == APP_NAME) || CORRECT_PREFIXES_LIST.firstOrNull() { stringText.contains(it) } != null) {
+		if ((stringText == APP_NAME) || CORRECT_PREFIXES_LIST.firstOrNull { stringText.contains(it) } != null) {
 			return
 		}
 
