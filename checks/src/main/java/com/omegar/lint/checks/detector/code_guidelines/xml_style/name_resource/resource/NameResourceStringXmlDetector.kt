@@ -34,7 +34,8 @@ class NameResourceStringXmlDetector : ResourceXmlDetector() {
 			"button",
 			"action",
 			"hint",
-			"format"
+			"format",
+			"mask"
 		)
 
 		private const val ATTRIBUTE_NAME_VAL = "name" //Attribute
