@@ -2,9 +2,7 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restriction
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UClass
-import org.jetbrains.uast.UElement
-import org.jetbrains.uast.UMethod
+import org.jetbrains.uast.*
 
 @Suppress("UnstableApiUsage")
 class MaxMethodCountDetector : Detector(), Detector.UastScanner {
@@ -28,6 +26,10 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 		)
 
 		private const val DATA_CLASS_FUNCTION_VALUE = "public final fun copy"
+		private const val KEYWORD_VAR = "var"
+		private const val KEYWORD_VAL = "val"
+		private const val METHOD_GET = "get"
+		private const val METHOD_SET = "set"
 		private const val MAX_METHOD_COUNT = 30
 	}
 
@@ -36,6 +38,17 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 	override fun createUastHandler(context: JavaContext) = object : UElementHandler() {
 		override fun visitClass(node: UClass) {
 			val resultMethods = mutableListOf<UMethod>()
+			val text = node.uastDeclarations.distinctBy { it.text }
+			var propertyCount = 0
+
+			text.forEachIndexed { _, uDeclaration ->
+				if (uDeclaration.text.contains(KEYWORD_VAL) && uDeclaration.text.contains(METHOD_GET)) {
+					propertyCount++
+				} else if (uDeclaration.text.contains(KEYWORD_VAR)) {
+					if (uDeclaration.text.contains(METHOD_GET)) propertyCount++
+					if (uDeclaration.text.contains(METHOD_SET)) propertyCount++
+				}
+			}
 			node.methods.forEach {
 				if (it.asRenderString().contains(DATA_CLASS_FUNCTION_VALUE)) {
 					return@visitClass
@@ -44,7 +57,7 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 					resultMethods.add(it)
 				}
 			}
-			if (resultMethods.size > MAX_METHOD_COUNT) {
+			if (resultMethods.size - propertyCount > MAX_METHOD_COUNT) {
 				context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
 			}
 		}
