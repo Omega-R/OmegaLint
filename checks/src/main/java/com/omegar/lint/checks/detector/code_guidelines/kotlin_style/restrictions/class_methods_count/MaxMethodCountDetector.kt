@@ -26,8 +26,8 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 		)
 
 		private const val DATA_CLASS_FUNCTION_VALUE = "public final fun copy"
-		private const val VAR_LABEL = "var"
-		private const val VAL_LABEL = "val"
+		private const val KEYWORD_VAR = "var"
+		private const val KEYWORD_VAL = "val"
 		private const val METHOD_GET = "get"
 		private const val METHOD_SET = "set"
 		private const val MAX_METHOD_COUNT = 30
@@ -39,14 +39,14 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 		override fun visitClass(node: UClass) {
 			val resultMethods = mutableListOf<UMethod>()
 			val text = node.uastDeclarations.distinctBy { it.text }
-			var getSetCount = 0
+			var propertyCount = 0
 
 			text.forEachIndexed { _, uDeclaration ->
-				if (uDeclaration.text.contains(VAL_LABEL) && uDeclaration.text.contains(METHOD_GET)) {
-					getSetCount++
-				} else if (uDeclaration.text.contains(VAR_LABEL)) {
-					if (uDeclaration.text.contains(METHOD_GET)) getSetCount++
-					if (uDeclaration.text.contains(METHOD_SET)) getSetCount++
+				if (uDeclaration.text.contains(KEYWORD_VAL) && uDeclaration.text.contains(METHOD_GET)) {
+					propertyCount++
+				} else if (uDeclaration.text.contains(KEYWORD_VAR)) {
+					if (uDeclaration.text.contains(METHOD_GET)) propertyCount++
+					if (uDeclaration.text.contains(METHOD_SET)) propertyCount++
 				}
 			}
 			node.methods.forEach {
@@ -57,7 +57,7 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 					resultMethods.add(it)
 				}
 			}
-			if (resultMethods.size - getSetCount > MAX_METHOD_COUNT) {
+			if (resultMethods.size - propertyCount > MAX_METHOD_COUNT) {
 				context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
 			}
 		}
