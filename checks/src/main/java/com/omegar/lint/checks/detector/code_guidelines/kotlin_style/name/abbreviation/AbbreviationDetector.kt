@@ -12,7 +12,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		@JvmField
 		val ISSUE: Issue = Issue.create(
 			id = "OMEGA_ABBREVIATION_AS_WORD",
-			briefDescription = "Use this abbreviation does not match the coding convention",
+			briefDescription = "Use of this abbreviation does not match the coding convention",
 			explanation = """
                   Don't use abbreviations.
                   http://wiki.omega-r.club/dev-android-code#rec228153340
@@ -25,69 +25,63 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ABBREVIATION_REGEX = Regex("""[A-Z][A-Z]""")
-		private val ANNOTATION_REGEX = Regex("""^@""")
-		private const val OPEN_SCOPE_LABEL = "("
-		private const val OPEN_TAG_LABEL = "<"
-		private const val EQUAL_LABEL = "="
+		private val ABBREVIATION_REGEX = Regex("[A-Z][A-Z]")
+		private val ANNOTATION_REGEX = Regex("^@")
 		private const val SPACE_LABEL = " "
 
 		//exclusion
-		private const val MILLISECONDS_LABEL = "MSec"
-		private const val U_ELEMENT_LABEL = "UElement"
-		private const val TODO_LABEL = "TODO"
 		private const val CLASS_LABEL = "class"
 		private const val ENUM_LABEL = "enum class"
 
 		val exclusionsList = listOf(
-			MILLISECONDS_LABEL,
-			TODO_LABEL,
-			U_ELEMENT_LABEL
+			"MSec",
+			"TODO",
+			"UElement"
 		)
-
+		val specialSymbolList = listOf(
+			"(",
+			"<",
+			"=",
+			":"
+		)
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UDeclaration::class.java)
 
-	override fun createUastHandler(context: JavaContext): UElementHandler {
-		return object : UElementHandler() {
-			override fun visitDeclaration(node: UDeclaration) {
-				val parent = node.parent ?: return
-				val fileLines = parent.text.lines()
-				val nameLine = fileLines.firstOrNull { it.contains(CLASS_LABEL) }
+	override fun createUastHandler(context: JavaContext) = object : UElementHandler() {
+        override fun visitDeclaration(node: UDeclaration) {
+            val parent = node.parent ?: return
+            val nameLine = parent.text.lines().firstOrNull { it.contains(CLASS_LABEL) }
 
-				if (nameLine != null && nameLine.contains(ENUM_LABEL)) {
-					return
-				}
+            if (nameLine != null && nameLine.contains(ENUM_LABEL)) {
+                return
+            }
 
-				val lines = node.text?.lines() ?: return
+            val lines = node.text?.lines() ?: return
 
-				var checkText = getNameString(lines) ?: return
+            var checkText = getNameString(lines) ?: return
 
-				checkText = deleteAfterSymbol(checkText, EQUAL_LABEL)
-				checkText = deleteAfterSymbol(checkText, OPEN_SCOPE_LABEL)
-				checkText = deleteAfterSymbol(checkText, OPEN_TAG_LABEL)
+            checkText = deleteSpecialSymbols(checkText)
+            checkText = deleteExclusions(checkText)
 
-				checkText = deleteExclusions(checkText)
-
-				if (checkText.contains(ABBREVIATION_REGEX) && !node.isStatic) {
-					context.report(
-						ISSUE,
-						node as UElement,
-						context.getNameLocation(node),
-						checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT),
-						createLintFix(checkText)
-					)
-				}
-			}
-		}
-
+            if (checkText.contains(ABBREVIATION_REGEX) && !node.isStatic) {
+                context.report(
+                    ISSUE,
+                    node as UElement,
+                    context.getNameLocation(node),
+                    checkText + "\n" + ISSUE.getExplanation(TextFormat.TEXT),
+                    createLintFix(checkText)
+                )
+            }
+        }
 	}
 
-	private fun deleteAfterSymbol(checkText: String, symbol: String): String {
+	private fun deleteSpecialSymbols(checkText: String): String {
 		var text = checkText
-		if (text.indexOf(symbol) > 0) {
-			text = checkText.substring(0, checkText.indexOf(symbol))
+		specialSymbolList.forEach { symbol ->
+			if (text.contains(symbol) && text.indexOf(symbol) > 0) {
+				text = checkText.substring(0, checkText.indexOf(symbol))
+			}
 		}
 		return text
 	}
