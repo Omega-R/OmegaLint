@@ -2,10 +2,9 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restriction
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
+import org.jetbrains.uast.*
 
-import org.jetbrains.uast.UClass
-import org.jetbrains.uast.UElement
-
+@Suppress("UnstableApiUsage")
 class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
@@ -26,21 +25,41 @@ class MaxMethodCountDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
+		private const val DATA_CLASS_FUNCTION_VALUE = "public final fun copy"
+		private const val KEYWORD_VAR = "var"
+		private const val KEYWORD_VAL = "val"
+		private const val METHOD_GET = "get"
+		private const val METHOD_SET = "set"
 		private const val MAX_METHOD_COUNT = 30
 	}
 
 	override fun getApplicableUastTypes(): List<Class<out UElement?>> = listOf(UClass::class.java)
 
+	override fun createUastHandler(context: JavaContext) = object : UElementHandler() {
+		override fun visitClass(node: UClass) {
+			val resultMethods = mutableListOf<UMethod>()
+			val text = node.uastDeclarations.distinctBy { it.text }
+			var propertyCount = 0
 
-	override fun createUastHandler(context: JavaContext): UElementHandler {
-		return object : UElementHandler() {
-			override fun visitClass(node: UClass) {
-				val methods = node.methods
-				if (methods.size > MAX_METHOD_COUNT) {
-					context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
+			text.forEachIndexed { _, uDeclaration ->
+				if (uDeclaration.text.contains(KEYWORD_VAL) && uDeclaration.text.contains(METHOD_GET)) {
+					propertyCount++
+				} else if (uDeclaration.text.contains(KEYWORD_VAR)) {
+					if (uDeclaration.text.contains(METHOD_GET)) propertyCount++
+					if (uDeclaration.text.contains(METHOD_SET)) propertyCount++
 				}
+			}
+			node.methods.forEach {
+				if (it.asRenderString().contains(DATA_CLASS_FUNCTION_VALUE)) {
+					return@visitClass
+				}
+				if (!it.isVarArgs && !it.isConstructor) {
+					resultMethods.add(it)
+				}
+			}
+			if (resultMethods.size - propertyCount > MAX_METHOD_COUNT) {
+				context.report(ISSUE, node, context.getNameLocation(node), ISSUE.getExplanation(TextFormat.TEXT))
 			}
 		}
 	}
 }
-

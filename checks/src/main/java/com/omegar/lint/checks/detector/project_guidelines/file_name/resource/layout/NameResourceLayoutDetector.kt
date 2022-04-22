@@ -117,15 +117,25 @@ class NameResourceLayoutDetector : Detector(), Detector.UastScanner {
 	private fun checkLayoutName(arguments: List<UExpression>, newClassName: String, node: UCallExpression, context: JavaContext) {
 		arguments.forEach { argument ->
 			val argumentName = argument.asRenderString()
-			if (argumentName.contains(LAYOUT_PREFIX_VAL) && LAYOUT_PREFIX_VAL + newClassName != argumentName) {
+			val layoutName = LAYOUT_PREFIX_VAL + newClassName
+			if (argumentName.contains(LAYOUT_PREFIX_VAL) && layoutName != argumentName) {
 				context.report(
 					ISSUE,
 					node,
 					context.getNameLocation(argument),
-					"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}"
+					"$LAYOUT_PREFIX_VAL$newClassName\n${ISSUE.getExplanation(TextFormat.TEXT)}",
+					createLintFix(argumentName, layoutName)
 				)
 			}
 		}
+	}
+
+	private fun createLintFix(argumentName: String, layoutName: String): LintFix? {
+		return LintFix.create()
+			.replace()
+			.text(argumentName)
+			.with(layoutName)
+			.build()
 	}
 }
 
