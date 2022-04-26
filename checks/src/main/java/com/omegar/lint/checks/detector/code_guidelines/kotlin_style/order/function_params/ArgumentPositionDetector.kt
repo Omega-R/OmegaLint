@@ -2,13 +2,12 @@ package com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.funct
 
 import com.android.tools.lint.client.api.UElementHandler
 import com.android.tools.lint.detector.api.*
-import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UMethod
 import org.jetbrains.uast.UParameter
 
 @Suppress("UnstableApiUsage")
-class PositionArgumentDetector : Detector(), Detector.UastScanner {
+class ArgumentPositionDetector : Detector(), Detector.UastScanner {
 	companion object {
 		/** Issue describing the problem and pointing to the detector implementation */
 		@JvmField
@@ -23,7 +22,7 @@ class PositionArgumentDetector : Detector(), Detector.UastScanner {
 			priority = 6,
 			severity = Severity.WARNING,
 			implementation = Implementation(
-				PositionArgumentDetector::class.java,
+				ArgumentPositionDetector::class.java,
 				Scope.JAVA_FILE_SCOPE
 			)
 		)

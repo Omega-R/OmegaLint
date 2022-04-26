@@ -11,8 +11,9 @@ import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.elements_for
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.`class`.NameFileSufixDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.abbreviation.AbbreviationDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.name.field.CompanionObjectFieldsDetector
-import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.file_class_interface.ComponentPositionDetector
-import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.PositionArgumentDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.class_interface.ComponentPositionDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.file_package.PackageComponentDetector
+import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.order.function_params.ArgumentPositionDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_length.MaxClassLengthDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.class_methods_count.MaxMethodCountDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_style.restrictions.classes_in_package_count.MaxClassInPackageDetector
@@ -31,15 +32,17 @@ import com.omegar.lint.checks.detector.code_guidelines.xml_style.name_resource.t
 import com.omegar.lint.checks.detector.project_guidelines.file_name.`class`.NameFileUpperCamelCaseDetector
 import com.omegar.lint.checks.detector.project_guidelines.file_name.resource.layout.NameResourceLayoutDetector
 
+@Suppress("UnstableApiUsage")
 class LintIssueRegistry : IssueRegistry() {
 	override val issues: List<Issue>
 		get() = listOf(
             NameFileUpperCamelCaseDetector.ISSUE,
             AbbreviationDetector.ISSUE, // TODO need rewriting & lint quick fix
-            PositionArgumentDetector.ISSUE, // TODO add lint quick fix
+            ArgumentPositionDetector.ISSUE, // TODO add lint quick fix
             MaxFunctionsArgumentsDetector.ISSUE, // TODO ??lint quick fix??
             ExceptionCatchDetector.ISSUE,
             ComponentPositionDetector.ISSUE, //TODO add lint quick fix for
+            PackageComponentDetector.ISSUE,
             NameIdentifierXmlDetector.ISSUE,
             NameResourceStringXmlDetector.ISSUE,
             NameResourceStyleXmlDetector.ISSUE, //TODO change lint quick fix for
