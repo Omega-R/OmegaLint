@@ -25,9 +25,14 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 			)
 		)
 
-		private val ABBREVIATION_REGEX = Regex("[A-Z][A-Z]")
-		private val ANNOTATION_REGEX = Regex("^@")
-		private const val SPACE_LABEL = " "
+        private val ABBREVIATION_REGEX = Regex("[A-Z][A-Z]")
+        private val EXTENSIONS_REGEX = listOf(
+            Regex("fun.*\\."),
+            Regex("val.*?\\."),
+            Regex("var.*?\\.")
+        )
+        private val ANNOTATION_REGEX = Regex("^@")
+        private const val SPACE_LABEL = " "
 
 		//exclusion
 		private const val CLASS_LABEL = "class"
@@ -61,6 +66,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 
             var checkText = getNameString(lines) ?: return
 
+            checkText = checkForExtension(checkText)
             checkText = deleteSpecialSymbols(checkText)
             checkText = deleteExclusions(checkText)
 
@@ -103,14 +109,10 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		return resultText
 	}
 
-	private fun createLintFix(oldName: String): LintFix {
-		return LintFix.create()
-			.replace()
-			.text(oldName)
-			.with(getNewName(oldName))
-			.build()
-	}
-
+    private fun checkForExtension(checkText: String): String =
+        EXTENSIONS_REGEX.firstOrNull { checkText.contains(it) }?.let {
+            checkText.substring(checkText.indexOf('.') + 1)
+        } ?: run { checkText }
 
 	private fun getNewName(oldName: String): String {
 		var resultName = ""
@@ -128,5 +130,13 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		}
 
 		return resultName
+	}
+
+	private fun createLintFix(oldName: String): LintFix {
+		return LintFix.create()
+			.replace()
+			.text(oldName)
+			.with(getNewName(oldName))
+			.build()
 	}
 }
