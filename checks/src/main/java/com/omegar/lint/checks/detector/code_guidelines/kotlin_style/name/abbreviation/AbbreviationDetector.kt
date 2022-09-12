@@ -26,11 +26,7 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 		)
 
         private val ABBREVIATION_REGEX = Regex("[A-Z][A-Z]")
-        private val EXTENSIONS_REGEX = listOf(
-            Regex("fun.*\\."),
-            Regex("val.*?\\."),
-            Regex("var.*?\\.")
-        )
+        private val EXTENSION_REGEX = Regex("fun.*\\.|val.*?\\.|var.*?\\.")
         private val ANNOTATION_REGEX = Regex("^@")
         private const val SPACE_LABEL = " "
 
@@ -110,9 +106,8 @@ class AbbreviationDetector : Detector(), Detector.UastScanner {
 	}
 
     private fun checkForExtension(checkText: String): String =
-        EXTENSIONS_REGEX.firstOrNull { checkText.contains(it) }?.let {
-            checkText.substring(checkText.indexOf('.') + 1)
-        } ?: run { checkText }
+        if (checkText.contains(EXTENSION_REGEX)) checkText.substring(checkText.indexOf('.') + 1)
+        else checkText
 
 	private fun getNewName(oldName: String): String {
 		var resultName = ""
