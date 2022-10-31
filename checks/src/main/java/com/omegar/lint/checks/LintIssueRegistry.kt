@@ -3,6 +3,7 @@ package com.omegar.lint.checks
 import com.android.tools.lint.client.api.IssueRegistry
 import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
+import com.omegar.lint.checks.detector.code_guidelines.general_recommendations.bind.BindDetector
 import com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.argument_bundle_for_fragments_creation.ArgumentsBundleKeyPrefixDetector
 import com.omegar.lint.checks.detector.code_guidelines.general_recommendations.parameter_passing.intent_creation.IntentExtraParametersDetector
 import com.omegar.lint.checks.detector.code_guidelines.kotlin_rules.exception.ExceptionCatchDetector
@@ -63,7 +64,8 @@ class LintIssueRegistry : IssueRegistry() {
             IntentExtraParametersDetector.ISSUE,
             ArgumentsBundleKeyPrefixDetector.ISSUE,
             LambdaDetector.ISSUE, //TODO add lint quick fix for
-            NameResourceLayoutDetector.ISSUE //TODO add lint quick fix for
+            NameResourceLayoutDetector.ISSUE, //TODO add lint quick fix for,
+            BindDetector.ISSUE
         )
 
 	override val api: Int
