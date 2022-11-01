@@ -25,10 +25,7 @@ class BindDetector : Detector(), Detector.UastScanner {
             )
         )
 
-        private val BIND_PATTERN = Regex("bind(.*)(\\()(.*)(R.id.).*(\\))")
-
-        // add underscore to regular expression
-        private val ID_PATTERN = Regex("R.id.[A-Za-z]*")
+        private val BIND_PATTERN = Regex("bind *\\( *(R *. *id *\\. *[A-Za-z0-9_]+)( *,.*)?\\)")
 
     }
 
@@ -36,22 +33,20 @@ class BindDetector : Detector(), Detector.UastScanner {
 
     override fun createUastHandler(context: JavaContext): UElementHandler? =
         object : UElementHandler() {
-            override fun visitClass(node: UClass) {
-
-                val text = node.text
-                val items = BIND_PATTERN
-                    .findAll(text)
-                    .map { bindItem ->
-                        val match = ID_PATTERN.find(bindItem.value)!!
+            override fun visitClass(node: UClass) = BIND_PATTERN
+                .findAll(node.text)
+                .map { item ->
+                    item.groups[1]?.let { match ->
                         BindableItem(
-                            bindItem.range.first,
-                            bindItem.value.length,
-                            match.value
+                            match.range.first,
+                            match.value.length,
+                            match.value.filter { !it.isWhitespace() }
                         )
                     }
-                    .groupBy { it.content }
-
-                items.forEach { (_, list) ->
+                }
+                .filterNotNull()
+                .groupBy { it.content }
+                .forEach { (_, list) ->
                     if (list.size > 1) {
                         context.report(
                             ISSUE,
@@ -65,7 +60,6 @@ class BindDetector : Detector(), Detector.UastScanner {
                         )
                     }
                 }
-            }
         }
 
     private data class BindableItem(
